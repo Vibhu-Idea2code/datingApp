@@ -31,6 +31,8 @@ const userSchema = new mongoose.Schema(
       minlength: 10,
       maxlength: 15,
     },
+    otp: { type: String, required: true },
+    otpExpiry: { type: Date, required: true },
     // looking_for: {
     //   type: String,
     //   enum: ["men", "women", "both"],
