@@ -10,14 +10,14 @@ const User = require("../models/user.models");
 
 /* -------------------------- REGISTER/CREATE USER -------------------------- */
 const register = async (req, res) => {
-  // const { email, password, role } = req.body;
+  const { email, password, role } = req.body;
   console.log(req.body);
   const reqBody = req.body;
-  // if (req.file) {
-  //   reqBody.profile_img = req.file.filename;
-  // } else {
-  //   throw new Error("Product image is required!");
-  // }
+  if (req.file) {
+    reqBody.profile_img = req.file.filename;
+  } else {
+    throw new Error("Product image is required!");
+  }
   const existingUser = await userService.findUserByEmail(reqBody.email);
 
   if (existingUser) {
@@ -39,13 +39,13 @@ const register = async (req, res) => {
 
   const filter = {
     ...reqBody,
-    // email:reqBody.email,
-    // role:reqBody.role,
+    email:reqBody.email,
+    role:reqBody.role,
     password: hashPassword,
     token,
   };
-  filter.gender = reqBody.gender;
-  filter.hobbies = reqBody.hobbies;
+  // filter.gender = reqBody.gender;
+  // filter.hobbies = reqBody.hobbies;
   const data = await userService.createUser(filter, reqBody);
 
   res.status(200).json({ success: true, data: data });
