@@ -1,27 +1,53 @@
 const express = require("express");
-
-const { userController } = require("../../controllers");
-
+const { userController, authController } = require("../../controllers");
+const auth = require("../../middlewares/auth");
+const {upload}=require("../../middlewares/upload");
 const router = express.Router();
 
-// create user
-// router.post(
-//   "/create-user",
-//   userController.register
-// );
 
-// get user list
-router.get("/list", userController.getUserList);
+/* -------------------------------------------------------------------------- */
+/*                                AUTH ROUTE                                */
+/* -------------------------------------------------------------------------- */
 
-/**get user list by id */
-router.get("/user-id/:userId", userController.getUserId);
-
-/**delete user  */
-router.delete("/delete/:userId", userController.deleteUser);
-
-router.put("/update-user/:userId",userController.updateUser);
-
+/* -------------------------- register/signUp/create  user -------------------------- */
+// router.post("/create-user", upload.single("profile_img"), authController.register);
 // router.post("/create-user", authController.register);
+router.post("/create-user", authController.register);
 
-// router.post("/login", authController.login);
+/* ---------------------------- LOGIN/SIGNIN USER --------------------------- */
+router.post("/login", authController.login);
+/* -------------------------- FORGOT PASSWORD USER ------------------------- */
+router.post(
+  "/forgot",
+  // body("password").isLength({min: 7}).withMessage('Password needs to be atleast 7 character long'),
+  authController.forgetPassword
+);
+/* ------------------------------- VERIFY OTP ------------------------------- */
+router.post("/verifyOtp", authController.verifyOtp);
+/* -------------------------- RESET PASSWORD USER ------------------------- */
+router.put("/resetPassword",auth(), authController.resetPassword);
+/* ----------------------------- CHANGE PASSWORD ---------------------------- */
+router.post("/change-password/:_id", auth(), authController.changePassword);
+
+
+/* -------------------------------------------------------------------------- */
+/*                                    USER ROUTE                                    */
+/* -------------------------------------------------------------------------- */
+
+/* ------------------------------- get user list ------------------------------------------- */
+router.get("/list", auth(), userController.getUserList);
+router.get("/role", auth(), userController.getAllUser);
+router.get("/role-list", auth(), userController.getUserListRole);
+
+/* ----------------------------- get user by id ----------------------------- */
+router.get("/getid-user/:userId", userController.getUserDetails);
+//  /* ---------------------------- delete user list ---------------------------- */
+router.delete("/delete-user/:userId", userController.deleteUser);
+router.delete("/delete-many", userController.deleteManyUsers);
+
+// /* ------------------------- update user info ------------------------ */
+// router.put("/update/:userId", userController.updateDetails);
+router.put("/update/:userId",upload.single("profile_img"), userController.updateDetails);
+
+
 module.exports = router;

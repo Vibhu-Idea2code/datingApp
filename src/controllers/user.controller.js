@@ -1,84 +1,208 @@
 const { userService } = require("../services");
+const { User } = require("../models"); // use in delete many
 
-const createUser = async (req, res) => {
+/* ------------------------ GET USER LIST (ROLE WISE) WITH AUTH ----------------------- */
+const getUserListRole = async (req, res) => {
   try {
-    const reqBody = req.body;
-    console.log(reqBody, "++++++user");
-    const user = await userService.createUser(reqBody);
-    if (!user) {
-      throw new Error("no such user");
+    const getList = await userService.getUserListSimple(req, res);
+    const userRole = req.body.role;
+    let users = [];
+    if (userRole === "user") {
+      for (let i = 0; i < getList.length; i++) {
+        if (getList[i].role !== "admin") {
+          users.push(getList[i]);
+        }
+      }
+      console.log("users", users);
+      res.send(users);
+    } else {
+      res.send(getList);
     }
-    res.status(200).json({
-      message: "Successfully created a new user",
-      success: true,
-      data: { user },
-    });
-  } catch (error) {
-    res.status(400).json({ success: false, message: error.message });
+  } catch (err) {
+    console.log("Error in getting the user list", err);
+    res.status(500).send(err);
   }
 };
 
+/* -------------- GET USER LIST WITH SIMPLE AUTH AND PAGINATION ------------- */
+// const getUserList = async (req, res) => {
+//   try {
+//     const { search, page, perPage, ...options } = req.query;
+//     let filter = {};
+
+//     if (search) {
+//       filter.user_name = { $regex: search, $options: "i" };
+//     }
+
+//     const currentPage = parseInt(page) || 1;
+//     const itemsPerPage = parseInt(perPage) || 3;
+
+//     // Calculate the number of documents to skip based on the current page and items per page
+//     const skip = (currentPage - 1) * itemsPerPage;
+
+//     const userList = await userService.getUserList(filter, {
+//       skip: skip,
+//       limit: itemsPerPage,
+//       ...options, // You can pass other query options here
+//     });
+
+//     res.status(200).json({
+//       success: true,
+//       message: "Get user list successfully!",
+//       data: userList,
+//       currentPage: currentPage,
+//       totalPages: Math.ceil(userList.length / itemsPerPage),
+//     });
+//   } catch (error) {
+//     res.status(400).json({ success: false, message: error.message });
+//   }
+// };
 const getUserList = async (req, res) => {
   try {
-    let user = await userService.getUserList(req, res);
-    res.status(200).json({
-      message: "successfully fetched all users",
-      status: true,
-      data: user ,
-    });
-  } catch (error) {
-    res.status(400).json({ success: false, message: error.message });
-  }
-};
+    const { search, page, perPage, ...options } = req.query;
+    console.log(req.query);
+    let filter = {};
 
-const getUserId = async (req, res) => {
-  try {
-    const user = await userService.getUserId(req.params.userId);
-    if (!user) {
-      throw new Error("No Such User Found!!!");
+    if (search) {
+      filter.user_name = { $regex: search, $options: "i" };
     }
+console.log(search,"search");
+    const currentPage = parseInt(page) || 1;
+    const itemsPerPage = parseInt(perPage) || 10; // Adjust the default items per page as needed
+
+    const skip = (currentPage - 1) * itemsPerPage;
+
+    const userList = await userService.getUserList(filter, {
+      skip: skip,
+      limit: itemsPerPage,
+      ...options,
+    });
+
+    res.status(200).json({ userList });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+/* --------------- GET USER LIST ROLE WISE (SIMPLE) WITH AUTH --------------- */
+const getAllUser = async (req, res) => {
+  try {
+    const data = await userService.getAllUser({ role: req.body.role });
+    // const result=await userService.getUserListSearch()
     res.status(200).json({
-      message: `Fetched the details of ${user._id}`,
-      data: { user },
       success: true,
+      message: "User list successfully!",
+      data: { data },
+    });
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+};
+
+/* --------------------------- GET USER LIST BY ID -------------------------- */
+const getUserDetails = async (req, res) => {
+  try {
+    const getDetails = await userService.getUserById(req.params.userId);
+    if (!getDetails) {
+      throw new Error("User not found!");
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "User details get successfully!",
+      data: getDetails,
     });
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
   }
 };
 
+/* -------------------------- GET USER UPDATE BY ID ------------------------- */
+const updateDetails = async (req, res) => {
+  try {
+    // const reqBody=req.body;
+    const userId = req.params.userId;
+    const { role, gender, user_name, address } = req.body; // Extract the 'role' and 'gender' fields from the request body
+    const userExists = await userService.getUserById(userId);
+
+    if (!userExists) {
+      throw new Error("User not found!");
+    }
+
+    if (userExists.role === "admin" && role !== "admin") {
+      throw new Error("Admins cannot change their role");
+    }
+
+    if (userExists.role !== "admin" && role === "admin") {
+      throw new Error("You are not allowed to change your role to admin");
+    }
+
+    // Update the user's gender and other details
+    userExists.gender = gender; // Update the 'gender' field
+    userExists.user_name = user_name; // Update the 'firstName' field
+    userExists.address = address; // Update the 'lastName' field
+    if (req.file) {
+      userExists.profile_img = req.file.filename; // Store the path to the uploaded profile image
+    }
+    await userService.updateUser(userId, userExists); // Save the updated user
+
+    res.status(200).json({
+      success: true,
+      message: "User details updated successfully!",
+      data: userExists,
+    });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
+/* ------------------------ DELETE SINGLE USER BY ID ------------------------ */
 const deleteUser = async (req, res) => {
   try {
     const userId = req.params.userId;
-    const user = await userService.deleteUserId(userId);
+    const userExists = await userService.getUserById(userId);
+    if (!userExists) {
+      throw new Error("User not found!");
+    }
+
+    await userService.deleteUser(userId);
+
     res.status(200).json({
-      message: "Deleted Successfully",
-      data: { user },
       success: true,
+      message: "User delete successfully!",
+      data: userExists,
     });
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
   }
 };
 
-const updateUser = async (req, res) => {
+/* ------------------------- DELETE MANY USER BY ID ------------------------- */
+const deleteManyUsers = async (req, res) => {
   try {
-    const userId = req.params.userId;
-    const userEx = await userService.getUserId(userId);
-    if (!userEx) {
-      throw new Error("userId does not exist");
+    const { _id } = req.body;
+    const result = await User.deleteMany({ _id: { $in: _id } });
+    if (result.deletedCount === 0) {
+      throw new Error("No users deleted");
     }
-    await userService.updateUser(userId, req.body);
-    res.status(201).json({
+    return res.status(200).send({
       success: true,
-      message: "successfully updated",
-      data: { userEx },
+      message: "Deleted Successfully",
     });
-  } catch (error) {
-    res.status(400).json({
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send({
       success: false,
-      message: error.message,
+      message: `${err}`,
     });
   }
 };
-module.exports = { createUser, getUserList, getUserId, deleteUser,updateUser };
+
+module.exports = {
+  getAllUser,
+  getUserListRole,
+  getUserList,
+  getUserDetails,
+  updateDetails,
+  deleteUser,
+  deleteManyUsers,
+};
