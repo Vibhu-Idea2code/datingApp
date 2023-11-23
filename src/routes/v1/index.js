@@ -5,6 +5,8 @@ const numberRoute=require("./number.route");
 const petRoute=require("./pet.route");
 const sexualRoute=require("./sexual.route");
 const signRoute=require("./sign.route");
+const interestRoute=require("./interest.route");
+
 
 
 
@@ -16,6 +18,8 @@ router.use("/numbers",numberRoute);
 router.use("/pet",petRoute);
 router.use("/sexual",sexualRoute);
 router.use("/sign",signRoute);
+router.use("/interest",interestRoute);
+
 
 
 

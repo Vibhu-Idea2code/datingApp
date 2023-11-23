@@ -10,10 +10,13 @@ const router = express.Router();
 /* -------------------------------------------------------------------------- */
 
 /* -------------------------- register/signUp/create  user -------------------------- */
-router.post("/create-user", upload.single("profile_img"), authController.register);
+// router.post("/create-user", upload.single("profile"), authController.register);
+router.post("/create-user", authController.createUser);
 // router.post("/create-user", authController.register);
-// router.post("/create-user", authController.register);
-
+// router.post(
+//   "/send-mail",
+// authController.register 
+// );
 /* ---------------------------- LOGIN/SIGNIN USER --------------------------- */
 router.post("/login", authController.login);
 /* -------------------------- FORGOT PASSWORD USER ------------------------- */

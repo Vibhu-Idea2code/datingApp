@@ -6,7 +6,7 @@ let transport = nodemailer.createTransport({
   port: config.email.smtp.port,
   auth: {
     user: config.email.smtp.auth.user,
-    pass: config.email.smtp.auth.pass,
+    // pass: config.email.smtp.auth.pass,
   },
 });
 

@@ -6,51 +6,57 @@ const moment = require("moment");
 const jwt = require("jsonwebtoken");
 const jwtSecrectKey = "cdccsvavsvfssbtybnjnuki";
 const fs = require("fs");
-const User = require("../models/user.models");
+const User = require("../models/users.model");
 
 /* -------------------------- REGISTER/CREATE USER -------------------------- */
-const register = async (req, res) => {
-  const { email, password, role } = req.body;
-  console.log(req.body);
-  const reqBody = req.body;
-  if (req.file) {
-    reqBody.profile_img = req.file.filename;
-  } else {
-    throw new Error("Product image is required!");
-  }
-  const existingUser = await userService.findUserByEmail(reqBody.email);
+const createUser = async (req, res) => {
+  try {
+    const { email, first_name,last_name } = req.body;
 
-  if (existingUser) {
-    return res.status(400).json({
-      success: false,
-      message: "User with this email already exists.",
+    const userExists = await userService.getUserByEmail({email});
+    console.log(userExists);
+    if (!userExists) 
+      throw new Error("User not found!");
+      const otp = ("0".repeat(4) + Math.floor(Math.random() * 10 ** 4)).slice(-4);
+      userExists.otp = otp;
+      await userExists.save();
+
+    const user = await userService.createUser(reqBody);
+
+    if (!user) {
+      throw new Error("Something went wrong, please try again or later!");
+    }
+
+    ejs.renderFile(
+      path.join(__dirname, "../views/otp-template.ejs"),
+      {
+        email: email,
+        otp: ("0".repeat(4) + Math.floor(Math.random() * 10 ** 4)).slice(-4),
+        first_name:first_name,
+        last_name:last_name,
+      },
+      async (err, data) => {
+        if (err) {
+          let userCreated = await userService.getUserByEmail(email);
+          if (userCreated) {
+            await userService.deleteUserByEmail(email);
+          }
+          throw new Error("Something went wrong, please try again.");
+        } else {
+          emailService.sendMail(email, data, "Verify Email");
+        }
+      }
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "User create successfully!",
+      data: { user },
     });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
   }
-
-  const hashPassword = await bcrypt.hash(reqBody.password, 8);
-
-  let option = {
-    email: reqBody.email,
-    role: reqBody.role,
-    exp: moment().add(1, "days").unix(),
-  };
-
-  const token = await jwt.sign(option, jwtSecrectKey);
-
-  const filter = {
-    ...reqBody,
-    email:reqBody.email,
-    role:reqBody.role,
-    password: hashPassword,
-    token,
-  };
-  // filter.gender = reqBody.gender;
-  // filter.hobbies = reqBody.hobbies;
-  const data = await userService.createUser(filter, reqBody);
-
-  res.status(200).json({ success: true, data: data });
 };
-
 /* -------------------------- LOGIN/SIGNIN USER -------------------------- */
 const login = async (req, res) => {
   try {
@@ -225,7 +231,8 @@ const resetPassword = async (req, res) => {
 };
 
 module.exports = {
-  register,
+  // register,
+  createUser,
   login,
   verifyOtp,
   forgetPassword,

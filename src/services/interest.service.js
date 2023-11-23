@@ -14,7 +14,6 @@ const getHobbiesList = async (filter, options) => {
 const getHobbiesById = async (hobbiesId) => {
   return Hobbies.findById(hobbiesId);
 };
-
 /**update Hobbies and token */
 const updateHobbies = async (hobbiesId, updateBody) => {
   return Hobbies.findByIdAndUpdate(hobbiesId, { $set: updateBody });
