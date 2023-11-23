@@ -11,9 +11,18 @@ const userSchema = new mongoose.Schema(
     email: {
       type: String,
     },
-    profile:{
-        type: String,
+    phoneNumber: { type: String, required: true },
+    Otp: { type: String},
+    otpExpiry: { type: Date},
+    birthDate:{
+      type: Date,
+    },
+    gender: {
+      type: Array,
     }
+    // profile:{
+    //     type: String,
+    // }
   },
   {
     timestamps: true,
@@ -28,4 +37,4 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("client", userSchema);
+module.exports = mongoose.model("user", userSchema);

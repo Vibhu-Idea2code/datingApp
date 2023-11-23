@@ -7,56 +7,84 @@ const jwt = require("jsonwebtoken");
 const jwtSecrectKey = "cdccsvavsvfssbtybnjnuki";
 const fs = require("fs");
 const User = require("../models/users.model");
+const otpGenerator = require('otp-generator');
+
 
 /* -------------------------- REGISTER/CREATE USER -------------------------- */
 const createUser = async (req, res) => {
   try {
-    const { email, first_name,last_name } = req.body;
-
-    const userExists = await userService.getUserByEmail({email});
-    console.log(userExists);
-    if (!userExists) 
-      throw new Error("User not found!");
-      const otp = ("0".repeat(4) + Math.floor(Math.random() * 10 ** 4)).slice(-4);
-      userExists.otp = otp;
-      await userExists.save();
-
-    const user = await userService.createUser(reqBody);
-
-    if (!user) {
-      throw new Error("Something went wrong, please try again or later!");
+    const reqBody = req.body;
+    const { phoneNumber } = req.body;
+    
+    const userExists = await userService.getUserByEmail(reqBody.email);
+    const userExistsByPhoneNumber = await userService.getUserByPhoneNumber(reqBody.phoneNumber);
+    if (userExists || userExistsByPhoneNumber) {
+      throw new Error("User already created with this email or phone number!");
     }
+
+    const Otp = otpGenerator.generate(6, { upperCase: false, specialChars: false, alphabets: false });
+    // Set OTP expiry to 5 minutes from now
+    const otpExpiry = new Date();
+    otpExpiry.setMinutes(otpExpiry.getMinutes() + 5);
+    const user = await userService.createUser({
+      ...reqBody,
+      phoneNumber,
+      Otp,
+      otpExpiry,
+    });
+    await user.save();
+    if (!user) {
+      throw new Error("Something went wrong, please try again later!");
+    }
+    
+    const otp = ("0".repeat(4) + Math.floor(Math.random() * 10 ** 4)).slice(-4);
 
     ejs.renderFile(
       path.join(__dirname, "../views/otp-template.ejs"),
       {
-        email: email,
-        otp: ("0".repeat(4) + Math.floor(Math.random() * 10 ** 4)).slice(-4),
-        first_name:first_name,
-        last_name:last_name,
+        email: reqBody.email,
+        otp: otp,
+        first_name: reqBody.first_name,
+        last_name: reqBody.last_name,
       },
       async (err, data) => {
         if (err) {
-          let userCreated = await userService.getUserByEmail(email);
-          if (userCreated) {
-            await userService.deleteUserByEmail(email);
-          }
-          throw new Error("Something went wrong, please try again.");
+          console.error(err);
+          // Rollback: Delete the user that was created if there's an error
+          await userService.deleteUserByEmail(reqBody.email);
+          
+          res.status(500).json({
+            success: false,
+            message: "Something went wrong, please try again.",
+          });
         } else {
-          emailService.sendMail(email, data, "Verify Email");
+          try {
+            await emailService.sendMail(reqBody.email, data, "Verify Email");
+            res.status(200).json({
+              success: true,
+              message: "User created successfully!",
+              data: { user },
+            });
+          } catch (emailError) {
+            console.error(emailError);
+            // Rollback: Delete the user that was created if there's an error sending email
+            await userService.deleteUserByEmail(reqBody.email);
+            
+            res.status(500).json({
+              success: false,
+              message: "Error sending email, please try again.",
+            });
+          }
         }
       }
     );
-
-    res.status(200).json({
-      success: true,
-      message: "User create successfully!",
-      data: { user },
-    });
   } catch (error) {
+    console.error(error);
     res.status(400).json({ success: false, message: error.message });
   }
 };
+
+
 /* -------------------------- LOGIN/SIGNIN USER -------------------------- */
 const login = async (req, res) => {
   try {

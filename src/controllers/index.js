@@ -6,6 +6,8 @@ module.exports.petController = require("../controllers/pets.controller");
 module.exports.sexualController = require("../controllers/sexual.controller");
 module.exports.zodiacSignController = require("../controllers/sign.controller");
 module.exports.hobbiesController = require("../controllers/interet.controller");
+module.exports.loginController = require("../controllers/user.login.controller");
+
 
 
 
