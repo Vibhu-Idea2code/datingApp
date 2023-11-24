@@ -11,19 +11,49 @@ const userSchema = new mongoose.Schema(
     email: {
       type: String,
     },
+
     phoneNumber: { type: String, required: true },
-    Otp: { type: String},
+    otp: { type: String,default:""},
     otpExpiry: { type: Date},
     birthDate:{
       type: Date,
     },
     gender: {
       type: Array,
-    }
+    },
+    sexual:{
+      type: String,
+    },
+    showMe:{
+      type: String,
+    },
+    school:{
+      type: String,
+    },
+    interest:{
+      type: String,
+    },
+    sign:{
+      type: String,
+    },
+    pets:{
+      type: String,
+    },
+    address:{
+
+    },
+    status: {
+      type: Boolean,
+      default: true,
+    },
+    token:{
+      type:String,
+        }
     // profile:{
     //     type: String,
     // }
   },
+  
   {
     timestamps: true,
     versionKey: false,

@@ -11,132 +11,166 @@ const otpGenerator = require('otp-generator');
 
 
 /* -------------------------- REGISTER/CREATE USER -------------------------- */
-const createUser = async (req, res) => {
+// const createUser = async (req, res) => {
+//   try {
+//     const reqBody = req.body;
+//     const { phoneNumber } = req.body;
+//     // 
+//     const userExists = await userService.getUserByEmail(reqBody.email);
+//     const userExistsByPhoneNumber = await userService.getUserByPhoneNumber(reqBody.phoneNumber);
+//     if (userExists || userExistsByPhoneNumber) {
+//       throw new Error("User already created with this email or phone number!");
+//     }
+
+//     const Otp = otpGenerator.generate(6, { upperCase: false, specialChars: false, alphabets: false });
+//     // Set OTP expiry to 5 minutes from now
+//     const otpExpiry = new Date();
+//     otpExpiry.setMinutes(otpExpiry.getMinutes() + 5);
+//     const user = await userService.createUser({
+//       ...reqBody,
+//       phoneNumber,
+//       Otp,
+//       otpExpiry,
+//     });
+//     await user.save();
+//     if (!user) {
+//       throw new Error("Something went wrong, please try again later!");
+//     }
+    
+//     const otp = ("0".repeat(4) + Math.floor(Math.random() * 10 ** 4)).slice(-4);
+
+//     ejs.renderFile(
+//       path.join(__dirname, "../views/otp-template.ejs"),
+//       {
+//         email: reqBody.email,
+//         otp: otp,
+//         first_name: reqBody.first_name,
+//         last_name: reqBody.last_name,
+//       },
+//       async (err, data) => {
+//         if (err) {
+//           console.error(err);
+//           // Rollback: Delete the user that was created if there's an error
+//           await userService.deleteUserByEmail(reqBody.email);
+          
+//           res.status(500).json({
+//             success: false,
+//             message: "Something went wrong, please try again.",
+//           });
+//         } else {
+//           try {
+//             await emailService.sendMail(reqBody.email, data, "Verify Email");
+//             res.status(200).json({
+//               success: true,
+//               message: "User created successfully!",
+//               data: { user },
+//             });
+//           } catch (emailError) {
+//             console.error(emailError);
+//             // Rollback: Delete the user that was created if there's an error sending email
+//             await userService.deleteUserByEmail(reqBody.email);
+            
+//             res.status(500).json({
+//               success: false,
+//               message: "Error sending email, please try again.",
+//             });
+//           }
+//         }
+//       }
+//     );
+//   } catch (error) {
+//     console.error(error);
+//     res.status(400).json({ success: false, message: error.message });
+//   }
+// };
+
+
+/* -------------------------- LOGIN/SIGNIN USER -------------------------- */
+const loginEmail = async (req, res) => {
   try {
+    // validation;
     const reqBody = req.body;
-    const { phoneNumber } = req.body;
-    
-    const userExists = await userService.getUserByEmail(reqBody.email);
-    const userExistsByPhoneNumber = await userService.getUserByPhoneNumber(reqBody.phoneNumber);
-    if (userExists || userExistsByPhoneNumber) {
-      throw new Error("User already created with this email or phone number!");
+    const { email } = req.body;
+    console.log(req.body);
+    const findUser = await userService.findUserByLogonEmail({email} );
+    console.log(findUser, "++++");
+    if (!findUser) throw Error("User not found");
+    let option = {
+      email,
+     
+      exp: moment().add(1, "days").unix(),
+    };
+    let token;
+    if (findUser) {
+      token = await jwt.sign(option,jwtSecrectKey);
     }
-
-    const Otp = otpGenerator.generate(6, { upperCase: false, specialChars: false, alphabets: false });
-    // Set OTP expiry to 5 minutes from now
-    const otpExpiry = new Date();
-    otpExpiry.setMinutes(otpExpiry.getMinutes() + 5);
-    const user = await userService.createUser({
-      ...reqBody,
-      phoneNumber,
-      Otp,
-      otpExpiry,
-    });
-    await user.save();
-    if (!user) {
-      throw new Error("Something went wrong, please try again later!");
+    let datas;
+    if (token) {
+      datas = await userService.findUserAndUpdate(findUser._id, token);
     }
     
-    const otp = ("0".repeat(4) + Math.floor(Math.random() * 10 ** 4)).slice(-4);
-
     ejs.renderFile(
-      path.join(__dirname, "../views/otp-template.ejs"),
+      path.join(__dirname, "../views/login-template.ejs"),
       {
         email: reqBody.email,
-        otp: otp,
+        // otp: ("0".repeat(4) + Math.floor(Math.random() * 10 ** 4)).slice(-4),
         first_name: reqBody.first_name,
         last_name: reqBody.last_name,
       },
       async (err, data) => {
         if (err) {
-          console.error(err);
-          // Rollback: Delete the user that was created if there's an error
-          await userService.deleteUserByEmail(reqBody.email);
-          
-          res.status(500).json({
-            success: false,
-            message: "Something went wrong, please try again.",
-          });
-        } else {
-          try {
-            await emailService.sendMail(reqBody.email, data, "Verify Email");
-            res.status(200).json({
-              success: true,
-              message: "User created successfully!",
-              data: { user },
-            });
-          } catch (emailError) {
-            console.error(emailError);
-            // Rollback: Delete the user that was created if there's an error sending email
-            await userService.deleteUserByEmail(reqBody.email);
-            
-            res.status(500).json({
-              success: false,
-              message: "Error sending email, please try again.",
-            });
+          let userCreated = await userService.getUserByEmail(reqBody.email);
+          if (userCreated) {
+            // await userService.deleteUserByEmail(reqBody.email);
           }
+          throw new Error("Something went wrong, please try again.");
+        } else {
+          emailService.sendMail(reqBody.email, data, "Verify Email");
         }
       }
     );
-  } catch (error) {
-    console.error(error);
-    res.status(400).json({ success: false, message: error.message });
-  }
-};
-
-
-/* -------------------------- LOGIN/SIGNIN USER -------------------------- */
-const login = async (req, res) => {
-  try {
-    // validation;
-    const { email, password } = req.body;
-    console.log(req.body);
-    const findUser = await userService.findUserByLogonEmail({email} );
-    console.log(findUser, "++++");
-    if (!findUser) throw Error("User not found");
-
-    const successPassword = await bcrypt.compare(password, findUser.password);
-    console.log(successPassword, "000000000");
-    console.log("Input Password:", password);
-    console.log("Hashed Password in Database:", findUser.password);
-
-    if (!successPassword) {
-      console.log("Password Comparison Failed");
-      throw Error("Incorrect password");
-    }
-
-    if (!successPassword) throw Error("Incorrect password");
-
-    let option = {
-      email,
-      role: findUser.role,
-      exp: moment().add(1, "days").unix(),
-    };
-
-    let token;
-    if (findUser && successPassword) {
-      token = await jwt.sign(option,jwtSecrectKey);
-    }
-    let data;
-    if (token) {
-      data = await userService.findUserAndUpdate(findUser._id, token);
-    }
-    res.status(200).json({ data });
+    res.status(200).json({
+      success: true,
+      message: "User create successfully!",
+      data: { datas },
+    });
   } catch (error) {
     res.status(404).json({ error: error.message });
   }
 };
 
-/* ------------------------------- VERIFY OTP ------------------------------- */
+/* -------------------------- LOGIN WITH PHONE NUMBER WITH OTP  -------------------------- */
+const checkUserPh = async (req, res, next) => {
+  try {
+    // const reqBody = req.body;
+    const { phoneNumber } = req.body;
+    // console.log(req.body);
+    const findUser = await userService.getUserByPhoneNumber(phoneNumber );
+    console.log(findUser, "++++");
+    if (!findUser) throw Error("User not found");
+    const otpExpiry = new Date();
+    otpExpiry.setMinutes(otpExpiry.getMinutes() + 5);   
+    // const otp = Math.floor(1000 + Math.random() * 3000);
+    findUser.otp = otp;
+    findUser.expireOtpTime = Date.now() + 300000; //Valid upto 5 min
+    await findUser.save();
+
+    res.json({ message: `OTP sent successfully ${otp}` });
+  } catch (err) {
+    next(err);
+  }
+};  
+
+/* ------------------------------- VERIFY OTP with number------------------------------- */
 const verifyOtp = async (req, res) => {
   try {
-    const { email, otp } = req.body;
+    const { phoneNumber, otp } = req.body;
     const user = await verifyOtpService.findOtpByOtp({ otp });
     console.log("user", user);
     if (!user) {
       throw new Error("Invalid OTP entered!");
     }
-    const findEmail = await verifyOtpService.findOtpByEmail({ email });
+    const findEmail = await verifyOtpService.findOtpByEmail({ phoneNumber });
     console.log("findEmail", findEmail);
     if (!findEmail) {
       throw new Error("User not found");
@@ -156,6 +190,24 @@ const verifyOtp = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+// const checkUserOtp = async (req, res, next) => {
+//   try {
+//     const user = await User.findOne({ otp: req.body.otp, mo_no: req.body.mo_no });
+//     if (!user) return queryErrorRelatedResponse(req, res, 401, "Invalid OTP!");
+
+//     if (new Date(user.expireOtpTime).toTimeString() <= new Date(Date.now()).toTimeString()) {
+//       return queryErrorRelatedResponse(req, res, 401, "OTP is Expired!");
+//     }
+
+//     successResponse(res, user);
+//   } catch (err) {
+//     next(err);
+//   }
+// };
+
+
+
 /* ----------------------------- CHANGE PASSWORD ---------------------------- */
 const changePassword = async (req, res) => {
   try {
@@ -260,10 +312,11 @@ const resetPassword = async (req, res) => {
 
 module.exports = {
   // register,
-  createUser,
-  login,
+  // createUser,
+  loginEmail,
   verifyOtp,
   forgetPassword,
   resetPassword,
   changePassword,
+  checkUserPh
 };

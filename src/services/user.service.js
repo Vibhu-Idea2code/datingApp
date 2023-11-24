@@ -29,6 +29,13 @@ const getUserByEmail = async (email) => {
   return User.findOne({ email });
 };
 
+const getUserByPhone=async (phoneNumber)=>{
+  return User.findOne({phoneNumber});
+}
+
+const findOtpByOtp = async (otp) => {
+  return await User.findOne(otp);
+};
 /**
  * Get user details by id
  * @param {ObjectId} userId
@@ -65,6 +72,18 @@ const getUserByPhoneNumber = async (phoneNumber) => {
   return User.findOne({ phoneNumber });
 };
 
+const findUserByLogonEmail = async (email) => {
+  return await User.findOne(email);
+};
+const findUserAndUpdate = async (_id, token) => {
+  return await User.findByIdAndUpdate(
+    { _id },
+    {
+      $set: { token },
+    },
+    { new: true }
+  );
+}
 module.exports = {
   createUser,
   getUserList,
@@ -73,5 +92,9 @@ module.exports = {
   getUserByEmail,
   deleteUser,
   deleteUserByEmail,
-  getUserByPhoneNumber
+  getUserByPhoneNumber,
+  findUserByLogonEmail,
+  findUserAndUpdate,
+  getUserByPhone,
+  findOtpByOtp
 };

@@ -8,21 +8,22 @@ const router = express.Router();
 //   "/send-mail",
 // authController.createUser
 // );
-
+router.post('/verify-otp', authController.verifyOtp);
 /* -------------------------------------------------------------------------- */
 /*                                AUTH ROUTE                                */
 /* -------------------------------------------------------------------------- */
 
 /* -------------------------- register/signUp/create  user -------------------------- */
 // router.post("/create-user", upload.single("profile"), authController.register);
-router.post("/create-user", authController.createUser);
+// router.post("/create-user", authController.createUser);
 // router.post("/create-user", authController.register);
 // router.post(
 //   "/send-mail",
 // authController.register 
 // );
 /* ---------------------------- LOGIN/SIGNIN USER --------------------------- */
-router.post("/login", authController.login);
+router.post("/login", authController.loginEmail);
+router.post("/login-phone", authController.checkUserPh);
 /* -------------------------- FORGOT PASSWORD USER ------------------------- */
 router.post(
   "/forgot",
