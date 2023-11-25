@@ -16,7 +16,7 @@ router.post('/verify-otp', authController.verifyOtp);
 /* -------------------------- register/signUp/create  user -------------------------- */
 // router.post("/create-user", upload.single("profile"), authController.register);
 // router.post("/create-user", authController.createUser);
-// router.post("/create-user", authController.register);
+router.post("/create-user", authController.register);
 // router.post(
 //   "/send-mail",
 // authController.register 
@@ -43,9 +43,11 @@ router.post("/change-password/:_id", auth(), authController.changePassword);
 /* -------------------------------------------------------------------------- */
 
 /* ------------------------------- get user list ------------------------------------------- */
-router.get("/list", auth(), userController.getUserList);
-router.get("/role", auth(), userController.getAllUser);
-router.get("/role-list", auth(), userController.getUserListRole);
+// router.get("/list", auth(), userController.getUserList);
+// router.get("/role", auth(), userController.getAllUser);
+// router.get("/role-list", auth(), userController.getUserListRole);
+router.get("/list",  userController.userList);
+
 
 /* ----------------------------- get user by id ----------------------------- */
 router.get("/getid-user/:userId", userController.getUserDetails);
@@ -54,8 +56,8 @@ router.delete("/delete-user/:userId", userController.deleteUser);
 router.delete("/delete-many", userController.deleteManyUsers);
 
 // /* ------------------------- update user info ------------------------ */
-// router.put("/update/:userId", userController.updateDetails);
-router.put("/update/:userId",upload.single("profile_img"), userController.updateDetails);
+router.put("/update/:userId", userController.updateDetails);
+// router.put("/update/:userId",upload.single("profile_img"), userController.updateDetails);
 
 
 module.exports = router;

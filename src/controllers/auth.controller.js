@@ -11,78 +11,63 @@ const otpGenerator = require('otp-generator');
 
 
 /* -------------------------- REGISTER/CREATE USER -------------------------- */
-// const createUser = async (req, res) => {
-//   try {
-//     const reqBody = req.body;
-//     const { phoneNumber } = req.body;
-//     // 
-//     const userExists = await userService.getUserByEmail(reqBody.email);
-//     const userExistsByPhoneNumber = await userService.getUserByPhoneNumber(reqBody.phoneNumber);
-//     if (userExists || userExistsByPhoneNumber) {
-//       throw new Error("User already created with this email or phone number!");
-//     }
+const register = async (req, res) => {
+  // const { email, password, role } = req.body;
+  console.log(req.body);
+  const reqBody = req.body;
+  // if (req.file) {
+  //   reqBody.profile_img = req.file.filename;
+  // } else {
+  //   throw new Error("Product image is required!");
+  // }
+  const existingUser = await userService.findUserByEmail(reqBody.email);
 
-//     const Otp = otpGenerator.generate(6, { upperCase: false, specialChars: false, alphabets: false });
-//     // Set OTP expiry to 5 minutes from now
-//     const otpExpiry = new Date();
-//     otpExpiry.setMinutes(otpExpiry.getMinutes() + 5);
-//     const user = await userService.createUser({
-//       ...reqBody,
-//       phoneNumber,
-//       Otp,
-//       otpExpiry,
-//     });
-//     await user.save();
-//     if (!user) {
-//       throw new Error("Something went wrong, please try again later!");
-//     }
-    
-//     const otp = ("0".repeat(4) + Math.floor(Math.random() * 10 ** 4)).slice(-4);
+  if (existingUser) {
+    return res.status(400).json({
+      success: false,
+      message: "User with this email already exists.",
+    });
+  }
 
-//     ejs.renderFile(
-//       path.join(__dirname, "../views/otp-template.ejs"),
-//       {
-//         email: reqBody.email,
-//         otp: otp,
-//         first_name: reqBody.first_name,
-//         last_name: reqBody.last_name,
-//       },
-//       async (err, data) => {
-//         if (err) {
-//           console.error(err);
-//           // Rollback: Delete the user that was created if there's an error
-//           await userService.deleteUserByEmail(reqBody.email);
-          
-//           res.status(500).json({
-//             success: false,
-//             message: "Something went wrong, please try again.",
-//           });
-//         } else {
-//           try {
-//             await emailService.sendMail(reqBody.email, data, "Verify Email");
-//             res.status(200).json({
-//               success: true,
-//               message: "User created successfully!",
-//               data: { user },
-//             });
-//           } catch (emailError) {
-//             console.error(emailError);
-//             // Rollback: Delete the user that was created if there's an error sending email
-//             await userService.deleteUserByEmail(reqBody.email);
-            
-//             res.status(500).json({
-//               success: false,
-//               message: "Error sending email, please try again.",
-//             });
-//           }
-//         }
-//       }
-//     );
-//   } catch (error) {
-//     console.error(error);
-//     res.status(400).json({ success: false, message: error.message });
-//   }
-// };
+  // const hashPassword = await bcrypt.hash(reqBody.password, 8);
+
+  let option = {
+    email: reqBody.email,
+    role: reqBody.role,
+    exp: moment().add(1, "days").unix(),
+  };
+
+  const token = await jwt.sign(option, jwtSecrectKey);
+
+  const filter = {
+    ...reqBody,
+    email:reqBody.email,
+    gender: reqBody.gender,
+    interest:reqBody.interest,
+    birthDate:reqBody.birthDate,
+    sexual :reqBody.sexual,
+    showMe:reqBody.showMe,
+    school:reqBody.school,
+    sign:reqBody.sign,
+    pets:reqBody.pets,
+    address:reqBody.address,
+    lat:reqBody.lat,
+    long:reqBody.long,
+    maxAge:reqBody.maxAge,
+    minAge:reqBody.minAge,
+    maxDistance:reqBody.maxDistance,
+    first_name:reqBody.first_name,
+    last_name:reqBody.last_name,
+    phoneNumber:reqBody.phoneNumber,
+    jobTitle:reqBody.jobTitle,
+    token,
+  };
+
+  const data = await userService.createUser(filter);
+
+  res.status(200).json({ success: true, data: data });
+};
+
 
 
 /* -------------------------- LOGIN/SIGNIN USER -------------------------- */
@@ -140,7 +125,7 @@ const loginEmail = async (req, res) => {
 };
 
 /* -------------------------- LOGIN WITH PHONE NUMBER WITH OTP  -------------------------- */
-const checkUserPh = async (req, res, next) => {
+const checkUserPh = async (req, res) => {
   try {
     // const reqBody = req.body;
     const { phoneNumber } = req.body;
@@ -311,7 +296,7 @@ const resetPassword = async (req, res) => {
 };
 
 module.exports = {
-  // register,
+  register,
   // createUser,
   loginEmail,
   verifyOtp,

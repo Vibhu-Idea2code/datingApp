@@ -1,5 +1,6 @@
 // src/controllers/locationController.js
 const Location = require('../models/location.model');
+// const locationService = require('../services/locationService');
 
 exports.createLocation = async (req, res) => {
   try {
@@ -45,4 +46,37 @@ exports.deleteLocation = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+};
+
+// controllers/locationController.js
+// const Location = require('../models/Location');
+
+
+const getLocationsWithinMiles = async (req, res) => {
+  const { latitude, longitude, miles } = req.query;
+
+  try {
+    // Find locations within the specified distance
+    const locations = await Location.find({
+      $where: function () {
+        const distance = locationService.calculateDistance(
+          parseFloat(latitude),
+          parseFloat(longitude),
+          this.latitude,
+          this.longitude
+        );
+        return distance <= parseFloat(miles);
+      },
+    });
+
+    res.json(locations);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+
+module.exports = {
+  getLocationsWithinMiles,
 };

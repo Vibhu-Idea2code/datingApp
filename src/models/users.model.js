@@ -13,16 +13,16 @@ const userSchema = new mongoose.Schema(
     },
 
     phoneNumber: { type: String, required: true },
-    otp: { type: String,default:""},
+    otp: { type: String},
     otpExpiry: { type: Date},
     birthDate:{
       type: Date,
     },
     gender: {
-      type: Array,
+      type: String,
     },
     sexual:{
-      type: String,
+      type: Array,
     },
     showMe:{
       type: String,
@@ -31,20 +31,38 @@ const userSchema = new mongoose.Schema(
       type: String,
     },
     interest:{
-      type: String,
+      type: Array,
     },
     sign:{
-      type: String,
+      type: Array,
     },
     pets:{
-      type: String,
+      type: Array,
     },
     address:{
-
+    type: String,
+    },
+    lat:{
+      type: Number,
+    },
+    long:{
+      type: Number,
+    },
+    maxAge:{
+      type:Number,
+    },
+    minAge:{
+      type:Number,
+    },
+    maxDistance:{
+      type:String,
     },
     status: {
       type: Boolean,
       default: true,
+    },
+    jobTitle:{
+      type: String,
     },
     token:{
       type:String,

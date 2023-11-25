@@ -32,7 +32,9 @@ const getUserByEmail = async (email) => {
 const getUserByPhone=async (phoneNumber)=>{
   return User.findOne({phoneNumber});
 }
-
+const findUserByEmail = async (email) => {
+  return await User.findOne({email});
+};
 const findOtpByOtp = async (otp) => {
   return await User.findOne(otp);
 };
@@ -75,6 +77,9 @@ const getUserByPhoneNumber = async (phoneNumber) => {
 const findUserByLogonEmail = async (email) => {
   return await User.findOne(email);
 };
+const updateUser = async (userId, updateBody) => {
+  return User.findByIdAndUpdate(userId, { $set: updateBody });
+};
 const findUserAndUpdate = async (_id, token) => {
   return await User.findByIdAndUpdate(
     { _id },
@@ -96,5 +101,7 @@ module.exports = {
   findUserByLogonEmail,
   findUserAndUpdate,
   getUserByPhone,
-  findOtpByOtp
+  findOtpByOtp,
+  findUserByEmail,
+  updateUser
 };

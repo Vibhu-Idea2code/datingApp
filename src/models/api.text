@@ -8,19 +8,19 @@ login with email
 
 3.register /update
 email 
-first name 
-last name
-birth date
-gender
-sexual 
-show me
-school name
-interse
+first name // update
+last name // update
+birth date 
+gender // update
+sexual // update
+show me //update
+school name // update
+intense
 sign
 pets
 mobile number
 photos 
-adress (remaning)
+adress (remaining)
 lat and long 
 max distance 10miles 
 min and max age 18-32
@@ -28,10 +28,8 @@ min and max age 18-32
 listing api
 pets
 interest
-pets
 sign
 orientation
-
 
 update api 
 interest
@@ -41,15 +39,16 @@ exual
 gender
 photos
 
-4.home page(list)
-request (userid)
-  max distance = 10(filter)
-  age (bithdate)
-show me
-
 login -token
 register-token
 
+
+4.home page(list)
+request (userid)
+first name
+  max distance = 10(filter)
+  age (bithdate)
+show me
 
 like api
 add 
