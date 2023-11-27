@@ -1,5 +1,5 @@
 const express = require("express");
-const { userController, authController,loginController } = require("../../controllers");
+const { userController, authController, phoneUpdateController } = require("../../controllers");
 const auth = require("../../middlewares/auth");
 const {upload}=require("../../middlewares/upload");
 const router = express.Router();
@@ -50,14 +50,20 @@ router.get("/list",  userController.userList);
 
 
 /* ----------------------------- get user by id ----------------------------- */
-router.get("/getid-user/:userId", userController.getUserDetails);
+// router.get("/getid-user/:userId", userController.getUserDetails);
+// router.get("/setting-user/:userId", userController.updateSetting);
+
 //  /* ---------------------------- delete user list ---------------------------- */
 router.delete("/delete-user/:userId", userController.deleteUser);
 router.delete("/delete-many", userController.deleteManyUsers);
 
 // /* ------------------------- update user info ------------------------ */
-router.put("/update/:userId", userController.updateDetails);
+// router.put("/update/:userId", userController.updateDetails);
 // router.put("/update/:userId",upload.single("profile_img"), userController.updateDetails);
+
+/* ----------------------------- update phone number using id----------------------------- */
+router.put("/update-phone/:userId", phoneUpdateController.updatePhone);
+
 
 
 module.exports = router;

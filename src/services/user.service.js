@@ -43,9 +43,13 @@ const findOtpByOtp = async (otp) => {
  * @param {ObjectId} userId
  * @returns {Promise<User>}
  */
+// const getUserById = async (userId) => {
+//   return User.findById(userId);
+// };
 const getUserById = async (userId) => {
   return User.findById(userId);
 };
+
 
 /**
  * user details update by id
@@ -63,6 +67,7 @@ const updateDetails = async (userId, updateBody) => {
  * @returns {Promise<User>}
  */
 const deleteUser = async (userId) => {
+  
   return User.findByIdAndDelete(userId);
 };
 
@@ -88,7 +93,9 @@ const findUserAndUpdate = async (_id, token) => {
     },
     { new: true }
   );
-}
+};
+
+
 module.exports = {
   createUser,
   getUserList,

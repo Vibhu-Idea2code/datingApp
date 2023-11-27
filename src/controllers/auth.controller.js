@@ -8,7 +8,7 @@ const jwtSecrectKey = "cdccsvavsvfssbtybnjnuki";
 const fs = require("fs");
 const User = require("../models/users.model");
 const otpGenerator = require('otp-generator');
-
+const userHelper = require('../helpers/userHelper');
 
 /* -------------------------- REGISTER/CREATE USER -------------------------- */
 const register = async (req, res) => {
@@ -20,6 +20,13 @@ const register = async (req, res) => {
   // } else {
   //   throw new Error("Product image is required!");
   // }
+  if (!reqBody.birthDate) {
+    throw new Error("Birthdate is required for age calculation.");
+  }
+
+  // Use helper to calculate age
+  const age = userHelper.calculateAge(reqBody.birthDate);
+
   const existingUser = await userService.findUserByEmail(reqBody.email);
 
   if (existingUser) {
@@ -60,6 +67,8 @@ const register = async (req, res) => {
     last_name:reqBody.last_name,
     phoneNumber:reqBody.phoneNumber,
     jobTitle:reqBody.jobTitle,
+    // age:reqBody.age,
+    age,
     token,
   };
 
@@ -74,12 +83,19 @@ const register = async (req, res) => {
 const loginEmail = async (req, res) => {
   try {
     // validation;
+    
     const reqBody = req.body;
-    const { email } = req.body;
+    const { email,lat1,long1 } = req.body;
     console.log(req.body);
     const findUser = await userService.findUserByLogonEmail({email} );
     console.log(findUser, "++++");
     if (!findUser) throw Error("User not found");
+
+    if (lat1 !== undefined && long1 !== undefined) {
+      findUser.lat = lat1;
+      findUser.long = long1;
+      await findUser.save(); // Save the changes to the database
+    }
     let option = {
       email,
      

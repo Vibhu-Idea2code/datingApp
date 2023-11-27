@@ -8,6 +8,8 @@ module.exports.zodiacSignController = require("../controllers/sign.controller");
 module.exports.hobbiesController = require("../controllers/interet.controller");
 module.exports.loginController = require("../controllers/user.login.controller");
 module.exports.listingController = require("../controllers/listing.controller");
+module.exports.phoneUpdateController = require("../controllers/update.controller");
+
 
 
 

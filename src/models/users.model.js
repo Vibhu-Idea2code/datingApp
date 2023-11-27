@@ -64,6 +64,9 @@ const userSchema = new mongoose.Schema(
     jobTitle:{
       type: String,
     },
+    age:{
+      type: Number,
+    },
     token:{
       type:String,
         }
