@@ -2,7 +2,8 @@ const { userService } = require("../services");
 const { User } = require("../models"); // use in delete many
 const distance = require("../helpers/distanceCalculate");
 const userHelper = require('../helpers/userHelper');
-/* ------------------------ GET USER LIST (ROLE WISE) WITH AUTH ----------------------- */
+
+/* ------------------------ GET USER LIST (ROLE WISE) WITH AUTH ADMIN SIDE----------------------- */
 const getUserListRole = async (req, res) => {
   try {
     const getList = await userService.getUserListSimple(req, res);
@@ -14,7 +15,7 @@ const getUserListRole = async (req, res) => {
           users.push(getList[i]);
         }
       }
-      console.log("users", users);
+      console.log("users users", users);
       res.send(users);
     } else {
       res.send(getList);
@@ -25,66 +26,7 @@ const getUserListRole = async (req, res) => {
   }
 };
 
-/* -------------- GET USER LIST WITH SIMPLE AUTH AND PAGINATION ------------- */
-// const getUserList = async (req, res) => {
-//   try {
-//     const { search, page, perPage, ...options } = req.query;
-//     let filter = {};
-
-//     if (search) {
-//       filter.user_name = { $regex: search, $options: "i" };
-//     }
-
-//     const currentPage = parseInt(page) || 1;
-//     const itemsPerPage = parseInt(perPage) || 3;
-
-//     // Calculate the number of documents to skip based on the current page and items per page
-//     const skip = (currentPage - 1) * itemsPerPage;
-
-//     const userList = await userService.getUserList(filter, {
-//       skip: skip,
-//       limit: itemsPerPage,
-//       ...options, // You can pass other query options here
-//     });
-
-//     res.status(200).json({
-//       success: true,
-//       message: "Get user list successfully!",
-//       data: userList,
-//       currentPage: currentPage,
-//       totalPages: Math.ceil(userList.length / itemsPerPage),
-//     });
-//   } catch (error) {
-//     res.status(400).json({ success: false, message: error.message });
-//   }
-// };
-const getUserList = async (req, res) => {
-  try {
-    const { search, page, perPage, ...options } = req.query;
-    console.log(req.query);
-    let filter = {};
-
-    if (search) {
-      filter.user_name = { $regex: search, $options: "i" };
-    }
-    console.log(search, "search");
-    const currentPage = parseInt(page) || 1;
-    const itemsPerPage = parseInt(perPage) || 10; // Adjust the default items per page as needed
-
-    const skip = (currentPage - 1) * itemsPerPage;
-
-    const userList = await userService.getUserList(filter, {
-      skip: skip,
-      limit: itemsPerPage,
-      ...options,
-    });
-
-    res.status(200).json({ userList });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
+/* ------------------------ GET USER LIST BY DISTANCE ADMIN SIDE----------------------- */
 const userList = async (req, res) => {
   try {
     const getUser = await userService.getUserList();
@@ -94,7 +36,6 @@ const userList = async (req, res) => {
       // console.log(getUser[i].first_name, getUser[i].last_name);
       const clientId = getUser[i]._id;
       console.log(clientId)
-      
       var userDetails = {
         first_name: getUser[i].first_name,
         age: getUser[i].age,
@@ -110,7 +51,6 @@ const userList = async (req, res) => {
       };
       userDetailsData.push(userDetails);
     }
-
     res.status(200).json({
       success: true,
       message: "user List!",
@@ -124,7 +64,7 @@ const userList = async (req, res) => {
   }
 };
 
-/* --------------- GET USER LIST ROLE WISE (SIMPLE) WITH AUTH --------------- */
+/* --------------- GET USER LIST ROLE WISE (SIMPLE) WITH AUTH ADMIN SIDE--------------- */
 const getAllUser = async (req, res) => {
   try {
     const data = await userService.getAllUser({ role: req.body.role });
@@ -146,7 +86,6 @@ const getUserDetails = async (req, res) => {
     if (!getDetails) {
       throw new Error("User not found!");
     }
-   
     const { first_name,age, maxDistance } = getDetails;
     res.status(200).json({
       success: true,
@@ -164,59 +103,59 @@ const getUserDetails = async (req, res) => {
  /* ----------------------GET USER DETAILS FOR ADMIN PANEL-----------------------*/
 
 /* -------------------------- GET USER UPDATE BY ID own profile------------------------- */
-// const updateDetails = async (req, res) => {
-//   try {
-//     // const reqBody=req.body;
-//     const userId = req.params.userId;
-//     const {
-//       first_name,
-//       last_name,
-//       gender,
-//       sexual,
-//       school,
-//       interest,
-//       sign,
-//       pets,
-//       address,
-//       maxDistance,
-//       jobTitle,
-//       email,
-//       phoneNumber,
-//     } = req.body; // Extract the 'role' and 'gender' fields from the request body
-//     const userExists = await userService.getUserById(userId);
+const updateDetails = async (req, res) => {
+  try {
+    // const reqBody=req.body;
+    const userId = req.params.userId;
+    const {
+      first_name,
+      last_name,
+      gender,
+      sexual,
+      school,
+      interest,
+      sign,
+      pets,
+      address,
+      maxDistance,
+      jobTitle,
+      email,
+      phoneNumber,
+    } = req.body; // Extract the 'role' and 'gender' fields from the request body
+    const userExists = await userService.getUserById(userId);
 
-//     if (!userExists) {
-//       throw new Error("User not found!");
-//     }
+    if (!userExists) {
+      throw new Error("User not found!");
+    }
 
-//     // Update the user's gender and other details
-//     userExists.gender = gender; // Update the 'gender' field
-//     userExists.first_name = first_name; // Update the 'firstName' field
-//     userExists.address = address; // Update the 'lastName' field
-//     userExists.phoneNumber = phoneNumber; // Update the 'phoneNumber'
-//     userExists.last_name = last_name; // Update the 'firstName' field
-//     userExists.sexual = sexual; // Update the 'firstName' field
-//     userExists.school = school; // Update the 'firstName' field
-//     userExists.interest = interest; // Update the 'firstName' field
-//     userExists.sign = sign; // Update the 'firstName' field
-//     userExists.pets = pets; // Update the 'firstName' field
-//     userExists.maxDistance = maxDistance; // Update the 'firstName' field
-//     userExists.jobTitle = jobTitle; // Update the 'firstName' field
-//     userExists.email = email; // Update the 'firstName' field
-//     // if (req.file) {
-//     //   userExists.profile_img = req.file.filename; // Store the path to the uploaded profile image
-//     // }
-//     await userService.updateUser(userId, userExists); // Save the updated user
+    // Update the user's gender and other details
+    userExists.gender = gender; // Update the 'gender' field
+    userExists.first_name = first_name; // Update the 'firstName' field
+    userExists.address = address; // Update the 'lastName' field
+    userExists.phoneNumber = phoneNumber; // Update the 'phoneNumber'
+    userExists.last_name = last_name; // Update the 'firstName' field
+    userExists.sexual = sexual; // Update the 'firstName' field
+    userExists.school = school; // Update the 'firstName' field
+    userExists.interest = interest; // Update the 'firstName' field
+    userExists.sign = sign; // Update the 'firstName' field
+    userExists.pets = pets; // Update the 'firstName' field
+    userExists.maxDistance = maxDistance; // Update the 'firstName' field
+    userExists.jobTitle = jobTitle; // Update the 'firstName' field
+    userExists.email = email; // Update the 'firstName' field
+    // if (req.file) {
+    //   userExists.profile_img = req.file.filename; // Store the path to the uploaded profile image
+    // }
+    await userService.updateUser(userId, userExists); // Save the updated user
 
-//     res.status(200).json({
-//       success: true,
-//       message: "User details updated successfully!",
-//       data: userExists,
-//     });
-//   } catch (error) {
-//     res.status(400).json({ success: false, message: error.message });
-//   }
-// };
+    res.status(200).json({
+      success: true,
+      message: "User details updated successfully!",
+      data: userExists,
+    });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
 
 /* -------------------------- GET USER UPDATE BY ID own profile with seeting------------------------- */
 // const updateSetting = async (req, res) => {
@@ -308,9 +247,9 @@ const deleteManyUsers = async (req, res) => {
 module.exports = {
   getAllUser,
   getUserListRole,
-  getUserList,
+  
   getUserDetails,
-  // updateDetails,
+  updateDetails,
   deleteUser,
   deleteManyUsers,
   userList,

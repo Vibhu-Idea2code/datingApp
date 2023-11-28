@@ -20,6 +20,17 @@ const register = async (req, res) => {
   // } else {
   //   throw new Error("Product image is required!");
   // }
+   // Validate that at least 3 out of 5 interests are provided
+   if (!reqBody.interest || reqBody.interest.length < 3) {
+    throw new Error("At least 3 out of 5 interests are required.");
+  }
+
+   // Validate that at least 3 out of 5 sexual are provided
+   if (!reqBody.sexual || reqBody.sexual.length < 3) {
+    throw new Error("At least 3 out of 5 sexual are required.");
+  }
+
+
   if (!reqBody.birthDate) {
     throw new Error("Birthdate is required for age calculation.");
   }
@@ -141,7 +152,7 @@ const loginEmail = async (req, res) => {
 };
 
 /* -------------------------- LOGIN WITH PHONE NUMBER WITH OTP  -------------------------- */
-const checkUserPh = async (req, res) => {
+const checkUserPh = async (req, res,next) => {
   try {
     // const reqBody = req.body;
     const { phoneNumber } = req.body;
@@ -151,7 +162,7 @@ const checkUserPh = async (req, res) => {
     if (!findUser) throw Error("User not found");
     const otpExpiry = new Date();
     otpExpiry.setMinutes(otpExpiry.getMinutes() + 5);   
-    // const otp = Math.floor(1000 + Math.random() * 3000);
+    const otp = Math.floor(1000 + Math.random() * 3000);
     findUser.otp = otp;
     findUser.expireOtpTime = Date.now() + 300000; //Valid upto 5 min
     await findUser.save();

@@ -18,7 +18,7 @@ const getHobbiesById = async (hobbiesId) => {
 const updateHobbies = async (hobbiesId, updateBody) => {
   return Hobbies.findByIdAndUpdate(hobbiesId, { $set: updateBody });
 };
-
+ 
 /**delete Hobbies */
 const deleteHobbies = async (hobbiesId) => {
   return Hobbies.findByIdAndDelete(hobbiesId);
@@ -31,3 +31,4 @@ module.exports = {
   updateHobbies,
   deleteHobbies,
 };
+

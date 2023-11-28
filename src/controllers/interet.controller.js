@@ -28,20 +28,22 @@ const createInterest = async (req, res) => {
   }
 };
 
-/** Get Interest details */
-const getDetails = async (req, res) => {
+
+
+/** Get details by id */
+const getDetailsById = async (req, res) => {
   try {
-    const InterestExists = await interestService.getInterestById(
-      req.params.InterestId
+    const interest = await interestService.getHobbiesById(
+      req.params.hobbiesId
     );
-    if (!InterestExists) {
+    if (!interest) {
       throw new Error("Interest not found!");
     }
 
     res.status(200).json({
       success: true,
       message: "Interest details get successfully!",
-      data: InterestExists,
+      data: interest,
     });
   } catch (error) {
     res.status(error?.statusCode || 400).json({
@@ -52,76 +54,28 @@ const getDetails = async (req, res) => {
   }
 };
 
-/** Get details using aggrgation */
-const getDetailsByAggegation = async (req, res) => {
-  try {
-    const InterestDetails = await interestService.getInterestDetails(
-      req.params.InterestId
-    );
-    if (!InterestDetails.length) {
-      throw new Error("Interest not found!");
-    }
-
-    res.status(200).json({
-      success: true,
-      message: "Interest details get successfully!",
-      data: InterestDetails[0],
-    });
-  } catch (error) {
-    res.status(error?.statusCode || 400).json({
-      success: false,
-      message:
-        error?.message || "Something went wrong, please try again or later!",
-    });
-  }
-};
-
-/** Get prooduct list */
-const getInterestList = async (req, res) => {
-  try {
-    const { search, ...options } = req.query;
-    let filter = {};
-
-    if (search) {
-      filter.Interest_name = { $regex: search, $options: "i" };
-    }
-
-    const getList = await interestService.getInterestList(filter, options);
-
-    res.status(200).json({
-      success: true,
-      data: getList,
-    });
-  } catch (error) {
-    res.status(error?.statusCode || 400).json({
-      success: false,
-      message:
-        error?.message || "Something went wrong, please try again or later!",
-    });
-  }
-};
 
 /** Update Interest details */
 const updateInterest = async (req, res) => {
   try {
     const reqBody = req.body;
-    const InterestId = req.params.InterestId;
-    const InterestExists = await interestService.getInterestById(InterestId);
+    const hobbiesId = req.params.hobbiesId;
+    const InterestExists = await interestService.getHobbiesById(hobbiesId);
     if (!InterestExists) {
       throw new Error("Interest not found!");
     }
 
     if (req.file) {
-      reqBody.Interest_image = req.file.filename;
+      reqBody.logo = req.file.filename;
     }
 
-    const updatedInterest = await interestService.updateInterest(
-      InterestId,
+    const updatedInterest = await interestService.updateHobbies(
+      hobbiesId,
       reqBody
     );
     if (updatedInterest) {
       if (req.file) {
-        const filePath = `./public/Interest_images/${InterestExists.Interest_image}`;
+        const filePath = `../public/profile_images/${InterestExists.logo}`;
         if (fs.existsSync(filePath)) {
           fs.unlinkSync(filePath);
         }
@@ -204,9 +158,9 @@ const deleteInterest = async (req, res) => {
 
 module.exports = {
   createInterest,
-  getDetails,
-  getDetailsByAggegation,
-  getInterestList,
+  // getDetails,
+  getDetailsById,
+  // getInterestList,
   updateInterest,
   manageInterestStatus,
   deleteInterest,

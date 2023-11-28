@@ -42,7 +42,6 @@ photos
 login -token
 register-token
 
-
 4.home page(list)
 request (userid)
 first name
@@ -50,11 +49,14 @@ first name
   age (bithdate)
 show me
 
+
+(remaing)
 like api
 add 
 listing
 
 admin
+
 plan api(i,u,d,l)
 plan name
 plan description

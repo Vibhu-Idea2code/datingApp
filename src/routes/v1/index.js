@@ -7,6 +7,8 @@ const sexualRoute=require("./sexual.route");
 const signRoute=require("./sign.route");
 const interestRoute=require("./interest.route");
 const listingRoute=require("./listing.route");
+// const apiRoute=require("./api.route");
+
 
 
 
@@ -21,6 +23,8 @@ router.use("/sexual",sexualRoute);
 router.use("/sign",signRoute);
 router.use("/interest",interestRoute);
 router.use("/list",listingRoute);
+// router.use("/api-create",apiRoute);
+
 
 
 

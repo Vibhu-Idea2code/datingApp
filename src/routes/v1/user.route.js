@@ -1,5 +1,5 @@
 const express = require("express");
-const { userController, authController, phoneUpdateController } = require("../../controllers");
+const { userController, authController, UpdateController } = require("../../controllers");
 const auth = require("../../middlewares/auth");
 const {upload}=require("../../middlewares/upload");
 const router = express.Router();
@@ -43,9 +43,9 @@ router.post("/change-password/:_id", auth(), authController.changePassword);
 /* -------------------------------------------------------------------------- */
 
 /* ------------------------------- get user list ------------------------------------------- */
-// router.get("/list", auth(), userController.getUserList);
-// router.get("/role", auth(), userController.getAllUser);
-// router.get("/role-list", auth(), userController.getUserListRole);
+// router.get("/list-user", auth(), userController.getUserList);
+router.get("/role", auth(), userController.getAllUser);
+router.get("/role-list", auth(), userController.getUserListRole);
 router.get("/list",  userController.userList);
 
 
@@ -58,12 +58,46 @@ router.delete("/delete-user/:userId", userController.deleteUser);
 router.delete("/delete-many", userController.deleteManyUsers);
 
 // /* ------------------------- update user info ------------------------ */
-// router.put("/update/:userId", userController.updateDetails);
+router.put("/update/:userId", userController.updateDetails);
 // router.put("/update/:userId",upload.single("profile_img"), userController.updateDetails);
 
 /* ----------------------------- update phone number using id----------------------------- */
-router.put("/update-phone/:userId", phoneUpdateController.updatePhone);
+router.put("/update-phone/:userId", UpdateController.updatePhone);
+
+/* ----------------------------- update maxminAge using id----------------------------- */
+router.put("/update-age/:userId", UpdateController.updateMaxMinAge);
+
+/* ----------------------------- update maxdistance using id----------------------------- */
+router.put("/update-distance/:userId", UpdateController.updateMaxDistance);
+
+/* ----------------------------- update show me (gender) using id----------------------------- */
+router.put("/update-showme/:userId", UpdateController.updateShowMe);
+
+// /* ----------------------------- update (gender) using id----------------------------- */
+router.put("/update-gender/:userId", UpdateController.updateGender);
+
+// /* ----------------------------- update (gender) using id----------------------------- */
+router.put("/update-aboutme/:userId", UpdateController.updateAboutMe);
+
+// /* ----------------------------- update (gender) using id----------------------------- */
+router.put("/update-jobtitle/:userId", UpdateController.updateJobTitle);
+
+// /* ----------------------------- update (gender) using id----------------------------- */
+router.put("/update-company/:userId", UpdateController.updateCompany);
+
+// /* ----------------------------- update (gender) using id----------------------------- */
+router.put("/update-school/:userId", UpdateController.updateSchool);
+
+// /* ----------------------------- update (gender) using id----------------------------- */
+router.put("/update-address/:userId", UpdateController.updateAddress);
+
+// /* ----------------------------- update (gender) using id----------------------------- */
+router.put("/update-livingin/:userId", UpdateController.updateLivingIn);
+
+// /* ----------------------------- update (gender) using id----------------------------- */
+router.put("/update-name/:userId", UpdateController.updateFirstName);
 
 
-
+// /* ----------------------------- update (gender) using id----------------------------- */
+router.put("/update-interest/:userId", UpdateController.updateInterest);
 module.exports = router;

@@ -11,80 +11,98 @@ const userSchema = new mongoose.Schema(
     email: {
       type: String,
     },
-
-    phoneNumber: { type: String, required: true },
-    otp: { type: String},
-    otpExpiry: { type: Date},
-    birthDate:{
+    phoneNumber: {
+      type: String,
+      required: true,
+    },
+    otp: {
+      type: String,
+    },
+    otpExpiry: {
+      type: Date,
+    },
+    birthDate: {
       type: Date,
     },
     gender: {
       type: String,
     },
-    sexual:{
+    sexual: {
       type: Array,
     },
-    showMe:{
+    showMe: {
       type: String,
     },
-    school:{
+    school: {
       type: String,
     },
-    interest:{
+    interest: {
+      type: mongoose.Types.ObjectId,
+      ref:"hobbies",
+    },
+    sign: {
       type: Array,
     },
-    sign:{
+    pets: {
       type: Array,
     },
-    pets:{
-      type: Array,
+    address: {
+      type: String,
     },
-    address:{
-    type: String,
-    },
-    lat:{
+    lat: {
       type: Number,
     },
-    long:{
+    long: {
       type: Number,
     },
-    maxAge:{
-      type:Number,
+    maxAge: {
+      type: Number,
     },
-    minAge:{
-      type:Number,
+    minAge: {
+      type: Number,
     },
-    maxDistance:{
-      type:String,
+    maxDistance: {
+      type: String,
     },
     status: {
       type: Boolean,
       default: true,
     },
-    jobTitle:{
+    company:{
+      type:String,
+    },
+    jobTitle: {
       type: String,
     },
-    age:{
+    age: {
       type: Number,
     },
-    token:{
-      type:String,
-        }
-    // profile:{
-    //     type: String,
-    // }
+    token: {
+      type: String,
+    },
+    city:{
+      type:String
+    },
+    aboutMe:{
+      type :String,
+    },
+    role: {
+      type: String,
+      default:"user",
+      enum: ["admin", "user", "subadmin"], // 1-admin  2 -user   3-superadmin
+    },
   },
-  
+
   {
     timestamps: true,
     versionKey: false,
     toJSON: {
-        transform: function (doc, data) {
-          if (data?.profile) {
-            data.profile = `${config.base_url}profile_images/${data.profile}`;
-          }
-        },
+      transform: function (doc, data) {
+        if (data?.profile) {
+          data.profile = `${config.base_url}profile_images/${data.profile}`;
+        }
       },
+    },
   }
 );
 

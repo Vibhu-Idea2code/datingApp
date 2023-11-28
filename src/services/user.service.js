@@ -6,8 +6,8 @@ const User = require("../models/users.model");
  * @param {object} reqBody
  * @returns {Promise<User>}
  */
-const createUser = async (reqBody) => {
-  return User.create(reqBody);
+const createUser = async (first_name,last_name) => {
+  return User.create(first_name,last_name);
 };
 
 /**
@@ -95,7 +95,19 @@ const findUserAndUpdate = async (_id, token) => {
   );
 };
 
+const getUserListSimple = async (req, res) => {
+  return User.find();
+};
+const getAllUser = async (role) => {
+  return await User.find(role);
+};
 
+const updateDetailsInte = async (userId, updateBody) => {
+  return User.findByIdAndUpdate(userId, { $set: updateBody }).populate({
+      path: "interest",
+      select: ["_id"],
+    });
+};
 module.exports = {
   createUser,
   getUserList,
@@ -110,5 +122,8 @@ module.exports = {
   getUserByPhone,
   findOtpByOtp,
   findUserByEmail,
-  updateUser
+  updateUser,
+  getUserListSimple,
+  getAllUser,
+  updateDetailsInte
 };

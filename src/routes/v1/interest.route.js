@@ -13,6 +13,20 @@ router.post(
   hobbiesController.createInterest
 );
 
+/** Create product */
+router.get(
+  "/id/:hobbiesId",
+  // auth(),
+  hobbiesController.getDetailsById
+);
+
+router.put(
+  "/update/:hobbiesId",
+  // auth(),
+  upload.single("logo"),
+  hobbiesController.updateInterest
+);
+
 /** Get product details */
 // router.get(
 //   "/details/:productId",
