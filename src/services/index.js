@@ -6,4 +6,8 @@ module.exports.petsService = require("./pets.service");
 module.exports.sexualService = require("./sexual.service");
 module.exports.zodiacService = require("./zodiac.service");
 module.exports.listingService= require("./listing.service");
+module.exports.adminService= require("./admin.service");
+module.exports.planService= require("./plan.service");
+
+
 

@@ -1,29 +1,4 @@
-const { adminService } = require("../service");
-
-// Create admin
-const createAdmin = async (req, res) => {
-  try {
-    const reqBody = req.body;
-    const adminExist = await adminService.getAdminByName(reqBody.admin_name);
-    if (adminExist) {
-      throw new Error("Admin already exist...! ");
-    }
-    const admin = await adminService.createAdmin(reqBody);
-    if (!admin) {
-      throw new Error("Something went wrong, please try again or later...! ");
-    }
-    res.status(200).json({
-      succcess: true,
-      message: "Admin created successfully! ",
-      data: admin,
-    });
-  } catch (error) {
-    res.status(400).json({
-      succcess: false,
-      message: error.message,
-    });
-  }
-};
+const { adminService, emailService, verifyOtpService } = require("../services");
 
 // Get admin list
 const getAdminList = async (req, res) => {
@@ -61,7 +36,7 @@ const updateAdmin = async (req, res) => {
     res.status(200).json({
       succcess: true,
       message: "Admin updated successfully ...! ",
-      data: reqBody,
+      data: adminUpdate,
     });
   } catch (error) {
     res.status(400).json({
@@ -85,6 +60,7 @@ const deleteAdmin = async (req, res) => {
     res.status(200).json({
       succcess: true,
       message: "Admin deleted successfully ...! ",
+      data: admin_delete,
     });
   } catch (error) {
     res.status(400).json({
@@ -95,7 +71,7 @@ const deleteAdmin = async (req, res) => {
 };
 
 module.exports = {
-  createAdmin,
+  // createAdmin,
   getAdminList,
   updateAdmin,
   deleteAdmin,

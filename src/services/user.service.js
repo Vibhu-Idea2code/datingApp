@@ -80,7 +80,7 @@ const getUserByPhoneNumber = async (phoneNumber) => {
 };
 
 const findUserByLogonEmail = async (email) => {
-  return await User.findOne(email);
+  return await User.findOne({email});
 };
 const updateUser = async (userId, updateBody) => {
   return User.findByIdAndUpdate(userId, { $set: updateBody });

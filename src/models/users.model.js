@@ -37,8 +37,9 @@ const userSchema = new mongoose.Schema(
       type: String,
     },
     interest: {
-      type: mongoose.Types.ObjectId,
-      ref:"hobbies",
+      type: Array,
+      // type: mongoose.Types.ObjectId,
+      // ref:"hobbies",
     },
     sign: {
       type: Array,

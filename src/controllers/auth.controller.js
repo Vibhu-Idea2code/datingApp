@@ -94,11 +94,10 @@ const register = async (req, res) => {
 const loginEmail = async (req, res) => {
   try {
     // validation;
-    
     const reqBody = req.body;
     const { email,lat1,long1 } = req.body;
     console.log(req.body);
-    const findUser = await userService.findUserByLogonEmail({email} );
+    const findUser = await userService.findUserByLogonEmail(reqBody.email);
     console.log(findUser, "++++");
     if (!findUser) throw Error("User not found");
 
@@ -108,8 +107,9 @@ const loginEmail = async (req, res) => {
       await findUser.save(); // Save the changes to the database
     }
     let option = {
-      email,
-     
+      email: findUser.email,
+      lat1: findUser.lat,
+      long1: findUser.long,
       exp: moment().add(1, "days").unix(),
     };
     let token;
@@ -155,16 +155,18 @@ const loginEmail = async (req, res) => {
 const checkUserPh = async (req, res,next) => {
   try {
     // const reqBody = req.body;
-    const { phoneNumber } = req.body;
+    const {phoneNumber}  = req.body;
     // console.log(req.body);
     const findUser = await userService.getUserByPhoneNumber(phoneNumber );
     console.log(findUser, "++++");
     if (!findUser) throw Error("User not found");
+
     const otpExpiry = new Date();
     otpExpiry.setMinutes(otpExpiry.getMinutes() + 5);   
     const otp = Math.floor(1000 + Math.random() * 3000);
     findUser.otp = otp;
     findUser.expireOtpTime = Date.now() + 300000; //Valid upto 5 min
+    
     await findUser.save();
 
     res.json({ message: `OTP sent successfully ${otp}` });

@@ -1,4 +1,6 @@
 const express = require("express");
+
+/* ------------------------------- USER ROUTE ------------------------------- */
 const userRoute = require("./user.route");
 // const locationRoute=require("./location.route");
 const numberRoute=require("./number.route");
@@ -8,6 +10,13 @@ const signRoute=require("./sign.route");
 const interestRoute=require("./interest.route");
 const listingRoute=require("./listing.route");
 // const apiRoute=require("./api.route");
+const planRoute=require("./plan.route");
+
+
+
+/* ------------------------------- ADMIN ROUTE ------------------------------ */
+const adminRoute=require("./admin.route");
+
 
 
 
@@ -24,6 +33,9 @@ router.use("/sign",signRoute);
 router.use("/interest",interestRoute);
 router.use("/list",listingRoute);
 // router.use("/api-create",apiRoute);
+router.use("/admin",adminRoute);
+router.use("/plan",planRoute);
+
 
 
 

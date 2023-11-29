@@ -12,6 +12,15 @@ module.exports.UpdateController = require("../controllers/update.controller");
 // module.exports.apiController = require("../controllers/create.user.controller");
 
 
+/* ---------------------------- ADMIN CONTROLLER ---------------------------- */
+module.exports.adminController = require("../controllers/admin.auth.controller");
+module.exports.authAdminController = require("../controllers/admin.controller");
+
+/* ----------------------------- PLAN CONTROLLER ---------------------------- */
+module.exports.planController = require('../controllers/plan.controller');
+
+
+
 
 
 
