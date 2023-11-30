@@ -1,0 +1,68 @@
+login with email 
+1.email id (mail send)
+ token- email otp send
+2.login with phone number 
+   a.otp create
+   b.check phone number verify 
+   response status 1 or 0
+
+3.register /update
+email 
+first name // update
+last name // update
+birth date 
+gender // update
+sexual // update
+show me //update
+school name // update
+intense
+sign
+pets
+mobile number
+photos 
+adress (remaining)
+lat and long 
+max distance 10miles 
+min and max age 18-32
+
+listing api
+pets
+interest
+sign
+orientation
+
+update api 
+interest
+signs
+pets
+exual
+gender
+photos
+
+login -token
+register-token
+
+4.home page(list)
+request (userid)
+first name
+  max distance = 10(filter)
+  age (bithdate)
+show me
+
+admin
+
+plan api(i,u,d,l)
+plan name
+plan description
+month 
+amount per month
+status
+
+
+(remaing)
+like api
+add 
+listing
+
+
+
