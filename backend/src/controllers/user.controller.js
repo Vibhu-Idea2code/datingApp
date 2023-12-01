@@ -67,7 +67,8 @@ const userList = async (req, res) => {
 /* --------------- GET USER LIST ROLE WISE (SIMPLE) WITH AUTH ADMIN SIDE--------------- */
 const getAllUser = async (req, res) => {
   try {
-    const data = await userService.getAllUser({ role: req.body.role });
+    
+    const data = await userService.getUserList();
     // const result=await userService.getUserListSearch()
     res.status(200).json({
       success: true,
@@ -92,6 +93,30 @@ const getUserDetails = async (req, res) => {
       message: "User details get successfully!",
       data: {
         first_name,
+        age,
+        maxDistance,
+      },
+    });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
+
+const getUserDetailsAll = async (req, res) => {
+  try {
+    const getDetails = await userService.getUserById(req.params.userId);
+    if (!getDetails) {
+      throw new Error("User not found!");
+    }
+    const { first_name,last_name,email ,phoneNumber ,birthDate,gender,sexual,showMe,school,interest,sign,pets,address,lat,long,maxAge,minAge,jobTitle,likeduser,user_img,role,
+      age,
+      maxDistance, } = getDetails;
+    res.status(200).json({
+      success: true,
+      message: "User details get successfully!",
+      data: {
+        first_name,last_name,email ,phoneNumber ,birthDate,gender,sexual,showMe,school,interest,sign,pets,address,lat,long,maxAge,minAge,jobTitle,likeduser,user_img,role,
         age,
         maxDistance,
       },
@@ -142,9 +167,9 @@ const updateDetails = async (req, res) => {
     userExists.maxDistance = maxDistance; // Update the 'firstName' field
     userExists.jobTitle = jobTitle; // Update the 'firstName' field
     userExists.email = email; // Update the 'firstName' field
-    // if (req.file) {
-    //   userExists.profile_img = req.file.filename; // Store the path to the uploaded profile image
-    // }
+    if (req.file) {
+      userExists.user_img = req.file.filename; // Store the path to the uploaded profile image
+    }
     await userService.updateUser(userId, userExists); // Save the updated user
 
     res.status(200).json({
@@ -254,5 +279,6 @@ module.exports = {
   deleteUser,
   deleteManyUsers,
   userList,
+  getUserDetailsAll,
   // updateSetting
 };

@@ -16,7 +16,7 @@ router.post('/verify-otp', authController.verifyOtp);
 /* -------------------------- register/signUp/create  user -------------------------- */
 // router.post("/create-user", upload.single("profile"), authController.register);
 // router.post("/create-user", authController.createUser);
-router.post("/create-user", authController.register);
+router.post("/create-user",upload.single("user_img"), authController.register);
 // router.post(
 //   "/send-mail",
 // authController.register 
@@ -44,13 +44,15 @@ router.post("/change-password/:_id", auth(), authController.changePassword);
 
 /* ------------------------------- get user list ------------------------------------------- */
 // router.get("/list-user", auth(), userController.getUserList);
-router.get("/role", auth(), userController.getAllUser);
+router.get("/role", userController.getAllUser);
 router.get("/role-list", auth(), userController.getUserListRole);
 router.get("/list",  userController.userList);
 
 
 /* ----------------------------- get user by id ----------------------------- */
 router.get("/getid-user/:userId", userController.getUserDetails);
+router.get("/getid-user-all/:userId", userController.getUserDetailsAll);
+
 // router.get("/setting-user/:userId", userController.updateSetting);
 
 //  /* ---------------------------- delete user list ---------------------------- */

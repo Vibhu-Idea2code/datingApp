@@ -21,7 +21,7 @@ router.post(
   router.put("/resetPassword",auth(), adminController.resetPassword);
 
   router.get("/list", auth(), authAdminController.getAdminList);    
-  router.put("/update/:adminId", authAdminController.updateAdmin);
+  router.put("/update/:adminId", upload.single("admin_image"),authAdminController.updateAdmin);
   router.delete("/delete-admin/:adminId", authAdminController.deleteAdmin);
 
 // router.get('/list-sexual',

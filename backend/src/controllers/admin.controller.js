@@ -29,6 +29,9 @@ const updateAdmin = async (req, res) => {
     if (!adminExist) {
       throw new Error("Admin not found!");
     }
+    if (req.file) {
+      userExists.admin_image = req.file.filename; // Store the path to the uploaded profile image
+    }
     const adminUpdate = await adminService.updateAdmin(adminId, reqBody);
     if (!adminUpdate) {
       throw new Error("Something went wrong, please try again or later...!");

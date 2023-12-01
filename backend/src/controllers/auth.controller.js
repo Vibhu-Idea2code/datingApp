@@ -15,11 +15,11 @@ const register = async (req, res) => {
   // const { email, password, role } = req.body;
   console.log(req.body);
   const reqBody = req.body;
-  // if (req.file) {
-  //   reqBody.profile_img = req.file.filename;
-  // } else {
-  //   throw new Error("Product image is required!");
-  // }
+  if (req.file) {
+    reqBody.user_img = req.file.filename;
+  } else {
+    throw new Error("Product image is required!");
+  }
    // Validate that at least 3 out of 5 interests are provided
    if (!reqBody.interest || reqBody.interest.length < 3) {
     throw new Error("At least 3 out of 5 interests are required.");

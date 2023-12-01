@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const config = require("../config/config");
 const userSchema = new mongoose.Schema(
   {
     first_name: {
@@ -86,9 +86,12 @@ const userSchema = new mongoose.Schema(
     },
     aboutMe:{
       type :String,
-    },
+    }, 
     likeduser:{
       type:Array,
+    },
+    user_img:{
+      type:String
     },
     role: {
       type: String,
@@ -102,12 +105,13 @@ const userSchema = new mongoose.Schema(
     versionKey: false,
     toJSON: {
       transform: function (doc, data) {
-        if (data?.profile) {
-          data.profile = `${config.base_url}profile_images/${data.profile}`;
+        if (data?.user_img) {
+          data.user_img = `${config.base_url}profile_images/${data.user_img}`;
         }
       },
     },
   }
 );
 
-module.exports = mongoose.model("user", userSchema);
+const User= mongoose.model("user", userSchema);
+module.exports=User;
