@@ -1,0 +1,31 @@
+/* Users.css */
+.user-list {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .user-card {
+    width: 300px; /* Adjust the width as needed */
+    margin: 10px;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  
+  .card-header {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .card-body {
+    padding: 10px;
+  }
+  
+  .card-actions {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+  }
+  

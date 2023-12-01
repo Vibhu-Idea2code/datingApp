@@ -11,8 +11,8 @@ axios.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        const refreshToken = localStorage.getItem('refreshToken');
-        const response = await axios.post(`${mainUrl}/admin/refreshToken`, { refreshToken });
+        const refreshToken = localStorage.getItem('token');
+        const response = await axios.post(`${mainUrl}/admin/token`, { refreshToken });
         const token = response.data.info;
         // console.log(response.data.info);
         localStorage.setItem('token', token);

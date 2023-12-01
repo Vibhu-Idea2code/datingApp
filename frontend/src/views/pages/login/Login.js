@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Link,useNavigate } from 'react-router-dom';
 import axios from 'axios';
+// import HomeLayout from 'src/layout/HomeLayout';
 
 const Login = () => {
   const [email, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const navigate = useNavigate();
   const handleLogin = async () => {
     try {
@@ -17,9 +19,14 @@ const Login = () => {
 
       // Handle successful login (redirect, set authentication token, etc.)
       console.log('Login successful:', response.data);
-      localStorage.setItem("token",response.data.token)
-      navigate('/dashboard');
+      localStorage.setItem('token', response.data.token);
+      setShowSuccessAlert(true);
 
+      // Hide the success alert after 3 seconds (adjust the timeout as needed)
+      setTimeout(() => {
+        setShowSuccessAlert(false);
+        navigate('/dashboard');
+      }, 3000);
     } catch (err) {
       // Handle login error
       setError('Invalid username or password');
@@ -38,6 +45,11 @@ const Login = () => {
                   <h1>Login</h1>
                   <p className="text-medium-emphasis">Sign In to your account</p>
                   {error && <div className="alert alert-danger">{error}</div>}
+        {showSuccessAlert && (
+          <div className="alert alert-success">
+            Login successful! Redirecting to the dashboard...
+          </div>
+        )}
                   <div className="input-group mb-3">
                     <span className="input-group-text">
                       <i className="cil-user"></i>
