@@ -1,7 +1,10 @@
 import React from 'react'
+// import Popup from './views/theme/colors/Popup'
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const Users = React.lazy(() => import('./views/theme/colors/Users'))
+const Popup = React.lazy(() => import('./views/theme/colors/Popup'))
+
 // const common = React.lazy(() => import('./views/theme/colors/common'))
 
 // const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
@@ -56,6 +59,7 @@ const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/user', name: '', element: Users, exact: true },
+  { path: '/Popup/:userId', name: 'Popup', element: Popup,exact: true},
   // { path: '/user/views', name: 'User', element: Users },
   // { path: '/user/common', name: 'common', element: common },
 

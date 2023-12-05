@@ -1,35 +1,49 @@
-// UserDetails.js
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const UserDetails = ({ userId }) => {
-  const [userDetails, setUserDetails] = useState(null);
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchUserDetails = async () => {
+    const fetchUserData = async () => {
       try {
-        const response = await axios.get(`http://localhost:6500/v1/user/details/${userId}`);
-        setUserDetails(response.data.data);
+        // Make a GET request to the API endpoint for fetching user data by ID
+        const response = await axios.get(`http://example.com/api/users/${userId}`);
+        setUserData(response.data);
       } catch (error) {
-        console.error('Error fetching user details:', error);
+        setError(error);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchUserDetails();
+    // Fetch user data when the component mounts or when userId changes
+    fetchUserData();
   }, [userId]);
 
-  if (!userDetails) {
-    return <div>Loading...</div>;
+  if (loading) {
+    return <p>Loading...</p>;
   }
+
+  if (error) {
+    return <p>Error: {error.message}</p>;
+  }
+
+  if (!userData) {
+    return <p>No user data available</p>;
+  }
+
+  // Render user details using userData
 
   return (
     <div>
       <h2>User Details</h2>
-      <div>
-        <p>Full Name: {userDetails.first_name} {userDetails.last_name}</p>
-        <p>Email: {userDetails.email}</p>
-        {/* Add more details as needed */}
-      </div>
+      <p>User ID: {userData.id}</p>
+      <p>Name: {userData.name}</p>
+      <p>Email: {userData.email}</p>
+      {/* Add other user details as needed */}
     </div>
   );
 };

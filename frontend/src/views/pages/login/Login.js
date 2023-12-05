@@ -12,21 +12,22 @@ const Login = () => {
   const handleLogin = async () => {
     try {
       // Make an API call to your login endpoint
-      const response = await axios.post('http://localhost:6500/v1/admin/login', {
+      const response = await axios.post('http://localhost:7500/v1/admin/login', {
         email,
         password,
       });
 
       // Handle successful login (redirect, set authentication token, etc.)
-      console.log('Login successful:', response.data);
-      localStorage.setItem('token', response.data.token);
+      console.log('Login successful:',response.data);
+      localStorage.setItem('token', response.data.data.token);
+       console.log(response.data.data.token)
       setShowSuccessAlert(true);
 
       // Hide the success alert after 3 seconds (adjust the timeout as needed)
       setTimeout(() => {
         setShowSuccessAlert(false);
         navigate('/dashboard');
-      }, 3000);
+      }, 1000);
     } catch (err) {
       // Handle login error
       setError('Invalid username or password');
@@ -93,8 +94,7 @@ const Login = () => {
                   <div>
                     <h2>Sign up</h2>
                     <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                      tempor incididunt ut labore et dolore magna aliqua.
+                     Sorry!! you have to register for access to our fesilities.
                     </p>
                     <Link to="/register" className="btn btn-primary mt-3">
                       Register Now!
