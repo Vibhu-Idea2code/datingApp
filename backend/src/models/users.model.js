@@ -36,11 +36,14 @@ const userSchema = new mongoose.Schema(
     school: {
       type: String,
     },
-    interest: {
-      type: Array,
-      // type: mongoose.Types.ObjectId,
-      // ref:"hobbies",
-    },
+   
+    interest: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'hobbies',
+        },
+      ],
+  
     sign: {
       type: Array,
     },

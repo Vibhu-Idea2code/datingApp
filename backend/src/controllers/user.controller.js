@@ -64,7 +64,7 @@ const userList = async (req, res) => {
   }
 };
 
-/* --------------- GET USER LIST ROLE WISE (SIMPLE) WITH AUTH ADMIN SIDE--------------- */
+/* --------------- GET USER LIST  (SIMPLE) WITH AUTH ADMIN SIDE--------------- */
 const getAllUser = async (req, res) => {
   try {
     

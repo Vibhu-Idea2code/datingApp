@@ -20,6 +20,7 @@ const getUserList = async (filter, options) => {
   return User.find();
 };
 
+
 /**
  * Get user by email
  * @param {string} email
@@ -50,6 +51,10 @@ const getUserById = async (userId) => {
   return User.findById(userId);
 };
 
+// const user = await User.findById(userId).
+const getUserByIdRef = async (userId) => {
+  return User.findById(userId).populate('interest').exec();
+};
 
 /**
  * user details update by id
@@ -103,10 +108,11 @@ const getAllUser = async (role) => {
 };
 
 const updateDetailsInte = async (userId, updateBody) => {
-  return User.findByIdAndUpdate(userId, { $set: updateBody }).populate({
-      path: "interest",
-      select: ["_id"],
-    });
+  return User.findByIdAndUpdate(userId, { $set: updateBody })
+  // .populate({
+  //     path: "interest",
+  //     select: ["_id"],
+  //   });
 };
 module.exports = {
   createUser,
@@ -125,5 +131,6 @@ module.exports = {
   updateUser,
   getUserListSimple,
   getAllUser,
-  updateDetailsInte
+  updateDetailsInte,
+  getUserByIdRef
 };
