@@ -1,7 +1,7 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
 // import { CIcon } from '@coreui/icons-react';
-import { cilPeople } from '@coreui/icons';
+import { cilList, cilPeople } from '@coreui/icons';
 import {
   cilBell,
   cilCalculator,
@@ -42,8 +42,8 @@ const _nav = [
   {
     component: CNavItem,
     name: 'viewPage',
-    to: '/theme/typography',
-    icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
+    to: '/interest',
+    icon: <CIcon icon={cilList} customClassName="nav-icon" />,
   },
   // {
   //   component: CNavTitle,

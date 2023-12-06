@@ -25,10 +25,14 @@ const Users = () => {
   }, []);
 
   const handleViewDetails = (userId) => {
+    const path = '/popup/Popup';
+    const params = { paramName: 'paramValue' };
+  
     // Set the selectedUserId to trigger the UserDetails component to render
     setSelectedUserId(userId);
     // Redirect to the popup page or any other page
-    navigate(`/popup/${userId}`);
+    // navigate(`/popup/Popup/${"asd"}`);
+    navigate(`${path}?${(userId).toString()}`);
   };
 
   return (
@@ -69,18 +73,22 @@ const Users = () => {
                       <td> {user.phoneNumber}</td>
                       <td>{user.gender}</td>
                       <td>
-                        <button
+                        {/* <button
                           className="view-details-btn"
                           onClick={() => handleViewDetails(user._id)}
                         >
                           Block User
-                        </button>
+                        </button> */}
                       </td>
                       <td>
                         {/* Use Link to handle the redirection */}
-                        <Link to={`/popup/${user._id}`} className="view-details-btn">
-                          View Details
-                        </Link>
+                        <button 
+                          className="view-details-btn"
+                          onClick={() => handleViewDetails(user._id)} 
+                        >
+                          View Details User
+                        </button>
+                        
                       </td>
                     </tr>
                   ))}
