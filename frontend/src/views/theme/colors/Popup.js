@@ -47,10 +47,10 @@ const Popup = () => {
     const article = {
       first_name: editedUserData.first_name,
       last_name: editedUserData.last_name,
-      email: "hg.idea2code@gmail.com",
-      phoneNumber: 8758893096,
-      birthDate: "1996-09-03",
-      gender: "women",
+      email: editedUserData.email,
+      phoneNumber: editedUserData.phoneNumber,
+      birthDate: editedUserData.birthDate,
+      gender: editedUserData.gender,
       sexual: "queer",
       showMe: "men",
       school: "ppsv",
@@ -112,7 +112,16 @@ const Popup = () => {
             onChange={handleInputChange}
           />
 
-          
+<label htmlFor="last_name">email:</label>
+          <input
+            type="text"
+            id="email"
+            name="email"
+            value={editedUserData.email || ""}
+            onChange={handleInputChange}
+          />
+
+
 
           {/* Include other form fields for the user details as needed */}
 
