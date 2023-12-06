@@ -20,6 +20,7 @@
     "express-joi-validation": "^5.0.1",
     "geolib": "^3.3.4",
     "joi": "^17.11.0",
+    "json-server": "^0.17.4",
     "jsonwebtoken": "^9.0.2",
     "math": "^0.0.3",
     "moment": "^2.29.4",
