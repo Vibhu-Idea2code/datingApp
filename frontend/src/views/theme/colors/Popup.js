@@ -112,7 +112,7 @@ const Popup = () => {
             onChange={handleInputChange}
           />
 
-<label htmlFor="last_name">email:</label>
+<label htmlFor="email">email:</label>
           <input
             type="text"
             id="email"

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const mainUrl = process.env.NODE_ENV ===   'http://localhost:6500';
+const mainUrl = process.env.NODE_ENV ===   'http://localhost:7500';
 
 axios.interceptors.response.use(
   (response) => response,

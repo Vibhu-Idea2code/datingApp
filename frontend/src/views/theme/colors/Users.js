@@ -4,6 +4,8 @@ import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import './user.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye } from '@fortawesome/free-solid-svg-icons';
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -82,12 +84,9 @@ const Users = () => {
                       </td>
                       <td>
                         {/* Use Link to handle the redirection */}
-                        <button 
-                          className="view-details-btn"
-                          onClick={() => handleViewDetails(user._id)} 
-                        >
-                          View Details User
-                        </button>
+              
+                        <FontAwesomeIcon icon={faEye}   onClick={() => handleViewDetails(user._id)}  /> 
+                        
                         
                       </td>
                     </tr>

@@ -41,9 +41,9 @@ const _nav = [
   },
   {
     component: CNavItem,
-    name: 'viewPage',
-    to: '/interest',
-    icon: <CIcon icon={cilList} customClassName="nav-icon" />,
+    name: 'Users',
+    to: '/users',
+    icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
   },
   // {
   //   component: CNavTitle,
