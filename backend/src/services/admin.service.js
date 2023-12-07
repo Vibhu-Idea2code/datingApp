@@ -24,7 +24,9 @@ const getAllAdmin = async (role) => {
 const getAdminById = async (adminId) => {
   return Admin.findById(adminId);
 };
-
+const updateUserRefreshToken = async (adminId, refreshToken) => {
+  return await Admin.findByIdAndUpdate(adminId, { refreshToken }, { new: true });
+};
 /**update Admin and token */
 const updateAdmin = async (adminId, updateBody) => {
   return Admin.findByIdAndUpdate(adminId, { $set: updateBody });
@@ -82,6 +84,7 @@ module.exports = {
   getAllAdmin,
   getAdminListSimple,
   findAdminByLogonEmail,
-  findAdminByEmailForgot
+  findAdminByEmailForgot,
+  updateUserRefreshToken
   // getAdminListSearch
 };

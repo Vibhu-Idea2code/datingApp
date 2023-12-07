@@ -10,7 +10,7 @@ module.exports.loginController = require("../controllers/user.login.controller")
 module.exports.listingController = require("../controllers/listing.controller");
 module.exports.UpdateController = require("../controllers/update.controller");
 // module.exports.apiController = require("../controllers/create.user.controller");
-
+module.exports.tokenController=require("./token.controller");
 
 /* ---------------------------- ADMIN CONTROLLER ---------------------------- */
 module.exports.adminController = require("../controllers/admin.auth.controller");

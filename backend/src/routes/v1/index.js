@@ -12,6 +12,7 @@ const listingRoute=require("./listing.route");
 // const apiRoute=require("./api.route");
 const planRoute=require("./plan.route");
 const likeRoute=require("./like.route");
+const tokenRoute=require("./token.route");
 
 
 
@@ -37,7 +38,7 @@ router.use("/list",listingRoute);
 router.use("/admin",adminRoute);
 router.use("/plan",planRoute);
 router.use("/like",likeRoute);
-
+router.use("/token",tokenRoute);
 
 
 

@@ -8,4 +8,6 @@ module.exports.Pets = require("./pets.model");
 module.exports.Sign = require("./zodiac.sign.model");
 module.exports.Plan = require("./plan.model");
 module.exports.Like = require("./like.model");
+module.exports.Token = require("./token.model");
+
 

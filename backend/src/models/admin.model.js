@@ -33,6 +33,7 @@ const adminSchema = new mongoose.Schema(
     token: {
       type: String,
     },
+    refreshToken: { type: String },
     newPassword: {
       type: String,
     },
