@@ -13,6 +13,6 @@ router.post(
  );
 
 /** Verify token to get user details */
-router.get("/verify-token", auth(), tokenController.verifyAccessToken);
+router.get("/verify-token", auth(), tokenController.verifyRefreshToken);
 
 module.exports = router;

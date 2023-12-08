@@ -67,7 +67,6 @@ const userList = async (req, res) => {
 /* --------------- GET USER LIST  (SIMPLE) WITH AUTH ADMIN SIDE--------------- */
 const getAllUser = async (req, res) => {
   try {
-    
     const data = await userService.getUserList();
     // const result=await userService.getUserListSearch()
     res.status(200).json({
@@ -101,7 +100,6 @@ const getUserDetails = async (req, res) => {
     res.status(400).json({ success: false, message: error.message });
   }
 };
-
 
 const getUserDetailsAll = async (req, res) => {
   try {
@@ -152,7 +150,9 @@ const updateDetails = async (req, res) => {
     if (!userExists) {
       throw new Error("User not found!");
     }
-
+    if (req.file) {
+      userExists.user_img = req.file.filename; // Store the path to the uploaded profile image
+    }
     // Update the user's gender and other details
     userExists.gender = gender; // Update the 'gender' field
     userExists.first_name = first_name; // Update the 'firstName' field
@@ -167,9 +167,7 @@ const updateDetails = async (req, res) => {
     userExists.maxDistance = maxDistance; // Update the 'firstName' field
     userExists.jobTitle = jobTitle; // Update the 'firstName' field
     userExists.email = email; // Update the 'firstName' field
-    if (req.file) {
-      userExists.user_img = req.file.filename; // Store the path to the uploaded profile image
-    }
+   
     await userService.updateUser(userId, userExists); // Save the updated user
 
     res.status(200).json({

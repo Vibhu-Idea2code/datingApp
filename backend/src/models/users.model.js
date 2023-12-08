@@ -36,6 +36,9 @@ const userSchema = new mongoose.Schema(
     school: {
       type: String,
     },
+    // interest:{
+    //   type: Array,
+    // }
    
     interest: [
         {

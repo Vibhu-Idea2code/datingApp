@@ -22,7 +22,7 @@ router.post("/login-phone", authController.checkUserPh);
 
 /* ------------------------------- VERIFY OTP ------------------------------- */
 router.post("/verify-otp", authController.verifyOtp);
-// router.post("/verifyOtp", authController.verifyOtp);
+// router.post("/verifyOtp", authController.verifyOtp);  
 
 
 /* -------------------------------------------------------------------------- */
@@ -31,7 +31,7 @@ router.post("/verify-otp", authController.verifyOtp);
 
 /* ------------------------------- get user list ------------------------------------------- */
 
-router.get("/role", userController.getAllUser);// admin side (all user list) 
+router.get("/role", auth(),userController.getAllUser);// admin side (all user list) 
 router.get("/role-list", auth(), userController.getUserListRole);// ROLE WISE 
 router.get("/list", userController.userList); // HOME PAGE (DISTANCE,USERID,FIRSTNAME) 
 
@@ -44,8 +44,8 @@ router.delete("/delete-user/:userId", userController.deleteUser);
 router.delete("/delete-many", userController.deleteManyUsers);
 
 // /* ------------------------- update user info ------------------------ */
-router.put("/update/:userId", userController.updateDetails);
-// router.put("/update/:userId",upload.single("profile_img"), userController.updateDetails);
+// router.put("/update/:userId", userController.updateDetails);
+router.put("/update/:userId",upload.single("user_img"), userController.updateDetails);
 
 /* ----------------------------- update phone number using id----------------------------- */
 router.put("/update-phone/:userId", UpdateController.updatePhone);

@@ -18,7 +18,7 @@ const auth = () => async (req, res, next) => {
     const decoded = jwt.verify(
       token.replace("Bearer ", ""),
       config.jwt.secret_key,
-      // config.jwt.RefreshJwtSecrectKey
+      config.jwt.RefreshJwtSecrectKey
     );
     console.log(decoded);
     if (!decoded) {
@@ -27,10 +27,10 @@ const auth = () => async (req, res, next) => {
 
     const user = await Admin.findOne({ email: decoded.email });
     const admin = await User.findOne({ email: decoded.email });
-    if (!user) {
+    if (user) {
       return next(new Error("Please authenticate!"));
     }
-    if (!admin) {
+    if (admin) {
       return next(new Error("Please authenticate!"));
     }
     req.user = user;

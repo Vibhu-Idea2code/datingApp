@@ -13,8 +13,17 @@ const userHelper = require('../helpers/userHelper');
 /* -------------------------- REGISTER/CREATE USER -------------------------- */
 const register = async (req, res) => {
   // const { email, password, role } = req.body;
+
   console.log(req.body);
   const reqBody = req.body;
+  const existingUser = await userService.findUserByEmail(reqBody.email);
+
+  if (existingUser) {
+    return res.status(400).json({
+      success: false,
+      message: "User with this email already exists.",
+    });
+  }
   if (req.file) {
     reqBody.user_img = req.file.filename;
   } else {
@@ -38,14 +47,7 @@ const register = async (req, res) => {
   // Use helper to calculate age
   const age = userHelper.calculateAge(reqBody.birthDate);
 
-  const existingUser = await userService.findUserByEmail(reqBody.email);
 
-  if (existingUser) {
-    return res.status(400).json({
-      success: false,
-      message: "User with this email already exists.",
-    });
-  }
 
   // const hashPassword = await bcrypt.hash(reqBody.password, 8);
 
@@ -110,7 +112,7 @@ const loginEmail = async (req, res) => {
       email: findUser.email,
       lat1: findUser.lat,
       long1: findUser.long,
-      exp: moment().add(1, "days").unix(),
+      exp: moment().add(1, "day").unix(),
     };
     let token;
     if (findUser) {

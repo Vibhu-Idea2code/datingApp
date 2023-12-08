@@ -13,7 +13,7 @@ const generateToken = async (reqBody) => {
     // expire_time: reqBody.expire_time.unix(),
   };
 
-  return jwt.sign(payload, config.jwt.secret_key);
+  return jwt.sign(payload, config.jwt.RefreshJwtSecrectKey);
 };
 
 /**

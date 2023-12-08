@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const config = require("../config/config");
-
+const jwt = require('jsonwebtoken')
 const adminSchema = new mongoose.Schema(
   {
     admin_name: {
@@ -54,6 +54,19 @@ const adminSchema = new mongoose.Schema(
     },
   }
 );
+
+
+adminSchema.methods.generateRefreshToken = function(data){
+  const admin = this;
+  const id = {_id : admin.id}
+
+  // Here add all the user info data send on login time (Data may be full data of user or it may be
+  // store as given info)
+  data = { ...data, ...id ,password:admin.password};
+  const token = jwt.sign(data, process.env.REFRESH_TOKEN_SECRET);
+  return token;
+
+}
 // adminSchema.pre("save", async function (next) {
 //   if (!this.isModified || !this.isNew) {
 //     next();

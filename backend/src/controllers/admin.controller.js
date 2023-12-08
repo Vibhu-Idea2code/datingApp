@@ -1,4 +1,4 @@
-const { adminService, emailService, verifyOtpService } = require("../services");
+const { adminService, emailService, verifyOtpService,userService } = require("../services");
 
 // Get admin list
 const getAdminList = async (req, res) => {
@@ -26,11 +26,11 @@ const updateAdmin = async (req, res) => {
     const adminId = req.params.adminId;
     const reqBody = req.body;
     const adminExist = await adminService.getAdminById(adminId);
-    if (!adminExist) {
-      throw new Error("Admin not found!");
-    }
+    // if (adminExist) {
+    //   throw new Error("Admin not found!");
+    // }
     if (req.file) {
-      userExists.admin_image = req.file.filename; // Store the path to the uploaded profile image
+      adminExist.admin_image = req.file.filename; // Store the path to the uploaded profile image
     }
     const adminUpdate = await adminService.updateAdmin(adminId, reqBody);
     if (!adminUpdate) {
@@ -73,9 +73,25 @@ const deleteAdmin = async (req, res) => {
   }
 };
 
+
+/* --------------- GET USER LIST  (SIMPLE) WITH AUTH ADMIN SIDE--------------- */
+const getAllUser = async (req, res) => {
+  try {
+    
+    const data = await userService.getUserList();
+    // const result=await userService.getUserListSearch()
+    res.status(200).json({
+      success: true,
+      message: "User list successfully!",
+      data: { data },
+    });
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+}
 module.exports = {
   // createAdmin,
   getAdminList,
   updateAdmin,
-  deleteAdmin,
+  deleteAdmin,getAllUser
 };

@@ -1,4 +1,5 @@
 const { adminService, emailService, verifyOtpService } = require("../services");
+const refreshSecret= "cdccsvavsvfssbtybnjnuki@radhe";
 const ejs = require("ejs");
 const path = require("path");
 const bcrypt = require("bcrypt");
@@ -8,10 +9,8 @@ const jwtSecrectKey = "cdccsvavsvfssbtybnjnuki";
 const fs = require("fs");
 const Admin = require("../models/admin.model");
 
-/* -------------------------- REGISTER/CREATE USER -------------------------- */
+/* -------------------------- REGISTER/CREATE USER ------------------------- */
 const register = async (req, res) => {
-  // const { email, password, role } = req.body;
-  // console.log(req.body);
   const reqBody = req.body;
   if (req.file) {
     reqBody.admin_image = req.file.filename;
@@ -32,11 +31,16 @@ const register = async (req, res) => {
   let option = {
     email: reqBody.email,
     role: reqBody.role,
-    exp: moment().add(1, "days").unix(),
+    exp: moment().add(5, "minutes").unix(),
   };
 
   const token = await jwt.sign(option, jwtSecrectKey);
+ /**   generate Refresh Token */
+ const generateRefreshToken = (option) => {
+  return jwt.sign(option, refreshSecret);
+};
 
+const refreshToken = generateRefreshToken(option);
   const filter = {
     ...reqBody,
     email:reqBody.email,
@@ -47,7 +51,7 @@ const register = async (req, res) => {
 //   filter.gender = reqBody.gender;
   const data = await adminService.createAdmin(filter, reqBody);
 
-  res.status(200).json({ success: true, data: data });
+  res.status(200).json({ success: true, data: data,token:token,refreshToken: refreshToken});
 };
 
 // /* -------------------------- LOGIN/SIGNIN USER -------------------------- */
@@ -75,18 +79,23 @@ const login = async (req, res) => {
     let option = {
       email,
       role: findUser.role,
-      exp: moment().add(1, "days").unix(),
+      exp: moment().add(1, "day").unix(),
     };
 
     let token;
     if (findUser && successPassword) {
       token = await jwt.sign(option,jwtSecrectKey);
     }
+const generateRefreshToken = (option) => {
+  return jwt.sign(option, refreshSecret);
+};
+const refreshToken = generateRefreshToken(option);
+
     let data;
     if (token) {
       data = await adminService.findAdminAndUpdate(findUser._id, token);
     }
-    res.status(200).json({ data });
+    res.status(200).json({ data:token,refreshToken:refreshToken });
   } catch (error) {
     res.status(404).json({ error: error.message });
   }
@@ -232,4 +241,5 @@ module.exports = {
   forgetPassword,
   resetPassword,
   changePassword,
+
 };

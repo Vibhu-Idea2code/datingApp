@@ -17,7 +17,7 @@ router.post(
   router.post("/verifyotp", adminController.verifyOtp);
   // router.put("/reset/:id", upload.single("admin_image"), adminController.updateProfile)
   // router.post('/refresh-token', adminController.refresh);  
-
+  // router.post("/refreshToken", adminController.RefreshToken);
   router.post("/change-password/:id",auth(), adminController.changePassword);
 
   router.put("/resetPassword",auth(), adminController.resetPassword);
