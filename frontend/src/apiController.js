@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const mainUrl = process.env.NODE_ENV ===   'http://localhost:7500';
+const mainUrl = process.env.NODE_ENV ===   'http://localhost:7500/v1/';
 
 axios.interceptors.response.use(
   (response) => response,
@@ -12,7 +12,7 @@ axios.interceptors.response.use(
 
       try {
         const refreshToken = localStorage.getItem('token');
-        const response = await axios.post(`${mainUrl}/admin/token`, { refreshToken });
+        const response = await axios.post(`${mainUrl}/token/create-token`, { refreshToken });
         const token = response.data.info;
         // console.log(response.data.info);
         localStorage.setItem('token', token);
@@ -35,24 +35,25 @@ axios.interceptors.response.use(
 );
 
 export const adminLogin = (data) => axios.post(`${mainUrl}/admin/login`, data);
+export const adminRegister = (data) => axios.post(`${mainUrl}/admin/forgot`,data);
 
-export const checkmailid = (data) => axios.post(`${mainUrl}/admin/checkmailid`, data);
+export const checkmailid = (data) => axios.post(`${mainUrl}/admin/verifyotp`, data);
 
-export const resetPassword = (data) => axios.post(`${mainUrl}/admin/resetPassword`, data);
+export const resetPassword = (data) => axios.put(`${mainUrl}/admin/resetPassword`, data);
 
 // Get admin details
 export const adminDetails = () =>
-  axios.get(`${mainUrl}/admin/adminDetails`, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
+  axios.get(`${mainUrl}/admin/list`, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
 
 // Get admin profile
 export const changePassword = (data) =>
-  axios.post(`${mainUrl}/admin/changePassword`, data, {
+  axios.post(`${mainUrl}/admin/change-password/${id}`, data, {
     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
   });
 
 //Update Admin Profile
 export const UpdateProfile = (data) =>
-  axios.post(`${mainUrl}/admin/UpdateProfile`, data, {
+  axios.post(`${mainUrl}admin/update/${id}`, data, {
     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
   });
 
