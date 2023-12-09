@@ -1,5 +1,5 @@
 const { adminService, emailService, verifyOtpService } = require("../services");
-const refreshSecret= "cdccsvavsvfssbtybnjnuki@radhe";
+const refreshSecret= "cdccsvavsvfssbtybnjnukiradhe";
 const ejs = require("ejs");
 const path = require("path");
 const bcrypt = require("bcrypt");

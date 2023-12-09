@@ -24,7 +24,7 @@ router.post("/login-phone", authController.checkUserPh);
 router.post("/verify-otp", authController.verifyOtp);
 // router.post("/verifyOtp", authController.verifyOtp);  
 
-
+router.get('/like/:userId', userController.getLikesByUserId);
 /* -------------------------------------------------------------------------- */
 /*                                    USER ROUTE                                    */
 /* -------------------------------------------------------------------------- */
@@ -85,6 +85,13 @@ router.put("/update-name/:userId", UpdateController.updateFirstName);
 
 // /* ----------------------------- update (gender) using id----------------------------- */
 router.put("/update-interest/:userId", UpdateController.updateInterest);
+
+router.put("/update-sign/:userId", UpdateController.updateSign);
+
+router.put("/update-pets/:userId", UpdateController.updatePets);
+
+router.put("/update-sexual-orientation/:userId", UpdateController.updateSexual);
+
 
 
 module.exports = router;

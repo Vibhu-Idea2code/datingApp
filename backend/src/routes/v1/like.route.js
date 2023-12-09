@@ -6,7 +6,7 @@ const { likeController } = require("../../controllers");
 const router = express.Router();
 
 
-router.post('/like-create/:userId', likeController.createLike);
+router.post('/like-create', likeController.createLike);
 
-router.get('/like/:userId', likeController.getLikesByUserId);
+router.get('/like/:fromuserid', likeController.getLikesByUserId);
 module.exports = router;

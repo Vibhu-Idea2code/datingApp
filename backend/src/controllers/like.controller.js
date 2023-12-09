@@ -3,58 +3,45 @@ const User = require('../models/users.model');
 
 const createLike = async (req, res) => {
   try {
-    const { userId } = req.params;
-    const { otherUserId } = req.body;
+    // const {  } = req.params;
+    const { fromuserid, touserid} = req.body;
 
-    // Check if the like already exists
-    const existingLike = await Like.findOne({ userId, likedUserId: otherUserId });
+    const existingLike = await Like.findOne({ fromuserid, touserid });
 
-    if (existingLike) {
-      if (existingLike.likeStatus) {
-        return res.status(400).json({ message: 'You already liked this user.' });
-      } else {
-        // If likeStatus is false, update it to true (user is liking again)
-        existingLike.likeStatus = true;
-        await existingLike.save();
-        return res.status(200).json({ message: 'Like status updated successfully.', like: existingLike });
-      }
-    }
-
-    // Create a new like
-    const newLike = await Like.create({ userId, likedUserId: otherUserId });
-    await newLike.save();
-
-    // Update the likedBy array in the liked user's document
-    await User.findByIdAndUpdate(otherUserId, { $push: { likedUser: userId } });
-
-    res.status(200).json({ message: 'Like successful.', like: newLike, userId });
+if (existingLike) {
+  // A like already exists, handle the situation (e.g., send an error response)
+  return res.status(400).json({ message: 'User already liked this profile' });
+}
+if (fromuserid === touserid) {
+  return res.status(400).json({ message: 'Cannot like your own ID' });
+}
+const newLike = new Like({
+  fromuserid,
+  touserid
+  });
+  const result = await newLike.save();
+      res.status(200).json({ message: 'Like successful.',  data: result});
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 };
 
-
-
 const getLikesByUserId = async (req, res) => {
   try {
-    const { userId } = req.params;
+    const { fromuserid } = req.params;
 
-    // Fetch all likes where the likedUser is the specified userId
-    const likeList = await Like.find({ likedUserId: userId });
+    // Count the number of likes where the likedUser is the specified userId
+    const likeCount = await Like.countDocuments({ fromuserid });
 
-    // Extract the user IDs who liked the specified user
-    const likeByUserIds = likeList.map(like => like.userId);
-
-    // Fetch user details for each user who liked the specified user
-    const likeByUsers = await User.findByIdAndUpdate({ _id: { $in: likeByUserIds } });
-
-    return res.status(200).json({ likeByUsers });
+    return res.status(200).json({ data:likeCount });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Internal Server Error' });
   }
 };
+
+
 
   
   

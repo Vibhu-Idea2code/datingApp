@@ -124,12 +124,45 @@ const getUserDetailsAll = async (req, res) => {
   }
 };
  /* ----------------------GET USER DETAILS FOR ADMIN PANEL-----------------------*/
+ const getLikesByUserId = async (req, res) => {
+  try {
+    const { userId } = req.params;
 
+    // Fetch all likes where the likedUser is the specified userId
+    const likeList = await User.find({ likedUserId: userId });
+
+    // Create a map to count the occurrences of each unique userId
+    const likeCountMap = new Map();
+    likeList.forEach(like => {
+      const userId = like.userId.toString(); // Convert ObjectId to string
+      likeCountMap.set(userId, (likeCountMap.get(userId) || 0) + 1);
+    });
+
+    // Extract the user IDs who liked the specified user
+    const likeByUserIds = Array.from(likeCountMap.keys());
+
+    // Fetch user details for each user who liked the specified user
+    const likeByUsers = await User.find({ _id: { $in: likeByUserIds } });
+
+    // Create a result array with user details and like count
+    const result = likeByUsers.map(user => ({
+      user,
+      likeCount: likeCountMap.get(user._id.toString()) || 0,
+    }));
+
+    return res.status(200).json({ likeByUsers: result });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
 /* -------------------------- GET USER UPDATE BY ID own profile------------------------- */
 const updateDetails = async (req, res) => {
   try {
     // const reqBody=req.body;
     const userId = req.params.userId;
+    console.log("🚀 ~ file: user.controller.js:133 ~ updateDetails ~ userId:", userId)
+    
     const {
       first_name,
       last_name,
@@ -271,7 +304,7 @@ const deleteManyUsers = async (req, res) => {
 module.exports = {
   getAllUser,
   getUserListRole,
-  
+  getLikesByUserId,
   getUserDetails,
   updateDetails,
   deleteUser,

@@ -1,78 +1,82 @@
+const Admin = require("../../src/models/admin.model");
+const dotenv = require("dotenv").config();
 const jwt = require("jsonwebtoken");
-const { User, Admin } = require("../models");
-const config = require("../config/config");
+// const refreshSecret = process.env.JWT_REFRESH_SECRET_KEY;
+const refreshSecret= "cdccsvavsvfssbtybnjnukiradhe";
+
+/* ------------------------------ Access Token ------------------------------ */
 
 const accessToken = () => async (req, res, next) => {
-    try {
-      const accessToken = req.headers.authorization;
-      if (!accessToken) {
-        return next(
-          res.status(401).json({
-            success: false,
-            message: "Please authenticate! with accessToken",
-          })
-        );
-      }
-  
-      const decoded = jwt.verify(
-        accessToken.replace("Bearer ", ""),
-        process.env.JWT_SECRECT_KEY
-      );
-      
-         if (!decoded) {
-        return next(new Error("Please enter valid token!"));
-      }
-      const user = await User.findOne({ email: decoded.email });
-  
-       if (!user) {
-        return next(new Error("Please authenticate!"));
-      }
-      req.user = user;
-  
-      next();
-    } catch (error) {
+  try {
+    const token = req.headers.authorization;
+    if (!token) {
       return next(
         res.status(401).json({
           status: 401,
-          message: "Invalid token! Please authenticate with a valid accessToken",
+          message: "Please authenticate! with accessToken",
         })
       );
     }
-  };
-  / ------------------------------ refresh Token ------------------------------ /
-  
-  const refreshToken = async (req, res, next) => {
-    try {
-      const refreshToken = req.body.refreshToken;
-  
-      if (!refreshToken) {
-        return res.status(401).json({ error: "Refresh token not provided" });
-      }
-  
-      const decoded = jwt.verify(
-        refreshToken,
-        process.env.JWT_REFRESH_SECRET_KEY
-      ); 
-  
-      if (!decoded) {
-        return next(new Error("Please enter valid token!"));
-      }
-  
-      const newAccessToken = jwt.sign(
-        { email: decoded.email },
-        process.env.JWT_SECRET_KEY,
-        { expiresIn: "1h" }
-      );
+
+    const decoded = jwt.verify(
+      token.replace("Bearer ", ""),
+      process.env.JWT_SECRECT_KEY
+    );
     
-      next();
-  
-      res.json({ refreshToken: refreshToken, newAccessToken: newAccessToken });
-  
-    } catch (err) {
-      res.status(401).json({
-        status: false,
-        message: err.message,
-      });
+       if (!decoded) {
+      return next(new Error("Please enter valid token!"));
     }
-  };
-  module.exports = auth3;
+    const admin = await Admin.findOne({ email: decoded.email });
+
+     if (!admin) {
+      return next(new Error("Please authenticate!"));
+    }
+    req.admin = admin;
+
+    next();
+  } catch (error) {
+    return next(
+      res.status(401).json({
+        status: 401,
+        message: "Invalid token! Please authenticate with a valid accessToken",
+      })
+    );
+  }
+};
+/* ------------------------------ refresh Token ------------------------------ */
+
+const refreshToken = async (req, res, next) => {
+  try {
+    const refreshToken = req.body.refreshToken;
+
+    if (!refreshToken) {
+      return res.status(401).json({ error: "Refresh token not provided" });
+    }
+    const decoded = jwt.verify(
+      refreshToken,
+      process.env.JWT_REFRESH_SECRET_KEY
+    ); 
+
+    if (!decoded) {
+      return next(new Error("Please enter valid token!"));
+    }
+
+    const newAccessToken = jwt.sign(
+      { email: decoded.email },
+      process.env.JWT_SECRET_KEY,
+      { expiresIn: "1h" }
+    );
+  
+    next();
+
+    res.json({ refreshToken: refreshToken, newAccessToken: newAccessToken });
+
+  } catch (err) {
+    res.status(401).json({
+      status: false,
+      message: err.message,
+    });
+  }
+};
+
+module.exports = { accessToken, refreshToken };

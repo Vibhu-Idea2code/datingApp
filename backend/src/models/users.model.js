@@ -27,9 +27,13 @@ const userSchema = new mongoose.Schema(
     gender: {
       type: String,
     },
-    sexual: {
-      type: Array,
-    },
+    sexual: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'sexual',
+      },
+    ],
+
     showMe: {
       type: String,
     },
@@ -47,12 +51,26 @@ const userSchema = new mongoose.Schema(
         },
       ],
   
-    sign: {
-      type: Array,
-    },
-    pets: {
-      type: Array,
-    },
+    sign: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'sign',
+      },
+    ],
+   
+    pets: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'pet',
+      },
+    ],
+    // likeduser: [
+    //   {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'like',
+    //   },
+    // ],
+   
     address: {
       type: String,
     },
@@ -93,9 +111,7 @@ const userSchema = new mongoose.Schema(
     aboutMe:{
       type :String,
     }, 
-    likeduser:{
-      type:Array,
-    },
+  
     user_img:{
       type:String
     },

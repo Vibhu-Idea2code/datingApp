@@ -324,6 +324,73 @@ const updateInterest = async (req, res) => {
   }
 };
 
+/* ------------------ UPDATE HOBBIES/INTERSET USING USER ID ----------------- */
+const updateSign = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const { sign } = req.body; //'interest' fields from the request body
+    const userExists = await userService.getUserById(userId);
+    if (!userExists) {
+      throw new Error("User not found!");
+    }
+    userExists.sign = sign; // Update the 'interest'
+    await userService.updateDetailsSign(userId, userExists); // Save the updated user
+    res.status(200).json({
+      success: true,
+      message: "User sign updated successfully!",
+      data: sign,
+    });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
+
+/* ------------------ UPDATE HOBBIES/INTERSET USING USER ID ----------------- */
+const updatePets = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const { pets } = req.body; //'interest' fields from the request body
+
+    const userExists = await userService.getUserById(userId);
+    if (!userExists) {
+      throw new Error("User not found!");
+    }
+    userExists.pets = pets; // Update the 'interest'
+    await userService.updateDetailsPets(userId, userExists); // Save the updated user
+    res.status(200).json({
+      success: true,
+      message: "User pets updated successfully!",
+      data: pets,
+    });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
+/* ------------------ UPDATE HOBBIES/INTERSET USING USER ID ----------------- */
+const updateSexual = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const { sexual } = req.body; //'interest' fields from the request body
+
+    const userExists = await userService.getUserById(userId);
+    if (!userExists) {
+      throw new Error("User not found!");
+    }
+    userExists.sexual = sexual; // Update the 'interest'
+    await userService.updateDetailsSexualOrientation(userId, userExists); // Save the updated user
+    res.status(200).json({
+      success: true,
+      message: "User sexual orinetation updated successfully!",
+      data: sexual,
+    });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
+
 module.exports = {
   updatePhone,
   updateMaxDistance,
@@ -338,4 +405,7 @@ module.exports = {
   updateAddress,
   updateFirstName,
   updateInterest,
+  updateSign,
+  updatePets,
+  updateSexual
 };

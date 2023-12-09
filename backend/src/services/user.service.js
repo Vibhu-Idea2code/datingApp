@@ -109,10 +109,33 @@ const getAllUser = async (role) => {
 
 const updateDetailsInte = async (userId, updateBody) => {
   return User.findByIdAndUpdate(userId, { $set: updateBody })
-  // .populate({
-  //     path: "interest",
-  //     select: ["_id"],
-  //   });
+  .populate({
+      path: "interest",
+      select: ["_id"],
+    });
+};
+const updateDetailsSign = async (userId, updateBody) => {
+  return User.findByIdAndUpdate(userId, { $set: updateBody })
+  .populate({
+      path: "sign",
+      select: ["_id"],
+    });
+};
+
+const updateDetailsPets = async (userId, updateBody) => {
+  return User.findByIdAndUpdate(userId, { $set: updateBody })
+  .populate({
+      path: "pets",//aa schema name avse
+      select: ["_id"],
+    });
+};
+
+const updateDetailsSexualOrientation = async (userId, updateBody) => {
+  return User.findByIdAndUpdate(userId, { $set: updateBody })
+  .populate({
+      path: "sexual",//aa schema name avse
+      select: ["_id"],
+    });
 };
 module.exports = {
   createUser,
@@ -132,5 +155,8 @@ module.exports = {
   getUserListSimple,
   getAllUser,
   updateDetailsInte,
-  getUserByIdRef
+  getUserByIdRef,
+  updateDetailsSign,
+  updateDetailsPets,
+  updateDetailsSexualOrientation
 };
