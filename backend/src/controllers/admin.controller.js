@@ -187,11 +187,7 @@ const register = async (req, res) => {
 
   // Use helper to calculate age
   const age = userHelper.calculateAge(reqBody.birthDate);
-
-
-
-  // const hashPassword = await bcrypt.hash(reqBody.password, 8);
-
+ 
   let option = {
     email: reqBody.email,
     role: reqBody.role,
@@ -231,10 +227,52 @@ const register = async (req, res) => {
   res.status(200).json({ success: true, data: data });
 };
 
+const deleteUser = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const userExists = await userService.getUserById(userId);
+    if (!userExists) {
+      throw new Error("User not found!");
+    }
+
+    await userService.deleteUser(userId);
+
+    res.status(200).json({
+      success: true,
+      message: "User delete successfully!",
+      data: userExists,
+    });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
+/* ------------------------- DELETE MANY USER BY ID ------------------------- */
+const deleteManyUsers = async (req, res) => {
+  try {
+    const { _id } = req.body;
+    const result = await User.deleteMany({ _id: { $in: _id } });
+    if (result.deletedCount === 0) {
+      throw new Error("No users deleted");
+    }
+    return res.status(200).send({
+      success: true,
+      message: "Deleted Successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send({
+      success: false,
+      message: `${err}`,
+    });
+  }
+};
+
 
 module.exports = {
   // createAdmin,
   getAdminList,
   updateAdmin,
-  deleteAdmin,getAllUser,updateDetails,register
+  deleteAdmin,
+  getAllUser,updateDetails,register,deleteUser,deleteManyUsers
 };

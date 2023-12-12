@@ -50,7 +50,12 @@ const userSchema = new mongoose.Schema(
           ref: 'hobbies',
         },
       ],
-  
+      plan: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'plan',
+        },
+      ],
     sign: [
       {
         type: mongoose.Schema.Types.ObjectId,

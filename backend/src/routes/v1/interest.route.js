@@ -26,6 +26,7 @@ router.put(
   upload.single("logo"),
   hobbiesController.updateInterest
 );
+router.delete("/delete/:hobbiesId",hobbiesController.deleteInterest);
 
 /** Get product details */
 // router.get(

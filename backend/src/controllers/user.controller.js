@@ -127,23 +127,18 @@ const getUserDetailsAll = async (req, res) => {
  const getLikesByUserId = async (req, res) => {
   try {
     const { userId } = req.params;
-
     // Fetch all likes where the likedUser is the specified userId
     const likeList = await User.find({ likedUserId: userId });
-
     // Create a map to count the occurrences of each unique userId
     const likeCountMap = new Map();
     likeList.forEach(like => {
       const userId = like.userId.toString(); // Convert ObjectId to string
       likeCountMap.set(userId, (likeCountMap.get(userId) || 0) + 1);
     });
-
     // Extract the user IDs who liked the specified user
     const likeByUserIds = Array.from(likeCountMap.keys());
-
     // Fetch user details for each user who liked the specified user
     const likeByUsers = await User.find({ _id: { $in: likeByUserIds } });
-
     // Create a result array with user details and like count
     const result = likeByUsers.map(user => ({
       user,
@@ -156,6 +151,37 @@ const getUserDetailsAll = async (req, res) => {
     return res.status(500).json({ message: 'Internal Server Error' });
   }
 };
+const purchasePlan=async (req,res)=>{
+  const{planType}=req.body;
+  let planPrice;
+  switch(planType){
+    case"BASIC":
+    planPrice=39;
+    break;
+    case"PREMIUM":
+    planPrice=78;
+    break;
+    default :
+    return res.status(400).send("Invalid Plan Type");
+    }
+    if(!req.userData.stripeCustomerId){
+      const customer={
+        email:req.userData.email,
+        name: `${req.userData.firstName} ${req.userData.lastName}`
+        };
+        const stripeCustomer=await stripe.customers.create(customer);
+        await User.updateOne({_id:req.userData._id},{"stripeCustomerId":stripeCustomer.id
+        ,"membership":"MEMBERSHIP_ACTIVE"});
+        }
+        const paymentMethodCreate=await stripe.paymentMethods.create({type:"card",card:req.body});
+        const invoice=await stripe.billingPortal.sessions.create({
+          customer:req.userData.stripeCustomerId,
+          return_url:`${process.env.CLOUDINARY_URL}/billing`,
+          line_items:[{price:planPrice+"","quantity":1}]
+          })
+          return res.redirect(`${process.env.STRIPE_CHECKOUT_DOMAIN}/session/${invoice.id}`)
+          }
+
 /* -------------------------- GET USER UPDATE BY ID own profile------------------------- */
 const updateDetails = async (req, res) => {
   try {

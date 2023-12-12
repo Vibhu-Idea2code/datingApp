@@ -47,10 +47,6 @@ const register = async (req, res) => {
   // Use helper to calculate age
   const age = userHelper.calculateAge(reqBody.birthDate);
 
-
-
-  // const hashPassword = await bcrypt.hash(reqBody.password, 8);
-
   let option = {
     email: reqBody.email,
     role: reqBody.role,

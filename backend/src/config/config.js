@@ -40,7 +40,7 @@ module.exports = {
   base_url: envVars.BASE_URL,
   jwt: {
     secret_key: envVars.JWT_SECRET_KEY,
-    refreshSecret : envVars.JWT_REFRESH_SECRET_KEY,
+    // refreshSecret : envVars.JWT_REFRESH_SECRET_KEY,
   },
   email: {
     smtp: {

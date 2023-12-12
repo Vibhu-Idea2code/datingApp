@@ -4,7 +4,7 @@ const {
   authController,
   UpdateController,
 } = require("../../controllers");
-const auth = require("../../middlewares/auth");
+const { refreshToken, accessToken } = require("../../middlewares/auth");
 const { upload } = require("../../middlewares/upload");
 const router = express.Router();
 
@@ -31,8 +31,8 @@ router.get('/like/:userId', userController.getLikesByUserId);
 
 /* ------------------------------- get user list ------------------------------------------- */
 
-router.get("/role", auth(),userController.getAllUser);// admin side (all user list) 
-router.get("/role-list", auth(), userController.getUserListRole);// ROLE WISE 
+router.get("/role", accessToken(),userController.getAllUser);// admin side (all user list) 
+router.get("/role-list", accessToken(), userController.getUserListRole);// ROLE WISE 
 router.get("/list", userController.userList); // HOME PAGE (DISTANCE,USERID,FIRSTNAME) 
 
 /* ----------------------------- get user by id ----------------------------- */

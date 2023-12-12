@@ -7,16 +7,16 @@ const interestSchema = new mongoose.Schema({
   logo: { type: String },
   is_active: {
     type: Boolean,
-    default: false,
+    default: true,
   },
 },
 {
-  timestamps: true,
+  timestamps: true, 
   versionKey: false,
   toJSON: {
     transform: function (doc, data) {
       if (data?.logo) {
-        data.logo = `${config.base_url}logos/${data.logo}`;
+        data.logo = `${config.base_url}profile_images/${data.logo}`;
       }
     },
   },

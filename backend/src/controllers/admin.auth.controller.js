@@ -18,28 +18,24 @@ const register = async (req, res) => {
     throw new Error("admin image is required!");
   }
   const existingUser = await adminService.findAdminByEmail(reqBody.email);
-
   if (!existingUser) {
     return res.status(400).json({
       success: false,
       message: "Admin with this email already exists.",
     });
   }
-
   const hashPassword = await bcrypt.hash(reqBody.password, 8);
-
   let option = {
     email: reqBody.email,
     role: reqBody.role,
     exp: moment().add(5, "minutes").unix(),
   };
-
+  
   const token = await jwt.sign(option, jwtSecrectKey);
  /**   generate Refresh Token */
  const generateRefreshToken = (option) => {
   return jwt.sign(option, refreshSecret);
 };
-
 const refreshToken = generateRefreshToken(option);
   const filter = {
     ...reqBody,
@@ -48,11 +44,10 @@ const refreshToken = generateRefreshToken(option);
     password: hashPassword,
     token,
   };
-//   filter.gender = reqBody.gender;
   const data = await adminService.createAdmin(filter, reqBody);
-
   res.status(200).json({ success: true, data: data,token:token,refreshToken: refreshToken});
 };
+
 
 // /* -------------------------- LOGIN/SIGNIN USER -------------------------- */
 const login = async (req, res) => {
@@ -63,7 +58,6 @@ const login = async (req, res) => {
     const findUser = await adminService.findAdminByLogonEmail({email} );
     console.log(findUser, "++++");
     if (!findUser) throw Error("User not found");
-
     const successPassword = await bcrypt.compare(password, findUser.password);
     console.log(successPassword, "000000000");
     console.log("Input Password:", password);
@@ -73,9 +67,7 @@ const login = async (req, res) => {
       console.log("Password Comparison Failed");
       throw Error("Incorrect password");
     }
-
     if (!successPassword) throw Error("Incorrect password");
-
     let option = {
       email,
       role: findUser.role,
