@@ -12,7 +12,7 @@ const Login = () => {
   const handleLogin = async () => {
     try {
       // Make an API call to your login endpoint
-      const response = await axios.post('http://localhost:7500/v1/admin/login', {
+      const response = await axios.post('http://localhost:8500/v1/admin/login', {
         email,
         password,
       });

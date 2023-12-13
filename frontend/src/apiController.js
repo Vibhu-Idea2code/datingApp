@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const mainUrl = process.env.NODE_ENV ===   'http://localhost:7500/v1/';
+const mainUrl = process.env.NODE_ENV ===   'http://localhost:8500/v1/';
 
 axios.interceptors.response.use(
   (response) => response,
@@ -12,8 +12,8 @@ axios.interceptors.response.use(
 
       try {
         const refreshToken = localStorage.getItem('token');
-        const response = await axios.post(`${mainUrl}/token/create-token`, { refreshToken });
-        const token = response.data.info;
+        // const response = await axios.post(`${mainUrl}/token/create-token`, { refreshToken });
+        // const token = response.data.info;
         // console.log(response.data.info);
         localStorage.setItem('token', token);
         // Retry the original request with the new token
@@ -59,7 +59,7 @@ export const UpdateProfile = (data) =>
 
 //Get All users
 export const allUsers = (data) =>
-  axios.get(`${mainUrl}/admin/user/allUsers`, data, {
+  axios.get(`${mainUrl}admin/user-list`, data, {
     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
   });
     
