@@ -67,12 +67,12 @@ const userList = async (req, res) => {
 /* --------------- GET USER LIST  (SIMPLE) WITH AUTH ADMIN SIDE--------------- */
 const getAllUser = async (req, res) => {
   try {
-    const data = await userService.getUserList();
+    const allUser = await userService.getUserList();
     // const result=await userService.getUserListSearch()
     res.status(200).json({
       success: true,
       message: "User list successfully!",
-      data: { data },
+      data:allUser ,
     });
   } catch (error) {
     res.status(404).json({ error: error.message });
@@ -151,37 +151,63 @@ const getUserDetailsAll = async (req, res) => {
     return res.status(500).json({ message: 'Internal Server Error' });
   }
 };
-const purchasePlan=async (req,res)=>{
-  const{planType}=req.body;
-  let planPrice;
-  switch(planType){
-    case"BASIC":
-    planPrice=39;
-    break;
-    case"PREMIUM":
-    planPrice=78;
-    break;
-    default :
-    return res.status(400).send("Invalid Plan Type");
-    }
-    if(!req.userData.stripeCustomerId){
-      const customer={
-        email:req.userData.email,
-        name: `${req.userData.firstName} ${req.userData.lastName}`
-        };
-        const stripeCustomer=await stripe.customers.create(customer);
-        await User.updateOne({_id:req.userData._id},{"stripeCustomerId":stripeCustomer.id
-        ,"membership":"MEMBERSHIP_ACTIVE"});
-        }
-        const paymentMethodCreate=await stripe.paymentMethods.create({type:"card",card:req.body});
-        const invoice=await stripe.billingPortal.sessions.create({
-          customer:req.userData.stripeCustomerId,
-          return_url:`${process.env.CLOUDINARY_URL}/billing`,
-          line_items:[{price:planPrice+"","quantity":1}]
-          })
-          return res.redirect(`${process.env.STRIPE_CHECKOUT_DOMAIN}/session/${invoice.id}`)
-          }
-
+// const purchasePlan=async (req,res)=>{
+//   const{planType}=req.body;
+//   let planPrice;
+//   switch(planType){
+//     case"BASIC":
+//     planPrice=39;
+//     break;
+//     case"PREMIUM":
+//     planPrice=78;
+//     break;
+//     default :
+//     return res.status(400).send("Invalid Plan Type");
+//     }
+//     if(!req.userData.stripeCustomerId){
+//       const customer={
+//         email:req.userData.email,
+//         name: `${req.userData.firstName} ${req.userData.lastName}`
+//         };
+//         const stripeCustomer=await stripe.customers.create(customer);
+//         await User.updateOne({_id:req.userData._id},{"stripeCustomerId":stripeCustomer.id
+//         ,"membership":"MEMBERSHIP_ACTIVE"});
+//         }
+//         const paymentMethodCreate=await stripe.paymentMethods.create({type:"card",card:req.body});
+//         const invoice=await stripe.billingPortal.sessions.create({
+//           customer:req.userData.stripeCustomerId,
+//           return_url:`${process.env.CLOUDINARY_URL}/billing`,
+//           line_items:[{price:planPrice+"","quantity":1}]
+//           })
+//           return res.redirect(`${process.env.STRIPE_CHECKOUT_DOMAIN}/session/${invoice.id}`)
+//           }
+    //  const purchasePlan=async(req,res)=>{
+    //   try{
+    //     const {planType}=req.params;
+    //     if (!['MONTHLY','YEARLY'].includes(planType)) throw new Error('Invalid subscription type');
+    //     const user=await User.findById(req.userId);
+    //     if(!user)throw new Error ('No such user exists!')
+    //     else if(user.membership==='FREE'){
+    //   await User.findByIdAndUpdate(req.userId,{membership:'Trial',trialEnds:Date.now()
+    //   +14*24*60*60})
+    //   return res.status(200).json({message:'Your account has been upgraded to a free trial.'})
+    //   .catch((err)=>console.log(err));
+    //     }
+    //     else if(user.membership!=="EXPIRED"){
+    //       throw new Error ("You are already subscribed.")
+    //       }
+    //       req.userData = user;
+    //       next();
+    //       } catch(e){
+    //         console.log(e);
+    //         return res.status(400).send(e.message);
+    //         }
+    //         }
+        
+// app.post('/api/purchase-plan', (req, res) => {
+//   const userId = req.body.userId; // Assuming you receive the userId in the request body
+//   const planId = req.body.planId;
+// });
 /* -------------------------- GET USER UPDATE BY ID own profile------------------------- */
 const updateDetails = async (req, res) => {
   try {
@@ -337,5 +363,6 @@ module.exports = {
   deleteManyUsers,
   userList,
   getUserDetailsAll,
+  // purchasePlan
   // updateSetting
 };

@@ -1,9 +1,8 @@
-const express=require('express');
-const {apiController}=require('../../controllers');
-const router=express.Router();
+const express = require("express");
+const { apiController } = require("../../controllers");
+const router = express.Router();
 
-router.post('/create',
-apiController.createApi);
+router.post("/create", apiController.createApi);
 
 // router.get('/list-pets',
 // apiRoute.petList);
@@ -14,7 +13,4 @@ apiController.createApi);
 // router.get('/list-sign',
 // apiRoute.signList);
 
-
-
-
-module.exports=router;
+module.exports = router;

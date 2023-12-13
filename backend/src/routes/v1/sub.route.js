@@ -1,0 +1,1 @@
+router.post('/purchase/month', purchasePlan);
