@@ -1,4 +1,5 @@
 import * as React from "react";
+
 import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
 import { useState } from "react";
@@ -9,9 +10,10 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import Button from "@mui/material/Button";
+import { useNavigate } from "react-router-dom";
 
 const columns = [
-  { field: "_id", headerName: "ID", width: 90 },
   {
     field: "user_img", // New column for profile picture
     headerName: "user_img",
@@ -59,10 +61,16 @@ const columns = [
       <>
         <IconButton
           color="primary"
-          onClick={() => handleEdit(params.id)}
+          className="editIcon"
+          onClick={() => {
+            if (userRole == "admin") {
+              const editdata = datatableData.find((data) => data._id === value);
+            }
+          }}
           disabled={params.row.editing}>
           <EditIcon />
         </IconButton>
+
         <IconButton
           color="secondary"
           onClick={() => handleDelete(params.id)}
@@ -94,6 +102,7 @@ const columns = [
 ];
 
 export default function Users() {
+  const navigate = useNavigate();
   const [rows, setRows] = useState([]);
 
   const getData = () => {
@@ -126,10 +135,26 @@ export default function Users() {
   //   // Add logic for view action
   //   console.log("View user with ID:", userId);
   // };
-
+  const handleButtonClick = () => {
+    // Add logic for the button click action
+    navigate("/indexForm");
+  };
   return (
-    <Box>
-      <DataGrid
+    <Box >
+      <Button
+        style={{
+          position: "absolute",
+          top: 129,
+          right: 50,
+          borderRadius: 1,
+          fontWeight: "bold",
+        }}
+        variant="contained"
+        color="primary"
+        onClick={handleButtonClick}>
+        Add User
+      </Button>
+      <DataGrid style={{marginTop:"2.2rem"}}
         rows={rows}
         columns={columns}
         pageSize={5}
@@ -139,3 +164,5 @@ export default function Users() {
     </Box>
   );
 }
+
+// Add your custom styles here

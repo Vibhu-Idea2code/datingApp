@@ -1,10 +1,11 @@
-import React from 'react'
+import React from "react";
 // import Popup from './views/theme/colors/Popup'
 
-const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
-const Users = React.lazy(() => import('./views/theme/colors/Users'))
-const Popup = React.lazy(() => import('./views/theme/colors/Popup'))
-const View = React.lazy(() => import('./views/theme/colors/View'))
+const Dashboard = React.lazy(() => import("./views/dashboard/Dashboard"));
+const Users = React.lazy(() => import("./views/theme/colors/Users"));
+const Popup = React.lazy(() => import("./views/theme/colors/Popup"));
+const View = React.lazy(() => import("./views/theme/colors/View"));
+const indexForm = React.lazy(() => import("./views/theme/colors/indexForm"));
 
 // const common = React.lazy(() => import('./views/theme/colors/common'))
 
@@ -57,14 +58,15 @@ const View = React.lazy(() => import('./views/theme/colors/View'))
 // const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
 const routes = [
-  { path: '/', exact: true, name: 'Home' },
-  { path: '/dashboard', name: 'Dashboard', element: Dashboard },
-  { path: '/user', name: '', element: Users, exact: true },
-  { path: '/Popup/:Popup', name: 'Popup', element: Popup,exact: true},
+  { path: "/", exact: true, name: "Home" },
+  { path: "/dashboard", name: "Dashboard", element: Dashboard },
+  { path: "/user", name: "", element: Users, exact: true },
+  { path: "/Popup/:Popup", name: "Popup", element: Popup, exact: true },
+  { path: "/indexForm", name: "", element: indexForm, exact: true },
   // { path: '/user/views', name: 'User', element: Users },
   // { path: '/user/common', name: 'common', element: common },
 
-  { path: '/view', name: '', element: View },
+  { path: "/view", name: "", element: View },
   // { path: '/base', name: 'Base', element: Cards, exact: true },
   // { path: '/base/accordion', name: 'Accordion', element: Accordion },
   // { path: '/base/breadcrumbs', name: 'Breadcrumbs', element: Breadcrumbs },
@@ -104,6 +106,6 @@ const routes = [
   // { path: '/notifications/modals', name: 'Modals', element: Modals },
   // { path: '/notifications/toasts', name: 'Toasts', element: Toasts },
   // { path: '/widgets', name: 'Widgets', element: Widgets },
-]
+];
 
-export default routes
+export default routes;
