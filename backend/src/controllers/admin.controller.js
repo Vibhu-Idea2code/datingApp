@@ -1,6 +1,11 @@
-const { adminService, emailService, verifyOtpService,userService } = require("../services");
-const otpGenerator = require('otp-generator');
-const userHelper = require('../helpers/userHelper');
+const {
+  adminService,
+  emailService,
+  verifyOtpService,
+  userService,
+} = require("../services");
+const otpGenerator = require("otp-generator");
+const userHelper = require("../helpers/userHelper");
 const ejs = require("ejs");
 const path = require("path");
 const bcrypt = require("bcrypt");
@@ -81,22 +86,20 @@ const deleteAdmin = async (req, res) => {
   }
 };
 
-
 /* --------------- GET USER LIST  (SIMPLE) WITH AUTH ADMIN SIDE--------------- */
 const getAllUser = async (req, res) => {
   try {
-    
     const data = await userService.getUserList();
     // const result=await userService.getUserListSearch()
     res.status(200).json({
       success: true,
       message: "User list successfully!",
-      data:  data ,
+      data: data,
     });
   } catch (error) {
     res.status(404).json({ error: error.message });
   }
-}
+};
 
 const updateDetails = async (req, res) => {
   try {
@@ -118,7 +121,7 @@ const updateDetails = async (req, res) => {
       phoneNumber,
     } = req.body; // Extract the 'role' and 'gender' fields from the request body
     const userExists = await userService.getUserById(userId);
-console.log(userExists)
+    console.log(userExists);
     // if (!userExists) {
     //   throw new Error("User not found!");
     // }
@@ -139,10 +142,10 @@ console.log(userExists)
     userExists.maxDistance = maxDistance; // Update the 'firstName' field
     userExists.jobTitle = jobTitle; // Update the 'firstName' field
     userExists.email = email; // Update the 'firstName' field
-   
+
     await userService.updateUser(userId, userExists); // Save the updated user
 
-    res.status(200).json({  
+    res.status(200).json({
       success: true,
       message: "User details updated successfully!",
       data: userExists,
@@ -165,29 +168,28 @@ const register = async (req, res) => {
       message: "User with this email already exists.",
     });
   }
-  if (req.file) {
-    reqBody.user_img = req.file.filename;
-  } else {
-    throw new Error("Product image is required!");
-  }
-   // Validate that at least 3 out of 5 interests are provided
-   if (!reqBody.interest || reqBody.interest.length < 3) {
-    throw new Error("At least 3 out of 5 interests are required.");
-  }
+  // if (req.file) {
+  //   reqBody.user_img = req.file.filename;
+  // } else {
+  //   throw new Error("Product image is required!");
+  // }
+  // Validate that at least 3 out of 5 interests are provided
+  // if (!reqBody.interest || reqBody.interest.length < 3) {
+  //   throw new Error("At least 3 out of 5 interests are required.");
+  // }
 
-   // Validate that at least 3 out of 5 sexual are provided
-   if (!reqBody.sexual || reqBody.sexual.length < 3) {
-    throw new Error("At least 3 out of 5 sexual are required.");
-  }
+  // // Validate that at least 3 out of 5 sexual are provided
+  // if (!reqBody.sexual || reqBody.sexual.length < 3) {
+  //   throw new Error("At least 3 out of 5 sexual are required.");
+  // }
 
-
-  if (!reqBody.birthDate) {
-    throw new Error("Birthdate is required for age calculation.");
-  }
+  // if (!reqBody.birthDate) {
+  //   throw new Error("Birthdate is required for age calculation.");
+  // }
 
   // Use helper to calculate age
   const age = userHelper.calculateAge(reqBody.birthDate);
- 
+
   let option = {
     email: reqBody.email,
     role: reqBody.role,
@@ -198,25 +200,25 @@ const register = async (req, res) => {
 
   const filter = {
     ...reqBody,
-    email:reqBody.email,
+    email: reqBody.email,
     gender: reqBody.gender,
-    interest:reqBody.interest,
-    birthDate:reqBody.birthDate,
-    sexual :reqBody.sexual,
-    showMe:reqBody.showMe,
-    school:reqBody.school,
-    sign:reqBody.sign,
-    pets:reqBody.pets,
-    address:reqBody.address,
-    lat:reqBody.lat,
-    long:reqBody.long,
-    maxAge:reqBody.maxAge,
-    minAge:reqBody.minAge,
-    maxDistance:reqBody.maxDistance,
-    first_name:reqBody.first_name,
-    last_name:reqBody.last_name,
-    phoneNumber:reqBody.phoneNumber,
-    jobTitle:reqBody.jobTitle,
+    interest: reqBody.interest,
+    birthDate: reqBody.birthDate,
+    sexual: reqBody.sexual,
+    showMe: reqBody.showMe,
+    school: reqBody.school,
+    sign: reqBody.sign,
+    pets: reqBody.pets,
+    address: reqBody.address,
+    lat: reqBody.lat,
+    long: reqBody.long,
+    maxAge: reqBody.maxAge,
+    minAge: reqBody.minAge,
+    maxDistance: reqBody.maxDistance,
+    first_name: reqBody.first_name,
+    last_name: reqBody.last_name,
+    phoneNumber: reqBody.phoneNumber,
+    jobTitle: reqBody.jobTitle,
     // age:reqBody.age,
     age,
     token,
@@ -268,11 +270,14 @@ const deleteManyUsers = async (req, res) => {
   }
 };
 
-
 module.exports = {
   // createAdmin,
   getAdminList,
   updateAdmin,
   deleteAdmin,
-  getAllUser,updateDetails,register,deleteUser,deleteManyUsers
+  getAllUser,
+  updateDetails,
+  register,
+  deleteUser,
+  deleteManyUsers,
 };
