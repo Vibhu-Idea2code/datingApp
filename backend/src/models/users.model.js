@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema(
     sexual: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'sexual',
+        ref: "sexual",
       },
     ],
 
@@ -43,30 +43,30 @@ const userSchema = new mongoose.Schema(
     // interest:{
     //   type: Array,
     // }
-   
+
     interest: [
-        {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'hobbies',
-        },
-      ],
-      plan: [
-        {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'plan',
-        },
-      ],
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "hobbies",
+      },
+    ],
+    plan: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "plan",
+      },
+    ],
     sign: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'sign',
+        ref: "sign",
       },
     ],
-   
+
     pets: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'pet',
+        ref: "pet",
       },
     ],
     // likeduser: [
@@ -75,7 +75,7 @@ const userSchema = new mongoose.Schema(
     //     ref: 'like',
     //   },
     // ],
-   
+
     address: {
       type: String,
     },
@@ -98,8 +98,8 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
-    company:{
-      type:String,
+    company: {
+      type: String,
     },
     jobTitle: {
       type: String,
@@ -110,19 +110,19 @@ const userSchema = new mongoose.Schema(
     token: {
       type: String,
     },
-    city:{
-      type:String
+    city: {
+      type: String,
     },
-    aboutMe:{
-      type :String,
-    }, 
-  
-    user_img:{
-      type:String
+    aboutMe: {
+      type: String,
+    },
+
+    user_img: {
+      type: String,
     },
     role: {
       type: String,
-      default:"user",
+      default: "user",
       enum: ["admin", "user", "subadmin"], // 1-admin  2 -user   3-superadmin
     },
   },
@@ -130,15 +130,15 @@ const userSchema = new mongoose.Schema(
   {
     timestamps: true,
     versionKey: false,
-    toJSON: {
-      transform: function (doc, data) {
-        if (data?.user_img) {
-          data.user_img = `${config.base_url}profile_images/${data.user_img}`;
-        }
-      },
-    },
+    //   toJSON: {
+    //     transform: function (doc, data) {
+    //       if (data?.user_img) {
+    //         data.user_img = `${config.base_url}profile_images/${data.user_img}`;
+    //       }
+    //     },
+    //   },
   }
 );
 
-const User= mongoose.model("user", userSchema);
-module.exports=User;
+const User = mongoose.model("user", userSchema);
+module.exports = User;
