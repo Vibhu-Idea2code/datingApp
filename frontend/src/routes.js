@@ -65,7 +65,6 @@ const routes = [
   { path: "/indexForm", name: "", element: indexForm, exact: true },
   // { path: '/user/views', name: 'User', element: Users },
   // { path: '/user/common', name: 'common', element: common },
-
   { path: "/view", name: "", element: View },
   // { path: '/base', name: 'Base', element: Cards, exact: true },
   // { path: '/base/accordion', name: 'Accordion', element: Accordion },

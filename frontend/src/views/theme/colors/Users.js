@@ -12,135 +12,252 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
-
-const columns = [
-  {
-    field: "user_img", // New column for profile picture
-    headerName: "user_img",
-    width: 150,
-    renderCell: (params) => (
-      <img
-        src={params.row.user_img} // Assuming the URL of the image is in the profile_picture field
-        alt={`Profile of ${params.row.first_name} ${params.row.last_name}`}
-        style={{ height: "50px", width: "50px", borderRadius: "50%" }}
-      />
-    ),
-  },
-  {
-    field: "first_name",
-    headerName: "First name",
-    width: 150,
-    editable: true,
-  },
-  {
-    field: "last_name",
-    headerName: "Last name",
-    width: 150,
-    editable: true,
-  },
-  {
-    field: "age",
-    headerName: "Age",
-    type: "number",
-    width: 110,
-    editable: true,
-  },
-  {
-    field: "email",
-    headerName: "email",
-    type: "email",
-    width: 250,
-    editable: true,
-  },
-  {
-    field: "actions",
-    headerName: "Actions",
-    width: 200,
-    sortable: false,
-    renderCell: (params) => (
-      <>
-        <IconButton
-          color="primary"
-          className="editIcon"
-          onClick={() => {
-            if (userRole == "admin") {
-              const editdata = datatableData.find((data) => data._id === value);
-            }
-          }}
-          disabled={params.row.editing}>
-          <EditIcon />
-        </IconButton>
-
-        <IconButton
-          color="secondary"
-          onClick={() => handleDelete(params.id)}
-          disabled={params.row.editing}>
-          <DeleteIcon />
-        </IconButton>
-        <IconButton
-          onClick={() => handleView(params.id)}
-          disabled={params.row.editing}>
-          <VisibilityIcon />
-        </IconButton>
-        {params.row.editing ? (
-          <>
-            <IconButton
-              color="primary"
-              onClick={() => handleUpdate(params.row)}>
-              <CheckIcon />
-            </IconButton>
-            <IconButton
-              color="secondary"
-              onClick={() => handleCancelEdit(params.id)}>
-              <ClearIcon />
-            </IconButton>
-          </>
-        ) : null}
-      </>
-    ),
-  },
-];
+import MUIDataTable from "mui-datatables";
+import { Grid, Switch } from "@mui/material";
+import * as Icons from "@mui/icons-material";
 
 export default function Users() {
   const navigate = useNavigate();
-  const [rows, setRows] = useState([]);
+  // const [rows, setRows] = useState([]);
+  const [datatableData, setdatatableData] = useState([]);
 
-  const getData = () => {
-    axios.get("http://localhost:8500/v1/admin/user-list").then((res) => {
-      console.log(res);
-      // setRows(res.data.data);
-      const updatedRows = res.data.data.map((apiRow) => ({
-        ...apiRow,
-        id: apiRow._id,
-      }));
-
-      setRows(updatedRows);
+  const getData = async () => {
+    await axios.get("http://localhost:8500/v1/admin/user-list").then((res) => {
+      setdatatableData(res.data.data);
     });
   };
 
   useEffect(() => {
     getData();
   }, []);
-  // const handleEdit = (userId) => {
 
-  //   console.log("Edit user with ID:", userId);
-  // };
+  const columns = [
+    {
+      name: "user_img",
+      label: "Profile",
+      options: {
+        customBodyRender: (image) =>
+          image ? (
+            <img
+              src={`${image}`}
+              alt={image}
+              style={{ height: "50px", width: "50px", borderRadius: "50%" }}
+            />
+          ) : (
+            // <img
+            //   src={no_profile}
+            //   alt={image}
+            //   style={{ height: "50px", width: "50px", borderRadius: "50%" }}
+            // />
+            <p>No Image</p>
+          ),
+      },
+    },
+    {
+      name: "first_name",
+      label: "Name",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "email",
+      label: "Email",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "phoneNumber",
+      label: "Mobile No",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "status",
+      label: "Status",
+      options: {
+        filter: true,
+        sort: false,
+        customBodyRender: (_, { rowIndex }) => {
+          // console.log(datatableData[rowIndex]);
+          const { status, _id } = datatableData[rowIndex];
+          return (
+            // <p>asd</p>
+            <Switch
+              checked={status}
+              onChange={() => {
+                const data = { id: _id, status: !status };
+                updateUserStatus(data, _id)
+                  .then(() => {
+                    toast.success("status changed successfully!", {
+                      key: data._id,
+                    });
+                    list();
+                  })
+                  .catch(() => {
+                    toast.error("something went wrong!", {
+                      key: data._id,
+                    });
+                  });
+              }}
+            />
+          );
+        },
+      },
+    },
+    {
+      name: "_id",
+      label: "Action",
+      options: {
+        customBodyRender: (value) => {
+          const editdata = datatableData.find((data) => data._id === value);
+          console.log(editdata);
+          return (
+            <div>
+              <Icons.BarChart
+                className="insightsIcon"
+                onClick={() => {
+                  const userdata = datatableData.find(
+                    (data) => data._id === value
+                  );
 
-  // const handleDelete = (userId) => {
-  //   // Add logic for delete action
-  //   console.log("Delete user with ID:", userId);
-  // };
+                  const currentDate = new Date();
+                  const options = {
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                  };
+                  const formattedDate = new Intl.DateTimeFormat(
+                    "en-US",
+                    options
+                  ).format(currentDate);
+                  const insightdata = { userid: value, date: formattedDate };
 
-  // const handleView = (userId) => {
-  //   // Add logic for view action
-  //   console.log("View user with ID:", userId);
-  // };
-  const handleButtonClick = () => {
-    // Add logic for the button click action
-    navigate("/indexForm");
+                  navigate("/popup", {
+                    state: {
+                      userdata: userdata,
+                      insightdata: insightdata,
+                      imageurl: baseurl,
+                    },
+                  });
+                }}
+              />
+              <Icons.Edit
+                className="editIcon"
+                onClick={() => {
+                  const editdata = datatableData.find(
+                    (data) => data._id === value
+                  );
+                  navigate("/user/manage", {
+                    state: { editdata: editdata, imageurl: baseurl },
+                  });
+                }}
+              />
+              <Icons.Delete
+                className="deleteIcon"
+                onClick={async () => {
+                  const confirm = await swal({
+                    title: "Are you sure?",
+                    text: "Are you sure that you want to delete this user?",
+                    icon: "warning",
+                    buttons: ["No, cancel it!", "Yes, I am sure!"],
+                    dangerMode: true,
+                  });
+                  if (confirm) {
+                    console.log(value);
+                    deleteUser(value)
+                      .then(() => {
+                        toast.success("deleted successfully!", {
+                          key: value,
+                        });
+                        list();
+                      })
+                      .catch(() => {
+                        toast.error("something went wrong!", {
+                          key: value,
+                        });
+                      });
+                  }
+                }}
+              />
+            </div>
+          );
+        },
+      },
+    },
+  ];
+
+  const deleteMultiple = async (index) => {
+    // const ids = index.data.map(
+    //   (index1) =>
+    //     datatableData.find(
+    //       (data, index2) => index2 === index1.dataIndex && data._id
+    //     )._id
+    // );
+    // const confirm = await swal({
+    //   title: "Are you sure?",
+    //   text: "Are you sure that you want to delete this users?",
+    //   icon: "warning",
+    //   buttons: ["No, cancel it!", "Yes, I am sure!"],
+    //   dangerMode: true,
+    // });
+    // if (confirm) {
+    //   deleteMultiUser(ids)
+    //     .then(() => {
+    //       list();
+    //       toast.success("Deleted successfully!", {
+    //         key: ids,
+    //       });
+    //     })
+    //     .catch(() => {
+    //       toast.error("Something went wrong!", {
+    //         key: ids,
+    //       });
+    //     });
+    // }
+  };
+
+  const SelectedRowsToolbar = ({ selectedRows, data }) => {
+    return console.log(data);
+    // <div>
+    //   <IconButton onClick={() => deleteMultiple(selectedRows, data)}>
+    //     <Icons.Delete />
+    //   </IconButton>
+    // </div>
+  };
+
+  const options = {
+    customToolbarSelect: (selectedRows, data) => (
+      <SelectedRowsToolbar
+        selectedRows={selectedRows}
+        data={data}
+        columns={columns}
+        datatableTitle="test"
+      />
+    ),
   };
   return (
-    <Box >
+    <Grid>
+      <div class="container-fluid">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb m-0 mb-3 ms-2">
+            <li class="breadcrumb-item">
+              <a class="" href="/">
+                Home
+              </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+              Users
+            </li>
+          </ol>
+        </nav>
+      </div>
+
       <Button
         style={{
           position: "absolute",
@@ -148,21 +265,22 @@ export default function Users() {
           right: 50,
           borderRadius: 1,
           fontWeight: "bold",
+          marginBottom: "10px",
         }}
         variant="contained"
         color="primary"
-        onClick={handleButtonClick}>
+        onClick={() => {
+          navigate("/indexForm");
+        }}>
         Add User
       </Button>
-      <DataGrid style={{marginTop:"2.2rem"}}
-        rows={rows}
+
+      <MUIDataTable
+        title={"Users"}
+        data={datatableData}
         columns={columns}
-        pageSize={5}
-        checkboxSelection
-        disableRowSelectionOnClick
+        options={options}
       />
-    </Box>
+    </Grid>
   );
 }
-
-// Add your custom styles here
