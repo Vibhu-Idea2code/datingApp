@@ -22,7 +22,7 @@ export default function Users() {
   const [datatableData, setdatatableData] = useState([]);
 
   const getData = async () => {
-    await axios.get("http://localhost:8500/v1/admin/user-list").then((res) => {
+    await axios.get("http://localhost:9500/v1/admin/user-list").then((res) => {
       setdatatableData(res.data.data);
     });
   };

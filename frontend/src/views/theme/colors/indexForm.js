@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import Select from "react-select";
+// import Select from "react-select";
 // import { adm inCreateUserDetails } from "../../../apiController";
 import {
   CButton,
@@ -19,13 +19,15 @@ import {
 } from "@coreui/react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 
 const IndexForm = () => {
   const { state } = useLocation();
 
-  var [defaultLoading, setdefaultLoading] = useState(true);
-  // var [isLoading, setIsLoading] = useState(false);
-  const { setValue } = useForm();
+  // var [defaultLoading, setdefaultLoading] = useState(true);
+  var [isLoading, setIsLoading] = useState(false);
+  // const { setValue } = useForm();
   const [isupdate, setisupdate] = useState("");
   // const [data, setdata] = useState({});
 
@@ -41,255 +43,362 @@ const IndexForm = () => {
   const [pet, setPet] = useState([]);
   const [sign, setSign] = useState([]);
   const [interest, setInterest] = useState([]);
+  const [img, setImg] = useState(null);
+
+  const fetchData = async () => {
+    setIsLoading(false);
+    try {
+      await axios
+        .get("http://localhost:9500/v1/list/list-sexual")
+        .then((response) => {
+          setSexual(response.data.data.getSexual);
+          setIsLoading(true);
+        });
+    } catch (error) {
+      console.error("Error fetching Sexual data:", error);
+    }
+  };
+
+  const fetchDataPets = async () => {
+    setIsLoading(false);
+    try {
+      await axios
+        .get("http://localhost:9500/v1/list/list-pets")
+        .then((response) => {
+          setPet(response.data.data.getPet);
+          setIsLoading(true);
+        });
+    } catch (error) {
+      console.error("Error fetching Sexual data:", error);
+    }
+  };
 
   useEffect(() => {
     fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    try {
-      const response = await axios.get(
-        "http://localhost:8500/v1/list/list-sexual"
-      );
-      // console.log(response.data.data.getSexual[0]);
-      // const data = await response.data();
-      const mappedOptions = response.data.data.getSexual.map((item) => ({
-        value: item._id,
-        label: item.name,
-      }));
-      // console.log(mappedOptions);
-      setSexual(mappedOptions);
-    } catch (error) {
-      console.error("Error fetching Sexual data:", error);
-    }
-  };
-  useEffect(() => {
+    // console.log("SDfds");
     fetchDataPets();
-  }, []);
-
-  const fetchDataPets = async () => {
-    try {
-      const response = await axios.get(
-        "http://localhost:8500/v1/list/list-pets"
-      );
-      // console.log(response.data.data.getPet[0]);
-      // const data = await response.data();
-      const mappedOptions = response.data.data.getPet.map((item) => ({
-        value: item._id,
-        label: item.name,
-      }));
-      // console.log(mappedOptions);
-      setPet(mappedOptions);
-    } catch (error) {
-      console.error("Error fetching Sexual data:", error);
-    }
-  };
-
-  useEffect(() => {
     fetchDataSigns();
-  }, []);
-  const fetchDataSigns = async () => {
-    try {
-      const response = await axios.get("http://localhost:8500/v1/sign/list");
-      console.log(response.data);
-      // const data = await response.data();
-      const mappedOptions = response.data.data.map((item) => ({
-        value: item._id,
-        label: item.name,
-      }));
-      console.log(mappedOptions);
-      setSign(mappedOptions);
-    } catch (error) {
-      console.error("Error fetching Sexual data:", error);
-    }
-  };
-
-  useEffect(() => {
     fetchDataInterests();
   }, []);
-  const fetchDataInterests = async () => {
+
+  const fetchDataSigns = async () => {
+    setIsLoading(false);
     try {
-      const response = await axios.get(
-        "http://localhost:8500/v1/list/list-interest"
-      );
-      console.log(response.data);
-      // const data = await response.data();
-      const mappedOptions = response.data.data.getHob.map((item) => ({
-        value: item._id,
-        label: item.name,
-      }));
-      console.log(mappedOptions);
-      setInterest(mappedOptions);
+      const response = await axios
+        .get("http://localhost:9500/v1/sign/list")
+        .then((response) => {
+          setSign(response.data.data);
+
+          setIsLoading(true);
+        });
     } catch (error) {
       console.error("Error fetching Sexual data:", error);
     }
   };
 
-  // const validateInterest = (value) => {
-  //   // Validate that at least 3 options are selected
-  //   return value && value.length >= 3;
-  // };
+  // useEffect(() => {
+  //   fetchDataInterests();
+  // }, []);
+  const fetchDataInterests = async () => {
+    setIsLoading(false);
+    try {
+      const response = await axios
+        .get("http://localhost:9500/v1/list/list-interest")
+        .then((response) => {
+          setInterest(response.data.data.getHob);
 
-  // axios.get("http://localhost:8500/v1/admin/user-list").then((response) => {
-  //   console.log(response.data);
-  // });
-
-  // const onSubmit = async () => {
-  //   // setIsLoading(true);
-  //   axios
-  //     .post("http://localhost:8500/v1/admin/create-user")
-  //     .then((response) => {
-  //       console.log(response.data.data);
-  //       // setdata(...data,[response.data]);
-  //     });
-  // };
-  // const calculateAge = (birthdate) => {
-  //   const today = new Date();
-  //   const birthDate = new Date(birthdate);
-  //   let age = today.getFullYear() - birthDate.getFullYear();
-
-  //   const monthDiff = today.getMonth() - birthDate.getMonth();
-  //   if (
-  //     monthDiff < 0 ||
-  //     (monthDiff === 0 && today.getDate() < birthDate.getDate())
-  //   ) {
-  //     age--;
-  //   }
-
-  //   return age;
-  // };
+          setIsLoading(true);
+        });
+    } catch (error) {
+      console.error("Error fetching Sexual data:", error);
+    }
+  };
 
   const onSubmit = async (data) => {
     try {
-      await console.log(data);
-      // setIsLoading(true);
-      const response = await axios.post(
-        "http://localhost:8500/v1/admin/create-user",
-        data
-      );
+      let formData = new FormData();
+      Object.keys(data).forEach(function (key) {
+        formData.append(key, data[key]);
+        // if (key === "user_img") {
+        //   formData.append(key, data[key][0]);
+        // } else {
+        //   formData.append(key, data[key]);
+        // }
+      });
+      // Add image to formData
+      // if (img) {
+      //   formData.append("user_img", img);
+      // }
 
-      console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^", response);
-      // Add any logic or state updates after successful submission
+      formData.append("user_img", img.get("user_img"));
+      await axios.post("http://localhost:9500/v1/admin/create-user", formData);
     } catch (error) {
       console.error("Error submitting form:", error);
-      // Handle errors or set an error state
-    } finally {
-      // setIsLoading(false);
     }
   };
 
-  // const handleOnChange = (e) => {
-  //   setdata({ ...data, [e.target.name]: e.target.value });
+  // const handleFileUpload = (event) => {
+  //   const file = event.target.files[0];
+  //   const reader = new FileReader();
+
+  //   reader.onloadend = () => {
+  //     setImg(reader.result);
+  //   };
+
+  //   reader.readAsDataURL(file);
   // };
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    const formData = new FormData();
+    formData.append("user_img", file);
+    setImg(formData);
+  };
 
   return (
-    <CCol>
-      <CCard className="mb-4">
-        <CCardHeader>
-          <strong>User</strong>
-        </CCardHeader>
-        <CCardBody>
-          <CForm onSubmit={handleSubmit(onSubmit)}>
-            <CCol md={4}>
-              <CFormLabel htmlFor="first_name">First Name</CFormLabel>
-              <CFormInput
-                type="text"
-                name="first_name"
-                {...register("first_name", {
-                  required: "This field is required",
-                })}
-                invalid={!!errors.first_name}
-              />
-              <CFormFeedback invalid>Please Enter First Name</CFormFeedback>
-            </CCol>
-            <CCol md={4}>
-              <CFormLabel htmlFor="last_name">Last Name</CFormLabel>
-              <CFormInput
-                type="text"
-                name="last_name"
-                id="last_name"
-                // onChange={handleOnChange}
-                {...register("last_name", {
-                  required: "This field is required",
-                })}
-                invalid={!!errors.last_name}
-              />
-              <CFormFeedback invalid>Please Enter Last Name</CFormFeedback>
-            </CCol>
-            <CCol md={4}>
-              <CFormLabel htmlFor="email">Email</CFormLabel>
-              <CFormInput
-                type="text"
-                id="email"
-                {...register("email", {
-                  required: "This field is required",
-                })}
-                invalid={!!errors.email}
-              />
-              <CFormFeedback invalid>Please Enter Last Name</CFormFeedback>
-            </CCol>
-            <CCol md={4}>
-              <CFormLabel htmlFor="phoneNumber">phoneNumber</CFormLabel>
-              <CInputGroup>
-                <CFormInput
-                  type="text"
-                  id="phoneNumber"
-                  {...register("phoneNumber", {
-                    required: "This field is required",
-                  })}
-                  invalid={!!errors.phoneNumber}
-                />
-                <CFormFeedback invalid>
-                  Please enter a phone number
-                </CFormFeedback>
-              </CInputGroup>
-            </CCol>
+    <div>
+      {" "}
+      {isLoading ? (
+        <CCol>
+          <CCard className="mb-4">
+            <CCardHeader>
+              <strong>User</strong>
+            </CCardHeader>
+            <CCardBody>
+              <CForm onSubmit={handleSubmit(onSubmit)}>
+                <CCol md={4}>
+                  <CFormLabel htmlFor="first_name">First Name</CFormLabel>
+                  <CFormInput
+                    type="text"
+                    name="first_name"
+                    {...register("first_name", {
+                      required: "This field is required",
+                    })}
+                    invalid={!!errors.first_name}
+                  />
+                  <CFormFeedback invalid>Please Enter First Name</CFormFeedback>
+                </CCol>
+                <CCol md={4}>
+                  <CFormLabel htmlFor="last_name">Last Name</CFormLabel>
+                  <CFormInput
+                    type="text"
+                    name="last_name"
+                    id="last_name"
+                    // onChange={handleOnChange}
+                    {...register("last_name", {
+                      required: "This field is required",
+                    })}
+                    invalid={!!errors.last_name}
+                  />
+                  <CFormFeedback invalid>Please Enter Last Name</CFormFeedback>
+                </CCol>
+                <CCol md={4}>
+                  <CFormLabel htmlFor="email">Email</CFormLabel>
+                  <CFormInput
+                    type="text"
+                    id="email"
+                    {...register("email", {
+                      required: "This field is required",
+                    })}
+                    invalid={!!errors.email}
+                  />
+                  <CFormFeedback invalid>Please Enter Last Name</CFormFeedback>
+                </CCol>
+                <CCol md={4}>
+                  <CFormLabel htmlFor="phoneNumber">phoneNumber</CFormLabel>
+                  <CInputGroup>
+                    <CFormInput
+                      type="text"
+                      id="phoneNumber"
+                      {...register("phoneNumber", {
+                        required: "This field is required",
+                      })}
+                      invalid={!!errors.phoneNumber}
+                    />
+                    <CFormFeedback invalid>
+                      Please enter a phone number
+                    </CFormFeedback>
+                  </CInputGroup>
+                </CCol>
 
-            <CCol md={4}>
-              <div className="mb-3">
-                <CFormLabel htmlFor="formFile">
-                  Default file input example
-                </CFormLabel>
-                <CFormInput type="file" id="formFile" />
-              </div>
-            </CCol>
+                <CCol md={4}>
+                  <div className="mb-3">
+                    <CFormLabel htmlFor="formFile">
+                      Default file input example
+                    </CFormLabel>
+                    <Controller
+                      name="user_img"
+                      accept="image/*"
+                      control={control}
+                      render={({ field }) => (
+                        <CFormInput
+                          type="file"
+                          id="formFile"
+                          onChange={(e) => {
+                            field.onChange(e);
+                            handleFileUpload(e);
+                          }}
+                        />
+                      )}
+                    />
+                  </div>
+                </CCol>
 
-            <CCol md={4}>
-              <CFormLabel htmlFor="birthDate">Birthdate</CFormLabel>
-              <CFormInput
-                type="date"
-                id="birthDate"
-                {...register("birthDate", {
-                  required: "This field is required",
-                })}
-                invalid={!!errors.birthdate}
-              />
-              <CFormFeedback invalid>Please enter a birthDate</CFormFeedback>
-            </CCol>
+                <CCol md={4}>
+                  <CFormLabel htmlFor="birthDate">Birthdate</CFormLabel>
+                  <CFormInput
+                    type="date"
+                    id="birthDate"
+                    {...register("birthDate", {
+                      required: "This field is required",
+                    })}
+                    invalid={!!errors.birthdate}
+                  />
+                  <CFormFeedback invalid>
+                    Please enter a birthDate
+                  </CFormFeedback>
+                </CCol>
 
-            <CCol md={4}>
-              <CFormLabel htmlFor="gender">Gender Selection</CFormLabel>
+                <CCol md={4}>
+                  <CFormLabel htmlFor="gender">Gender Selection</CFormLabel>
 
-              <CFormSelect {...register("gender")} className="mb-3">
-                <option value="female">female</option>
-                <option value="male">male</option>
-                <option value="other">other</option>
-              </CFormSelect>
-            </CCol>
+                  <CFormSelect {...register("gender")} className="mb-3">
+                    <option value="female">female</option>
+                    <option value="male">male</option>
+                    <option value="other">other</option>
+                  </CFormSelect>
+                </CCol>
 
-            <CCol md={4}>
-              <CFormLabel htmlFor="sexual">Sexual</CFormLabel>
+                <CCol md={4}>
+                  <CFormLabel htmlFor="sexual">sexual</CFormLabel>
+                  <Controller
+                    name="sexuals"
+                    style={{ marginTop: "16px", marginBottom: "16px" }}
+                    control={control}
+                    defaultValue={isupdate === "" ? [] : getValues("sexuals")}
+                    error={!!errors.sexual}
+                    rules={{ required: "Medical Conditions is required" }}
+                    render={({ field }) => (
+                      <>
+                        <Select
+                          {...field}
+                          labelId="sexuals"
+                          id="sexuals"
+                          style={{ marginTop: "16px", marginBottom: "16px" }}
+                          multiple>
+                          {sexual.map((cat) => (
+                            <MenuItem key={cat._id} value={cat._id}>
+                              {cat.name}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </>
+                    )}
+                  />
+                </CCol>
+                {/* 
+                <CCol md={4}>
+                  <CFormLabel htmlFor="pets">pets</CFormLabel>
+                  <Controller
+                    name="pets"
+                    style={{ marginTop: "16px", marginBottom: "16px" }}
+                    control={control}
+                    defaultValue={isupdate === "" ? [] : getValues("pets")}
+                    error={!!errors.pet}
+                    rules={{ required: "Medical Conditions is required" }}
+                    render={({ field }) => (
+                      <>
+                        <Select
+                          {...field}
+                          labelId="pet"
+                          id="pet"
+                          style={{ marginTop: "16px", marginBottom: "16px" }}
+                          multiple>
+                          {pet.map((cat) => (
+                            <MenuItem key={cat._id} value={cat._id}>
+                              {cat.name}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                       
+                      </>
+                    )}
+                  />
+                </CCol> */}
 
-              <Controller
-                name="sexual"
-                control={control}
-                render={({ field }) => (
-                  <Select {...field} options={sexual} isMulti />
-                )}
-              />
-            </CCol>
+                {/* <CCol md={4}>
+                  <CFormLabel htmlFor="interests">interest</CFormLabel>
+                  <Controller
+                    name="interests"
+                    style={{ marginTop: "16px", marginBottom: "16px" }}
+                    control={control}
+                    defaultValue={isupdate === "" ? [] : getValues("interests")}
+                    error={!!errors.interest}
+                    rules={{ required: "Medical Conditions is required" }}
+                    render={({ field }) => (
+                      <>
+                        <Select
+                          {...field}
+                          labelId="interests"
+                          id="interests"
+                          style={{ marginTop: "16px", marginBottom: "16px" }}
+                          multiple>
+                          {interest.map((cat) => (
+                            <MenuItem key={cat._id} value={cat._id}>
+                              {cat.name}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </>
+                    )}
+                  />
+                </CCol> */}
 
-            {/* <CCol md={4}>
+                {/* <CCol md={4}>
+                  <CFormLabel htmlFor="pets">Sign</CFormLabel>
+                  <Controller
+                    name="signs"
+                    style={{ marginTop: "16px", marginBottom: "16px" }}
+                    control={control}
+                    defaultValue={isupdate === "" ? [] : getValues("signs ")}
+                    error={!!errors.sign}
+                    rules={{ required: "Medical Conditions is required" }}
+                    render={({ field }) => (
+                      <>
+                        <Select
+                          {...field}
+                          labelId="signs"
+                          id="signs"
+                          style={{ marginTop: "16px", marginBottom: "16px" }}
+                          multiple>
+                          {sign.map((cat) => (
+                            <MenuItem key={cat._id} value={cat._id}>
+                              {cat.name}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                        
+                      </>
+                    )}
+                  />
+                </CCol> */}
+                {/* <CFormLabel htmlFor="pets">Sexual</CFormLabel>
+                  <Controller
+                    name="sexual"
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        {...field}
+                        options={sexual.map((option) => ({
+                          value: option._id,
+                          label: option.name,
+                        }))}
+                        isMulti
+                      />
+                    )}
+                  /> */}
+                {/* </CCol> */}
+
+                {/* <CCol md={4}>
               <CFormLabel htmlFor="pets">Pets</CFormLabel>
 
               <Controller
@@ -325,7 +434,7 @@ const IndexForm = () => {
                 )}
               />
             </CCol> */}
-            {/* 
+                {/* 
             <CCol md={4}>
               <CFormLabel htmlFor="pets">Pets</CFormLabel>
 
@@ -344,7 +453,7 @@ const IndexForm = () => {
                 )}
               />
             </CCol> */}
-            {/* <CFormSelect
+                {/* <CFormSelect
               size="sm"
               className="mb-3"
               aria-label="Small select example">
@@ -354,15 +463,19 @@ const IndexForm = () => {
               <option value="3">Three</option>
             </CFormSelect> */}
 
-            <CCol xs={12}>
-              <CButton color="primary" type="submit">
-                Submit
-              </CButton>
-            </CCol>
-          </CForm>
-        </CCardBody>
-      </CCard>
-    </CCol>
+                <CCol xs={12}>
+                  <CButton color="primary" type="submit">
+                    Submit
+                  </CButton>
+                </CCol>
+              </CForm>
+            </CCardBody>
+          </CCard>
+        </CCol>
+      ) : (
+        "Loading"
+      )}
+    </div>
   );
 };
 // };

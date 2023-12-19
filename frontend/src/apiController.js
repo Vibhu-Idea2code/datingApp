@@ -86,3 +86,14 @@ export const deleteMultiUser = (data) => {
     data: { Ids: data },
   });
 };
+
+//Add User Profile
+export const addUser = (data) =>
+  axios.post(
+    `${mainUrl}/admin/user/addUser`,
+    data
+    //  {
+    //   headers: { Authorization: `Bearer ${localStorage.getItem('token')}`
+    // }
+    // }
+  );
