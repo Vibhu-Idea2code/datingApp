@@ -42,5 +42,5 @@ app.get('/',(req,res)=>{
 // server.listen(3001,()=>{console.log("listening on port 3001")});
 // const server = http.createServer(app);
 server.listen(config.port, () => {
-  console.log("server listing the port 5000" + config.port);
+  console.log("server listing the port " + config.port);
 });

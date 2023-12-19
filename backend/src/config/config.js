@@ -5,7 +5,7 @@ dotenv.config({ path: "./.env" });
 
 const envVarsSchema = joi
   .object({
-    PORT: joi.number().default(2500),
+    PORT: joi.number(),
     MONGODB_URL: joi.string().trim().description("mongodb url"),
     BASE_URL: joi.string().trim().description("base URL"),
     JWT_SECRET_KEY: joi

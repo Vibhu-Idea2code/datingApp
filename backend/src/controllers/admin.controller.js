@@ -168,11 +168,9 @@ const register = async (req, res) => {
       message: "User with this email already exists.",
     });
   }
-  // if (req.file) {
-  //   reqBody.user_img = req.file.filename;
-  // } else {
-  //   throw new Error("Product image is required!");
-  // }
+  if (req.file) {
+    reqBody.user_img = req.file.filename;
+  }
   // Validate that at least 3 out of 5 interests are provided
   // if (!reqBody.interest || reqBody.interest.length < 3) {
   //   throw new Error("At least 3 out of 5 interests are required.");
