@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import { Grid, Switch } from "@mui/material";
 import * as Icons from "@mui/icons-material";
+import no_profile from "../../../assets/images/users/no_profile.jpg";
 
 export default function Users() {
   const navigate = useNavigate();
@@ -36,20 +37,19 @@ export default function Users() {
       name: "user_img",
       label: "Profile",
       options: {
-        customBodyRender: (image) =>
-          image ? (
+        customBodyRender: (user_img) =>
+          user_img ? (
             <img
-              src={`${image}`}
-              alt={image}
+              src={`http://localhost:9500/profile_images/${user_img}`}
+              // alt={user_img}
               style={{ height: "50px", width: "50px", borderRadius: "50%" }}
             />
           ) : (
-            // <img
-            //   src={no_profile}
-            //   alt={image}
-            //   style={{ height: "50px", width: "50px", borderRadius: "50%" }}
-            // />
-            <p>No Image</p>
+            <img
+              src={no_profile}
+              alt={user_img}
+              style={{ height: "50px", width: "50px", borderRadius: "50%" }}
+            />
           ),
       },
     },
@@ -116,7 +116,7 @@ export default function Users() {
       options: {
         customBodyRender: (value) => {
           const editdata = datatableData.find((data) => data._id === value);
-          console.log(editdata);
+          // console.log(editdata);
           return (
             <div>
               <Icons.BarChart
@@ -169,7 +169,7 @@ export default function Users() {
                     dangerMode: true,
                   });
                   if (confirm) {
-                    console.log(value);
+                    // console.log(value);
                     deleteUser(value)
                       .then(() => {
                         toast.success("deleted successfully!", {
@@ -243,15 +243,15 @@ export default function Users() {
   };
   return (
     <Grid>
-      <div class="container-fluid">
+      <div className="container-fluid">
         <nav aria-label="breadcrumb">
-          <ol class="breadcrumb m-0 mb-3 ms-2">
-            <li class="breadcrumb-item">
-              <a class="" href="/">
+          <ol className="breadcrumb m-0 mb-3 ms-2">
+            <li className="breadcrumb-item">
+              <a className="" href="/">
                 Home
               </a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page">
+            <li className="breadcrumb-item active" aria-current="page">
               Users
             </li>
           </ol>

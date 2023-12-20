@@ -1,37 +1,40 @@
-import React, { useState } from 'react';
-import { Link,useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 // import HomeLayout from 'src/layout/HomeLayout';
 
 const Login = () => {
-  const [email, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const navigate = useNavigate();
   const handleLogin = async () => {
     try {
       // Make an API call to your login endpoint
-      const response = await axios.post('http://localhost:8500/v1/admin/login', {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        "http://localhost:9500/v1/admin/login",
+        {
+          email,
+          password,
+        }
+      );
 
       // Handle successful login (redirect, set authentication token, etc.)
-      console.log('Login successful:',response.data);
-      localStorage.setItem('token', response.data.data.token);
-       console.log(response.data.data.token)
+      console.log("Login successful:", response.data);
+      localStorage.setItem("token", response.data.data.token);
+      console.log(response.data.data.token);
       setShowSuccessAlert(true);
 
       // Hide the success alert after 3 seconds (adjust the timeout as needed)
       setTimeout(() => {
         setShowSuccessAlert(false);
-        navigate('/dashboard');
+        navigate("/dashboard");
       }, 1000);
     } catch (err) {
       // Handle login error
-      setError('Invalid username or password');
-      console.error('Login error:', err);
+      setError("Invalid username or password");
+      console.error("Login error:", err);
     }
   };
 
@@ -44,13 +47,15 @@ const Login = () => {
               <div className="card p-4">
                 <div className="card-body">
                   <h1>Login</h1>
-                  <p className="text-medium-emphasis">Sign In to your account</p>
+                  <p className="text-medium-emphasis">
+                    Sign In to your account
+                  </p>
                   {error && <div className="alert alert-danger">{error}</div>}
-        {showSuccessAlert && (
-          <div className="alert alert-success">
-            Login successful! Redirecting to the dashboard...
-          </div>
-        )}
+                  {showSuccessAlert && (
+                    <div className="alert alert-success">
+                      Login successful! Redirecting to the dashboard...
+                    </div>
+                  )}
                   <div className="input-group mb-3">
                     <span className="input-group-text">
                       <i className="cil-user"></i>
@@ -77,7 +82,9 @@ const Login = () => {
                   </div>
                   <div className="row">
                     <div className="col-6">
-                      <button className="btn btn-primary px-4" onClick={handleLogin}>
+                      <button
+                        className="btn btn-primary px-4"
+                        onClick={handleLogin}>
                         Login
                       </button>
                     </div>
@@ -89,12 +96,14 @@ const Login = () => {
                   </div>
                 </div>
               </div>
-              <div className="card text-white bg-primary py-5" style={{ width: '44%' }}>
+              <div
+                className="card text-white bg-primary py-5"
+                style={{ width: "44%" }}>
                 <div className="card-body text-center">
                   <div>
                     <h2>Sign up</h2>
                     <p>
-                     Sorry!! you have to register for access to our fesilities.
+                      Sorry!! you have to register for access to our fesilities.
                     </p>
                     <Link to="/register" className="btn btn-primary mt-3">
                       Register Now!

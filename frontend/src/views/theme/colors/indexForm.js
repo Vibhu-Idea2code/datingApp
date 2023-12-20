@@ -80,6 +80,7 @@ const IndexForm = () => {
     fetchDataSigns();
     fetchDataInterests();
   }, []);
+  const [isHovering, setIsHovering] = useState(false);
 
   const fetchDataSigns = async () => {
     setIsLoading(false);
@@ -114,49 +115,48 @@ const IndexForm = () => {
     }
   };
 
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      setImg(reader.result);
+    };
+
+    reader.readAsDataURL(file);
+  };
+  const handleMouseOver = () => {
+    setIsHovering(true);
+  };
+
+  const handleMouseOut = () => {
+    setIsHovering(false);
+  };
   const onSubmit = async (data) => {
     try {
-      let formData = new FormData();
+      console.log(data);
+      // setIsLoading(false);
+      let formData = new FormData(); //formdata object
+      console.log(formData);
       Object.keys(data).forEach(function (key) {
-        formData.append(key, data[key]);
-        // if (key === "user_img") {
-        //   formData.append(key, data[key][0]);
-        // } else {
-        //   formData.append(key, data[key]);
-        // }
+        if (key === "user_img") {
+          formData.append(key, data[key]);
+        } else if (Array.isArray(data[key])) {
+          data[key].forEach((value) => {
+            formData.append(key, value);
+          });
+        } else {
+          formData.append(key, data[key]);
+        }
       });
-      // Add image to formData
-      // if (img) {
-      //   formData.append("user_img", img);
-      // }
-
-      formData.append("user_img", img.get("user_img"));
       await axios.post("http://localhost:9500/v1/admin/create-user", formData);
     } catch (error) {
       console.error("Error submitting form:", error);
     }
   };
 
-  // const handleFileUpload = (event) => {
-  //   const file = event.target.files[0];
-  //   const reader = new FileReader();
-
-  //   reader.onloadend = () => {
-  //     setImg(reader.result);
-  //   };
-
-  //   reader.readAsDataURL(file);
-  // };
-  const handleFileUpload = (event) => {
-    const file = event.target.files[0];
-    const formData = new FormData();
-    formData.append("user_img", file);
-    setImg(formData);
-  };
-
   return (
     <div>
-      {" "}
       {isLoading ? (
         <CCol>
           <CCard className="mb-4">
@@ -222,22 +222,32 @@ const IndexForm = () => {
 
                 <CCol md={4}>
                   <div className="mb-3">
-                    <CFormLabel htmlFor="formFile">
-                      Default file input example
-                    </CFormLabel>
+                    <CFormLabel htmlFor="formFile">add you image</CFormLabel>
                     <Controller
                       name="user_img"
                       accept="image/*"
                       control={control}
+                      onMouseOver={handleMouseOver}
+                      onMouseOut={handleMouseOut}
                       render={({ field }) => (
-                        <CFormInput
-                          type="file"
-                          id="formFile"
-                          onChange={(e) => {
-                            field.onChange(e);
-                            handleFileUpload(e);
-                          }}
-                        />
+                        <>
+                          <CFormInput
+                            type="file"
+                            id="formFile"
+                            onChange={handleFileUpload}
+                          />
+                          {!isHovering ? (
+                            <img
+                              src={img}
+                              alt="user_img"
+                              width="100"
+                              height={100}
+                              style={{ borderRadius: "50%" }}
+                            />
+                          ) : (
+                            <p>image not find</p>
+                          )}
+                        </>
                       )}
                     />
                   </div>
@@ -268,7 +278,7 @@ const IndexForm = () => {
                   </CFormSelect>
                 </CCol>
 
-                <CCol md={4}>
+                {/* <CCol md={4}>
                   <CFormLabel htmlFor="sexual">sexual</CFormLabel>
                   <Controller
                     name="sexuals"
@@ -294,7 +304,7 @@ const IndexForm = () => {
                       </>
                     )}
                   />
-                </CCol>
+                </CCol> */}
                 {/* 
                 <CCol md={4}>
                   <CFormLabel htmlFor="pets">pets</CFormLabel>

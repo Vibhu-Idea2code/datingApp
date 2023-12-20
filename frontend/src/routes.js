@@ -3,8 +3,8 @@ import React from "react";
 
 const Dashboard = React.lazy(() => import("./views/dashboard/Dashboard"));
 const Users = React.lazy(() => import("./views/theme/colors/Users"));
-const Popup = React.lazy(() => import("./views/theme/colors/Popup"));
-const View = React.lazy(() => import("./views/theme/colors/View"));
+const Popup = React.lazy(() => import("./views/theme/colors/PopupDemo"));
+const View = React.lazy(() => import("./views/theme/colors/ViewDemo"));
 const indexForm = React.lazy(() => import("./views/theme/colors/indexForm"));
 
 // const common = React.lazy(() => import('./views/theme/colors/common'))
