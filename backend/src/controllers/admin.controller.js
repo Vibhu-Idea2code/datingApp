@@ -157,74 +157,80 @@ const updateDetails = async (req, res) => {
 
 const register = async (req, res) => {
   // const { email, password, role } = req.body;
+  try {
+    const reqBody = req.body;
+    // reqBody.user_img = "";
+    if (req.file) {
+      reqBody.user_img = req.file.filename;
+    }
 
-  console.log(req.body);
-  const reqBody = req.body;
-  const existingUser = await userService.findUserByEmail(reqBody.email);
+    // console.log(req.body);
+    const existingUser = await userService.findUserByEmail(reqBody.email);
 
-  if (existingUser) {
-    return res.status(400).json({
-      success: false,
-      message: "User with this email already exists.",
-    });
+    if (existingUser) {
+      return res.status(400).json({
+        success: false,
+        message: "User with this email already exists.",
+      });
+    }
+
+    // Validate that at least 3 out of 5 interests are provided
+    // if (!reqBody.interest || reqBody.interest.length < 3) {
+    //   throw new Error("At least 3 out of 5 interests are required.");
+    // }
+
+    // // Validate that at least 3 out of 5 sexual are provided
+    // if (!reqBody.sexual || reqBody.sexual.length < 3) {
+    //   throw new Error("At least 3 out of 5 sexual are required.");
+    // }
+
+    // if (!reqBody.birthDate) {
+    //   throw new Error("Birthdate is required for age calculation.");
+    // }
+
+    // Use helper to calculate age
+    const age = userHelper.calculateAge(reqBody.birthDate);
+
+    let option = {
+      email: reqBody.email,
+      role: reqBody.role,
+      exp: moment().add(1, "days").unix(),
+    };
+
+    const token = await jwt.sign(option, jwtSecrectKey);
+
+    const filter = {
+      ...reqBody,
+      email: reqBody.email,
+      gender: reqBody.gender,
+      interest: reqBody.interest,
+      birthDate: reqBody.birthDate,
+      sexual: reqBody.sexual,
+      showMe: reqBody.showMe,
+      school: reqBody.school,
+      sign: reqBody.sign,
+      pets: reqBody.pets,
+      address: reqBody.address,
+      lat: reqBody.lat,
+      long: reqBody.long,
+      maxAge: reqBody.maxAge,
+      minAge: reqBody.minAge,
+      maxDistance: reqBody.maxDistance,
+      first_name: reqBody.first_name,
+      last_name: reqBody.last_name,
+      phoneNumber: reqBody.phoneNumber,
+      jobTitle: reqBody.jobTitle,
+      // age:reqBody.age,
+      age,
+      token,
+    };
+
+    const data = await userService.createUser(filter);
+
+    res.status(200).json({ success: true, data: data });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
-  if (req.file) {
-    reqBody.user_img = req.file.filename;
-  }
-  // Validate that at least 3 out of 5 interests are provided
-  // if (!reqBody.interest || reqBody.interest.length < 3) {
-  //   throw new Error("At least 3 out of 5 interests are required.");
-  // }
-
-  // // Validate that at least 3 out of 5 sexual are provided
-  // if (!reqBody.sexual || reqBody.sexual.length < 3) {
-  //   throw new Error("At least 3 out of 5 sexual are required.");
-  // }
-
-  // if (!reqBody.birthDate) {
-  //   throw new Error("Birthdate is required for age calculation.");
-  // }
-
-  // Use helper to calculate age
-  const age = userHelper.calculateAge(reqBody.birthDate);
-
-  let option = {
-    email: reqBody.email,
-    role: reqBody.role,
-    exp: moment().add(1, "days").unix(),
-  };
-
-  const token = await jwt.sign(option, jwtSecrectKey);
-
-  const filter = {
-    ...reqBody,
-    email: reqBody.email,
-    gender: reqBody.gender,
-    interest: reqBody.interest,
-    birthDate: reqBody.birthDate,
-    sexual: reqBody.sexual,
-    showMe: reqBody.showMe,
-    school: reqBody.school,
-    sign: reqBody.sign,
-    pets: reqBody.pets,
-    address: reqBody.address,
-    lat: reqBody.lat,
-    long: reqBody.long,
-    maxAge: reqBody.maxAge,
-    minAge: reqBody.minAge,
-    maxDistance: reqBody.maxDistance,
-    first_name: reqBody.first_name,
-    last_name: reqBody.last_name,
-    phoneNumber: reqBody.phoneNumber,
-    jobTitle: reqBody.jobTitle,
-    // age:reqBody.age,
-    age,
-    token,
-  };
-
-  const data = await userService.createUser(filter);
-
-  res.status(200).json({ success: true, data: data });
 };
 
 const deleteUser = async (req, res) => {

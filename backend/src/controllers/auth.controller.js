@@ -7,93 +7,97 @@ const jwt = require("jsonwebtoken");
 const jwtSecrectKey = "cdccsvavsvfssbtybnjnuki";
 const fs = require("fs");
 const User = require("../models/users.model");
-const otpGenerator = require('otp-generator');
-const userHelper = require('../helpers/userHelper');
+const otpGenerator = require("otp-generator");
+const userHelper = require("../helpers/userHelper");
 
 /* -------------------------- REGISTER/CREATE USER -------------------------- */
 const register = async (req, res) => {
   // const { email, password, role } = req.body;
+  try {
+    console.log(req.body);
+    const reqBody = req.body;
+    const existingUser = await userService.findUserByEmail(reqBody.email);
 
-  console.log(req.body);
-  const reqBody = req.body;
-  const existingUser = await userService.findUserByEmail(reqBody.email);
+    if (existingUser) {
+      return res.status(400).json({
+        success: false,
+        message: "User with this email already exists.",
+      });
+    }
+    
+    if (req.file) {
+      reqBody.user_img = req.file.filename;
+    } else {
+      return res.status(400).json({
+        success: false,
+        message: "image is required",
+      });
+    }
+    // Validate that at least 3 out of 5 interests are provided
+    if (!reqBody.interest || reqBody.interest.length < 3) {
+      throw new Error("At least 3 out of 5 interests are required.");
+    }
 
-  if (existingUser) {
-    return res.status(400).json({
-      success: false,
-      message: "User with this email already exists.",
-    });
+    // Validate that at least 3 out of 5 sexual are provided
+    if (!reqBody.sexual || reqBody.sexual.length < 3) {
+      throw new Error("At least 3 out of 5 sexual are required.");
+    }
+
+    if (!reqBody.birthDate) {
+      throw new Error("Birthdate is required for age calculation.");
+    }
+
+    // Use helper to calculate age
+    const age = userHelper.calculateAge(reqBody.birthDate);
+
+    let option = {
+      email: reqBody.email,
+      role: reqBody.role,
+      exp: moment().add(1, "days").unix(),
+    };
+
+    const token = await jwt.sign(option, jwtSecrectKey);
+
+    const filter = {
+      ...reqBody,
+      email: reqBody.email,
+      gender: reqBody.gender,
+      interest: reqBody.interest,
+      birthDate: reqBody.birthDate,
+      sexual: reqBody.sexual,
+      showMe: reqBody.showMe,
+      school: reqBody.school,
+      sign: reqBody.sign,
+      pets: reqBody.pets,
+      address: reqBody.address,
+      lat: reqBody.lat,
+      long: reqBody.long,
+      maxAge: reqBody.maxAge,
+      minAge: reqBody.minAge,
+      maxDistance: reqBody.maxDistance,
+      first_name: reqBody.first_name,
+      last_name: reqBody.last_name,
+      phoneNumber: reqBody.phoneNumber,
+      jobTitle: reqBody.jobTitle,
+      // age:reqBody.age,
+      age,
+      token,
+    };
+
+    const data = await userService.createUser(filter);
+
+    res.status(200).json({ success: true, data: data });
+  } catch (err) {
+    res.status(500).json({ err: err.message });
   }
-  if (req.file) {
-    reqBody.user_img = req.file.filename;
-  } else {
-    throw new Error("Product image is required!");
-  }
-   // Validate that at least 3 out of 5 interests are provided
-   if (!reqBody.interest || reqBody.interest.length < 3) {
-    throw new Error("At least 3 out of 5 interests are required.");
-  }
-
-   // Validate that at least 3 out of 5 sexual are provided
-   if (!reqBody.sexual || reqBody.sexual.length < 3) {
-    throw new Error("At least 3 out of 5 sexual are required.");
-  }
-
-
-  if (!reqBody.birthDate) {
-    throw new Error("Birthdate is required for age calculation.");
-  }
-
-  // Use helper to calculate age
-  const age = userHelper.calculateAge(reqBody.birthDate);
-
-  let option = {
-    email: reqBody.email,
-    role: reqBody.role,
-    exp: moment().add(1, "days").unix(),
-  };
-
-  const token = await jwt.sign(option, jwtSecrectKey);
-
-  const filter = {
-    ...reqBody,
-    email:reqBody.email,
-    gender: reqBody.gender,
-    interest:reqBody.interest,
-    birthDate:reqBody.birthDate,
-    sexual :reqBody.sexual,
-    showMe:reqBody.showMe,
-    school:reqBody.school,
-    sign:reqBody.sign,
-    pets:reqBody.pets,
-    address:reqBody.address,
-    lat:reqBody.lat,
-    long:reqBody.long,
-    maxAge:reqBody.maxAge,
-    minAge:reqBody.minAge,
-    maxDistance:reqBody.maxDistance,
-    first_name:reqBody.first_name,
-    last_name:reqBody.last_name,
-    phoneNumber:reqBody.phoneNumber,
-    jobTitle:reqBody.jobTitle,
-    // age:reqBody.age,
-    age,
-    token,
-  };
-
-  const data = await userService.createUser(filter);
-
-  res.status(200).json({ success: true, data: data });
 };
-
-
 
 /* -------------------------- LOGIN/SIGNIN USER -------------------------- */
 const loginEmail = async (req, res) => {
   try {
     // validation;
     const reqBody = req.body;
-    const { email,lat1,long1 } = req.body;
+    const { email, lat1, long1 } = req.body;
     console.log(req.body);
     const findUser = await userService.findUserByLogonEmail(reqBody.email);
     console.log(findUser, "++++");
@@ -112,13 +116,13 @@ const loginEmail = async (req, res) => {
     };
     let token;
     if (findUser) {
-      token = await jwt.sign(option,jwtSecrectKey);
+      token = await jwt.sign(option, jwtSecrectKey);
     }
     let datas;
     if (token) {
       datas = await userService.findUserAndUpdate(findUser._id, token);
     }
-    
+
     ejs.renderFile(
       path.join(__dirname, "../views/login-template.ejs"),
       {
@@ -150,28 +154,28 @@ const loginEmail = async (req, res) => {
 };
 
 /* -------------------------- LOGIN WITH PHONE NUMBER WITH OTP  -------------------------- */
-const checkUserPh = async (req, res,next) => {
+const checkUserPh = async (req, res, next) => {
   try {
     // const reqBody = req.body;
-    const {phoneNumber}  = req.body;
+    const { phoneNumber } = req.body;
     // console.log(req.body);
-    const findUser = await userService.getUserByPhoneNumber(phoneNumber );
+    const findUser = await userService.getUserByPhoneNumber(phoneNumber);
     console.log(findUser, "++++");
-    if (!findUser) throw Error("User not found");
+    // if (!findUser) throw Error("User not found");
 
     const otpExpiry = new Date();
-    otpExpiry.setMinutes(otpExpiry.getMinutes() + 5);   
+    otpExpiry.setMinutes(otpExpiry.getMinutes() + 5);
     const otp = Math.floor(1000 + Math.random() * 3000);
     findUser.otp = otp;
     findUser.expireOtpTime = Date.now() + 300000; //Valid upto 5 min
-    
+
     await findUser.save();
 
     res.json({ message: `OTP sent successfully ${otp}` });
   } catch (err) {
     next(err);
   }
-};  
+};
 
 /* ------------------------------- VERIFY OTP with number------------------------------- */
 const verifyOtp = async (req, res) => {
@@ -203,12 +207,10 @@ const verifyOtp = async (req, res) => {
   }
 };
 
-
-
 module.exports = {
   register,
   // createUser,
   loginEmail,
   verifyOtp,
-  checkUserPh
+  checkUserPh,
 };

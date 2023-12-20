@@ -31,9 +31,7 @@ io.on('connection',(socket)=>{
       io.emit('message',message)
   });
 });
-app.use((req, res, next) => {
-  next(new Error("routes not found"));
-});
+
 
 connectDB();
 app.get('/',(req,res)=>{
