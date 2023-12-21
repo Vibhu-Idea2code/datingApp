@@ -24,7 +24,7 @@ const register = async (req, res) => {
         message: "User with this email already exists.",
       });
     }
-    
+
     if (req.file) {
       reqBody.user_img = req.file.filename;
     } else {
@@ -154,26 +154,49 @@ const loginEmail = async (req, res) => {
 };
 
 /* -------------------------- LOGIN WITH PHONE NUMBER WITH OTP  -------------------------- */
+// const checkUserPh = async (req, res, next) => {
+//   try {
+//     // const reqBody = req.body;
+//     const { phoneNumber } = req.body;
+//     // console.log(req.body);
+//     const findUser = await userService.getUserByPhoneNumber(phoneNumber);
+//     console.log(findUser, "++++");
+//     // if (!findUser) throw Error("User not found");
+
+//     const otpExpiry = new Date();
+//     otpExpiry.setMinutes(otpExpiry.getMinutes() + 5);
+//     const otp = Math.floor(1000 + Math.random() * 3000);
+//     findUser.otp = otp;
+//     findUser.expireOtpTime = Date.now() + 300000; //Valid upto 5 min
+
+//     await findUser.save();
+
+//     res
+//       .status(200)
+//       .json({ success: true, message: `OTP sent successfully ${otp}` });
+//   } catch (err) {
+//     res.json({ message: err.message });
+//   }
+// };
+
 const checkUserPh = async (req, res, next) => {
   try {
     // const reqBody = req.body;
     const { phoneNumber } = req.body;
     // console.log(req.body);
-    const findUser = await userService.getUserByPhoneNumber(phoneNumber);
-    console.log(findUser, "++++");
-    // if (!findUser) throw Error("User not found");
+    const phoneRegex = /^\d{10}$/; // Assumes a 10-digit phone number
+    if (!phoneRegex.test(phoneNumber)) {
+      throw new Error("Invalid phone number format");
+    }
+    const otp = Math.floor(100000 + Math.random() * 900000);
 
-    const otpExpiry = new Date();
-    otpExpiry.setMinutes(otpExpiry.getMinutes() + 5);
-    const otp = Math.floor(1000 + Math.random() * 3000);
-    findUser.otp = otp;
-    findUser.expireOtpTime = Date.now() + 300000; //Valid upto 5 min
+    console.log(`Generated OTP for ${phoneNumber}: ${otp}`);
 
-    await findUser.save();
-
-    res.json({ message: `OTP sent successfully ${otp}` });
+    res
+      .status(200)
+      .json({ success: true, message: `OTP sent successfully ${otp}` });
   } catch (err) {
-    next(err);
+    res.json({ message: err.message });
   }
 };
 
@@ -181,27 +204,22 @@ const checkUserPh = async (req, res, next) => {
 const verifyOtp = async (req, res) => {
   try {
     const { phoneNumber, otp } = req.body;
-    const user = await verifyOtpService.findOtpByOtp({ otp });
-    console.log("user", user);
-    if (!user) {
-      throw new Error("Invalid OTP entered!");
-    }
+
     const findEmail = await verifyOtpService.findOtpByEmail({ phoneNumber });
     console.log("findEmail", findEmail);
     if (!findEmail) {
-      throw new Error("User not found");
+      throw new Error("0");
     }
     findEmail.otp = otp;
     await findEmail.save();
-    if (findEmail.otp === otp) {
-      return res.status(200).json({
-        success: true,
-        message: "your otp is right thank you",
-        data: user,
-      });
-    } else {
-      return res.status(401).json({ success: false, message: "Invalid OTP" });
+    if (findEmail.otp !== otp) {
+      throw new Error("Invalid OTP entered!");
     }
+    return res.status(200).json({
+      success: true,
+      message: "your otp is right thank",
+      data: findEmail,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
