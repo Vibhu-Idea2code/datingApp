@@ -1,0 +1,271 @@
+// const [sexual, setSexual] = useState({});
+// const [pet, setPet] = useState([]);
+// const [sign, setSign] = useState([]);
+// const [interest, setInterest] = useState([]);
+
+
+// const fetchData = async () => {
+//     setIsLoading(false);
+//     try {
+//       await axios
+//         .get("http://localhost:9500/v1/list/list-sexual")
+//         .then((response) => {
+//           setSexual(response.data.data.getSexual);
+//           setIsLoading(true);
+//         });
+//     } catch (error) {
+//       console.error("Error fetching Sexual data:", error);
+//     }
+//   };
+
+//   const fetchDataPets = async () => {
+//     setIsLoading(false);
+//     try {
+//       await axios
+//         .get("http://localhost:9500/v1/list/list-pets")
+//         .then((response) => {
+//           setPet(response.data.data.getPet);
+//           setIsLoading(true);
+//         });
+//     } catch (error) {
+//       console.error("Error fetching Sexual data:", error);
+//     }
+//   };
+
+//   useEffect(() => {
+//     fetchData();
+//     // console.log("SDfds");
+//     fetchDataPets();
+//     fetchDataSigns();
+//     fetchDataInterests();
+//   }, []);
+//   const [isHovering, setIsHovering] = useState(false);
+
+//   const fetchDataSigns = async () => {
+//     setIsLoading(false);
+//     try {
+//       const response = await axios
+//         .get("http://localhost:9500/v1/sign/list")
+//         .then((response) => {
+//           setSign(response.data.data);
+
+//           setIsLoading(true);
+//         });
+//     } catch (error) {
+//       console.error("Error fetching Sexual data:", error);
+//     }
+//   };
+
+//   // useEffect(() => {
+//   //   fetchDataInterests();
+//   // }, []);
+//   const fetchDataInterests = async () => {
+//     setIsLoading(false);
+//     try {
+//       const response = await axios
+//         .get("http://localhost:9500/v1/list/list-interest")
+//         .then((response) => {
+//           setInterest(response.data.data.getHob);
+
+//           setIsLoading(true);
+//         });
+//     } catch (error) {
+//       console.error("Error fetching Sexual data:", error);
+//     }
+//   };       
+       
+       
+       {/* <CCol md={4}>
+                  <CFormLabel htmlFor="sexual">sexual</CFormLabel>
+                  <Controller
+                    name="sexuals"
+                    style={{ marginTop: "16px", marginBottom: "16px" }}
+                    control={control}
+                    defaultValue={isupdate === "" ? [] : getValues("sexuals")}
+                    error={!!errors.sexual}
+                    rules={{ required: "Medical Conditions is required" }}
+                    render={({ field }) => (
+                      <>
+                        <Select
+                          {...field}
+                          labelId="sexuals"
+                          id="sexuals"
+                          style={{ marginTop: "16px", marginBottom: "16px" }}
+                          multiple>
+                          {sexual.map((cat) => (
+                            <MenuItem key={cat._id} value={cat._id}>
+                              {cat.name}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </>
+                    )}
+                  />
+                </CCol> */}
+                {/* 
+                <CCol md={4}>
+                  <CFormLabel htmlFor="pets">pets</CFormLabel>
+                  <Controller
+                    name="pets"
+                    style={{ marginTop: "16px", marginBottom: "16px" }}
+                    control={control}
+                    defaultValue={isupdate === "" ? [] : getValues("pets")}
+                    error={!!errors.pet}
+                    rules={{ required: "Medical Conditions is required" }}
+                    render={({ field }) => (
+                      <>
+                        <Select
+                          {...field}
+                          labelId="pet"
+                          id="pet"
+                          style={{ marginTop: "16px", marginBottom: "16px" }}
+                          multiple>
+                          {pet.map((cat) => (
+                            <MenuItem key={cat._id} value={cat._id}>
+                              {cat.name}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                       
+                      </>
+                    )}
+                  />
+                </CCol> */}
+
+                {/* <CCol md={4}>
+                  <CFormLabel htmlFor="interests">interest</CFormLabel>
+                  <Controller
+                    name="interests"
+                    style={{ marginTop: "16px", marginBottom: "16px" }}
+                    control={control}
+                    defaultValue={isupdate === "" ? [] : getValues("interests")}
+                    error={!!errors.interest}
+                    rules={{ required: "Medical Conditions is required" }}
+                    render={({ field }) => (
+                      <>
+                        <Select
+                          {...field}
+                          labelId="interests"
+                          id="interests"
+                          style={{ marginTop: "16px", marginBottom: "16px" }}
+                          multiple>
+                          {interest.map((cat) => (
+                            <MenuItem key={cat._id} value={cat._id}>
+                              {cat.name}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </>
+                    )}
+                  />
+                </CCol> */}
+
+                {/* <CCol md={4}>
+                  <CFormLabel htmlFor="pets">Sign</CFormLabel>
+                  <Controller
+                    name="signs"
+                    style={{ marginTop: "16px", marginBottom: "16px" }}
+                    control={control}
+                    defaultValue={isupdate === "" ? [] : getValues("signs ")}
+                    error={!!errors.sign}
+                    rules={{ required: "Medical Conditions is required" }}
+                    render={({ field }) => (
+                      <>
+                        <Select
+                          {...field}
+                          labelId="signs"
+                          id="signs"
+                          style={{ marginTop: "16px", marginBottom: "16px" }}
+                          multiple>
+                          {sign.map((cat) => (
+                            <MenuItem key={cat._id} value={cat._id}>
+                              {cat.name}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                        
+                      </>
+                    )}
+                  />
+                </CCol> */}
+                {/* <CFormLabel htmlFor="pets">Sexual</CFormLabel>
+                  <Controller
+                    name="sexual"
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        {...field}
+                        options={sexual.map((option) => ({
+                          value: option._id,
+                          label: option.name,
+                        }))}
+                        isMulti
+                      />
+                    )}
+                  /> */}
+                {/* </CCol> */}
+
+                {/* <CCol md={4}>
+              <CFormLabel htmlFor="pets">Pets</CFormLabel>
+
+              <Controller
+                name="pets"
+                control={control}
+                render={({ field }) => (
+                  <Select {...field} options={pet} isMulti />
+                )}
+              />
+            </CCol>
+
+            <CCol md={4}>
+              <CFormLabel htmlFor="signs">Sign</CFormLabel>
+
+              <Controller
+                name="sign"
+                control={control}
+                render={({ field }) => (
+                  <Select {...field} options={sign} isMulti />
+                )}
+              />
+            </CCol>
+
+            <CCol md={4}>
+              <CFormLabel htmlFor="interest">Interst</CFormLabel>
+
+              <Controller
+                name="interest"
+                rules={{ validate: validateInterest }}
+                control={control}
+                render={({ field }) => (
+                  <Select {...field} options={interest} isMulti />
+                )}
+              />
+            </CCol> */}
+                {/* 
+            <CCol md={4}>
+              <CFormLabel htmlFor="pets">Pets</CFormLabel>
+
+              <Controller
+                name="iceCreamType"
+                control={control}
+                render={({ field }) => (
+                  <Select
+                    {...field}
+                    options={[
+                      { value: "chocolate", label: "Chocolate" },
+                      { value: "strawberry", label: "Strawberry" },
+                      { value: "vanilla", label: "Vanilla" },
+                    ]}
+                  />
+                )}
+              />
+            </CCol> */}
+                {/* <CFormSelect
+              size="sm"
+              className="mb-3"
+              aria-label="Small select example">
+              <option>Open this select menu</option>
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+            </CFormSelect> */}

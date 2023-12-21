@@ -3,9 +3,10 @@ import React from "react";
 
 const Dashboard = React.lazy(() => import("./views/dashboard/Dashboard"));
 const Users = React.lazy(() => import("./views/theme/colors/Users"));
-const Popup = React.lazy(() => import("./views/theme/colors/PopupDemo"));
+const Test = React.lazy(() => import("./views/theme/colors/test"));
 const View = React.lazy(() => import("./views/theme/colors/ViewDemo"));
 const indexForm = React.lazy(() => import("./views/theme/colors/indexForm"));
+const List = React.lazy(() => import("./views/theme/listPages/List"));
 
 // const common = React.lazy(() => import('./views/theme/colors/common'))
 
@@ -61,8 +62,10 @@ const routes = [
   { path: "/", exact: true, name: "Home" },
   { path: "/dashboard", name: "Dashboard", element: Dashboard },
   { path: "/user", name: "", element: Users, exact: true },
-  { path: "/Popup/:Popup", name: "Popup", element: Popup, exact: true },
+  { path: "/test", name: "", element: Test, exact: true },
   { path: "/indexForm", name: "", element: indexForm, exact: true },
+  { path: "/sexual_orientation", name: "", element: List, exact: true },
+
   // { path: '/user/views', name: 'User', element: Users },
   // { path: '/user/common', name: 'common', element: common },
   { path: "/view", name: "", element: View },

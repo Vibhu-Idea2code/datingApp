@@ -1,7 +1,7 @@
-import React from 'react'
-import CIcon from '@coreui/icons-react'
+import React from "react";
+import CIcon from "@coreui/icons-react";
 // import { CIcon } from '@coreui/icons-react';
-import { cilList, cilPeople } from '@coreui/icons';
+import { cilList, cilPeople } from "@coreui/icons";
 import {
   cilBell,
   cilCalculator,
@@ -14,18 +14,18 @@ import {
   cilPuzzle,
   cilSpeedometer,
   cilStar,
-} from '@coreui/icons'
-import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
+} from "@coreui/icons";
+import { CNavGroup, CNavItem, CNavTitle } from "@coreui/react";
 
 const _nav = [
   {
     component: CNavItem,
-    name: 'Dashboard',
-    to: '/dashboard',
+    name: "Dashboard",
+    to: "/dashboard",
     icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
     badge: {
-      color: 'info',
-      text: 'NEW',
+      color: "info",
+      text: "NEW",
     },
   },
   // {
@@ -34,37 +34,46 @@ const _nav = [
   // },
   {
     component: CNavItem,
-    name: 'User',
-    to: '/user',
+    name: "User",
+    to: "/user",
     // to: '/user/users',
     icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
-    name: 'Users',
-    to: '/users',
+    name: "test",
+    to: "/test",
     icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
   },
-  // {
-  //   component: CNavTitle,
-  //   name: 'Components',
-  // },
-  // {
-  //   component: CNavGroup,
-  //   name: 'Base',
-  //   to: '/base',
-  //   icon: <CIcon icon={cilPuzzle} customClassName="nav-icon" />,
-  //   items: [
-  //     {
-  //       component: CNavItem,
-  //       name: 'Accordion',
-  //       to: '/base/accordion',
-  //     },
-  //     {
-  //       component: CNavItem,
-  //       name: 'Breadcrumb',
-  //       to: '/base/breadcrumbs',
-  //     },
+
+  {
+    component: CNavTitle,
+    name: "",
+  },
+  {
+    component: CNavGroup,
+    name: "Base",
+    to: "",
+    icon: <CIcon icon={cilPuzzle} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: "SexualOrientation",
+        to: "/sexual_orientation",
+      },
+
+      {
+        component: CNavItem,
+        name: "Interests",
+        to: "/interests",
+      },
+      {
+        component: CNavItem,
+        name: "Pets",
+        to: "/pet",
+      },
+    ],
+  },
   //     {
   //       component: CNavItem,
   //       name: 'Cards',
@@ -303,6 +312,6 @@ const _nav = [
   //   href: 'https://coreui.io/react/docs/templates/installation/',
   //   icon: <CIcon icon={cilDescription} customClassName="nav-icon" />,
   // },
-]
+];
 
-export default _nav
+export default _nav;
