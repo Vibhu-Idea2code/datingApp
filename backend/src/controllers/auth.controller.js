@@ -24,9 +24,15 @@ const register = async (req, res) => {
         message: "User with this email already exists.",
       });
     }
-
+    if (!req.files || req.files.length < 2) {
+      return res.status(400).json({
+        success: false,
+        message: "At least 2 images are required.",
+      });
+    }
     if (req.file) {
-      reqBody.user_img = req.file.filename;
+      reqBody.user_img = req.files.map((file) => file.filename);
+      // reqBody.user_img = req.file.filename;
     } else {
       return res.status(400).json({
         success: false,
