@@ -118,7 +118,7 @@ const userSchema = new mongoose.Schema(
     },
 
     user_img: {
-      type: String,
+      type: Array,
     },
     role: {
       type: String,
@@ -130,13 +130,15 @@ const userSchema = new mongoose.Schema(
   {
     timestamps: true,
     versionKey: false,
-    // toJSON: {
-    //   transform: function (doc, data) {
-    //     if (data?.user_img) {
-    //       data.user_img = `${config.base_url}profile_images/${data.user_img}`;
-    //     }
-    //   },
-    // },
+    toJSON: {
+      transform: function (doc, data) {
+        if (Array.isArray(data.user_img)) {
+          data.user_img = data.user_img.map(
+            (user_img) => `${config.base_url}profile_images/${user_img}`
+          );
+        }
+      },
+    },
   }
 );
 

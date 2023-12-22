@@ -13,30 +13,29 @@ const router = express.Router();
 /* -------------------------------------------------------------------------- */
 
 /* -------------------------- register/signUp/create user -------------------------- */
-router.post("/create-user", upload.single("user_img"), authController.register);
+router.post("/create-user", upload.array("user_img"), authController.register);
 
 /* ---------------------------- LOGIN/SIGNIN USER --------------------------- */
 router.post("/login", authController.loginEmail);
 router.post("/login-phone", authController.checkUserPh);
 
-
 /* ------------------------------- VERIFY OTP ------------------------------- */
 router.post("/verify-otp", authController.verifyOtp);
-// router.post("/verifyOtp", authController.verifyOtp);  
+// router.post("/verifyOtp", authController.verifyOtp);
 
-router.get('/like/:userId', userController.getLikesByUserId);
+router.get("/like/:userId", userController.getLikesByUserId);
 /* -------------------------------------------------------------------------- */
 /*                                    USER ROUTE                                    */
 /* -------------------------------------------------------------------------- */
 
 /* ------------------------------- get user list ------------------------------------------- */
 
-router.get("/role", accessToken(),userController.getAllUser);// admin side (all user list) 
-router.get("/role-list", accessToken(), userController.getUserListRole);// ROLE WISE 
-router.get("/list", userController.userList); // HOME PAGE (DISTANCE,USERID,FIRSTNAME) 
+router.get("/role", accessToken(), userController.getAllUser); // admin side (all user list)
+router.get("/role-list", accessToken(), userController.getUserListRole); // ROLE WISE
+router.get("/list", userController.userList); // HOME PAGE (DISTANCE,USERID,FIRSTNAME)
 
 /* ----------------------------- get user by id ----------------------------- */
-router.get("/getid-user/:userId", userController.getUserDetails);  // HOME PAGE (DISTANCE,USERID,FIRSTNAME) USING USER ID
+router.get("/getid-user/:userId", userController.getUserDetails); // HOME PAGE (DISTANCE,USERID,FIRSTNAME) USING USER ID
 router.get("/getid-user-all/:userId", userController.getUserDetailsAll); //HOME PAGE (FULLY DETAILS) USING USER ID
 
 //  /* ---------------------------- delete user list ---------------------------- */
@@ -45,7 +44,11 @@ router.delete("/delete-many", userController.deleteManyUsers);
 
 // /* ------------------------- update user info ------------------------ */
 // router.put("/update/:userId", userController.updateDetails);
-router.put("/update/:userId",upload.single("user_img"), userController.updateDetails);
+router.put(
+  "/update/:userId",
+  upload.single("user_img"),
+  userController.updateDetails
+);
 
 /* ----------------------------- update phone number using id----------------------------- */
 router.put("/update-phone/:userId", UpdateController.updatePhone);
@@ -91,7 +94,5 @@ router.put("/update-sign/:userId", UpdateController.updateSign);
 router.put("/update-pets/:userId", UpdateController.updatePets);
 
 router.put("/update-sexual-orientation/:userId", UpdateController.updateSexual);
-
-
 
 module.exports = router;

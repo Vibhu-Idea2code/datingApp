@@ -17,53 +17,44 @@ const register = async (req, res) => {
     console.log(req.body);
     const reqBody = req.body;
     const existingUser = await userService.findUserByEmail(reqBody.email);
-
     if (existingUser) {
-      return res.status(400).json({
-        success: false,
-        message: "User with this email already exists.",
-      });
+      throw new Error("User with this email already exists.");
     }
-    if (!req.files || req.files.length < 2) {
-      return res.status(400).json({
-        success: false,
-        message: "At least 2 images are required.",
-      });
+    if (!req.files || req.files.length < 2 || req.files.length > 6) {
+      throw new Error(`Between 2 and 6 images are required.`);
     }
-    if (req.file) {
-      reqBody.user_img = req.files.map((file) => file.filename);
-      // reqBody.user_img = req.file.filename;
+    user_img = [];
+    if (req.files) {
+      for (let ele of req.files) {
+        user_img.push(ele.filename);
+      }
     } else {
-      return res.status(400).json({
-        success: false,
-        message: "image is required",
-      });
+      throw new Error("user image is required!");
     }
+    reqBody.user_img = user_img;
     // Validate that at least 3 out of 5 interests are provided
-    if (!reqBody.interest || reqBody.interest.length < 3) {
-      throw new Error("At least 3 out of 5 interests are required.");
+    if (
+      !reqBody.interest ||
+      reqBody.interest.length < 3 ||
+      reqBody.interest.length >= 5
+    ) {
+      throw new Error("Between 3 and 5 interest are required.");
     }
-
     // Validate that at least 3 out of 5 sexual are provided
-    if (!reqBody.sexual || reqBody.sexual.length < 3) {
-      throw new Error("At least 3 out of 5 sexual are required.");
+    if (!reqBody.sexual || reqBody.sexual.length >= 3) {
+      throw new Error("select up to 3");
     }
-
     if (!reqBody.birthDate) {
       throw new Error("Birthdate is required for age calculation.");
     }
-
     // Use helper to calculate age
     const age = userHelper.calculateAge(reqBody.birthDate);
-
     let option = {
       email: reqBody.email,
       role: reqBody.role,
       exp: moment().add(1, "days").unix(),
     };
-
     const token = await jwt.sign(option, jwtSecrectKey);
-
     const filter = {
       ...reqBody,
       email: reqBody.email,
@@ -85,13 +76,12 @@ const register = async (req, res) => {
       last_name: reqBody.last_name,
       phoneNumber: reqBody.phoneNumber,
       jobTitle: reqBody.jobTitle,
+      user_img: reqBody.user_img,
       // age:reqBody.age,
       age,
       token,
     };
-
     const data = await userService.createUser(filter);
-
     res.status(200).json({ success: true, data: data });
   } catch (err) {
     res.status(500).json({ err: err.message });
@@ -107,52 +97,49 @@ const loginEmail = async (req, res) => {
     console.log(req.body);
     const findUser = await userService.findUserByLogonEmail(reqBody.email);
     console.log(findUser, "++++");
-    if (!findUser) throw Error("User not found");
-
-    if (lat1 !== undefined && long1 !== undefined) {
-      findUser.lat = lat1;
-      findUser.long = long1;
-      await findUser.save(); // Save the changes to the database
-    }
-    let option = {
-      email: findUser.email,
-      lat1: findUser.lat,
-      long1: findUser.long,
-      exp: moment().add(1, "day").unix(),
-    };
-    let token;
-    if (findUser) {
-      token = await jwt.sign(option, jwtSecrectKey);
-    }
-    let datas;
-    if (token) {
-      datas = await userService.findUserAndUpdate(findUser._id, token);
-    }
-
-    ejs.renderFile(
-      path.join(__dirname, "../views/login-template.ejs"),
-      {
-        email: reqBody.email,
-        // otp: ("0".repeat(4) + Math.floor(Math.random() * 10 ** 4)).slice(-4),
-        first_name: reqBody.first_name,
-        last_name: reqBody.last_name,
-      },
-      async (err, data) => {
-        if (err) {
-          let userCreated = await userService.getUserByEmail(reqBody.email);
-          if (userCreated) {
-            // await userService.deleteUserByEmail(reqBody.email);
+    if (!findUser) {
+      ejs.renderFile(
+        path.join(__dirname, "../views/login-template-nouser.ejs"),
+        {
+          email: reqBody.email,
+          // otp: ("0".repeat(4) + Math.floor(Math.random() * 10 ** 4)).slice(-4),
+          first_name: reqBody.first_name,
+          last_name: reqBody.last_name,
+        },
+        async (err, data) => {
+          if (err) {
+            throw new Error("Something went wrong, please try again.");
+          } else {
+            emailService.sendMail(reqBody.email, data, "Verify Email");
           }
-          throw new Error("Something went wrong, please try again.");
-        } else {
-          emailService.sendMail(reqBody.email, data, "Verify Email");
         }
-      }
-    );
+      );
+    } else {
+      ejs.renderFile(
+        path.join(__dirname, "../views/login-template.ejs"),
+        {
+          email: reqBody.email,
+          // otp: ("0".repeat(4) + Math.floor(Math.random() * 10 ** 4)).slice(-4),
+          first_name: reqBody.first_name,
+          last_name: reqBody.last_name,
+        },
+        async (err, data) => {
+          if (err) {
+            let userCreated = await userService.getUserByEmail(reqBody.email);
+            if (userCreated) {
+              // await userService.deleteUserByEmail(reqBody.email);
+            }
+            throw new Error("Something went wrong, please try again.");
+          } else {
+            emailService.sendMail(reqBody.email, data, "Verify Email");
+          }
+        }
+      );
+    }
     res.status(200).json({
       success: true,
-      message: "User create successfully!",
-      data: { datas },
+      message: "send mail successfully",
+      // data: { find },
     });
   } catch (error) {
     res.status(404).json({ error: error.message });
@@ -218,9 +205,25 @@ const verifyOtp = async (req, res) => {
     }
     findEmail.otp = otp;
     await findEmail.save();
-    if (findEmail.otp !== otp) {
+    if (findEmail.otp != otp) {
       throw new Error("Invalid OTP entered!");
     }
+
+    let option = {
+      phoneNumber,
+      exp: moment().add(1, "days").unix(),
+    };
+
+    let token;
+    if (findEmail) {
+      token = await jwt.sign(option, jwtSecrectKey);
+    }
+
+    let data;
+    if (token) {
+      data = await userService.findUserAndUpdate(findEmail._id, token);
+    }
+
     return res.status(200).json({
       success: true,
       message: "your otp is right thank",
