@@ -22,8 +22,8 @@ const Login = () => {
 
       // Handle successful login (redirect, set authentication token, etc.)
       console.log("Login successful:", response.data);
-      localStorage.setItem("token", response.data.data.token);
-      console.log(response.data.data.token);
+      localStorage.setItem("token", response.data.refreshToken);
+      console.log(response.data.refreshToken);
       setShowSuccessAlert(true);
 
       // Hide the success alert after 3 seconds (adjust the timeout as needed)

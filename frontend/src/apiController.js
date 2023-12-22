@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const mainUrl = process.env.NODE_ENV === "http://localhost:8500/v1/";
+process.env.NODE_ENV === "development"
+  ? "http://localhost:9500"
+  : "http://167.71.227.102:9500";
 
 axios.interceptors.response.use(
   (response) => response,
@@ -11,13 +13,13 @@ axios.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        const refreshToken = localStorage.getItem("token");
+        const refreshToken = localStorage.getItem("refreshToken");
         // const response = await axios.post(`${mainUrl}/token/create-token`, { refreshToken });
         // const token = response.data.info;
         // console.log(response.data.info);
-        localStorage.setItem("token", token);
+        localStorage.setItem("token", refreshToken);
         // Retry the original request with the new token
-        originalRequest.headers.Authorization = `Bearer ${token}`;
+        originalRequest.headers.Authorization = `Bearer ${refreshToken}`;
         // console.log(originalRequest);
         return axios(originalRequest);
       } catch (error) {
