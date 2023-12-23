@@ -7,6 +7,7 @@ const Test = React.lazy(() => import("./views/theme/colors/test"));
 const View = React.lazy(() => import("./views/theme/colors/ViewDemo"));
 const indexForm = React.lazy(() => import("./views/theme/colors/indexForm"));
 const List = React.lazy(() => import("./views/theme/listPages/List"));
+const Interest = React.lazy(() => import("./views/theme/listPages/Interest"));
 
 // const common = React.lazy(() => import('./views/theme/colors/common'))
 
@@ -65,6 +66,7 @@ const routes = [
   { path: "/test", name: "", element: Test, exact: true },
   { path: "/indexForm", name: "", element: indexForm, exact: true },
   { path: "/sexual_orientation", name: "", element: List, exact: true },
+  { path: "/interest", name: "", element: Interest, exact: true },
 
   // { path: '/user/views', name: 'User', element: Users },
   // { path: '/user/common', name: 'common', element: common },

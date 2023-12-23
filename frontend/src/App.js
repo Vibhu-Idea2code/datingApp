@@ -12,7 +12,7 @@ const loading = (
 // Containers
 
 const DefaultLayout = React.lazy(() => import("./layout/DefaultLayout"));
-const LoginLayout = React.lazy(() => import("./layout/LoginLayout"));
+// const LoginLayout = React.lazy(() => import("./layout/LoginLayout"));
 const Login = React.lazy(() => import("./views/pages/login/Login"));
 
 // Pages
@@ -20,30 +20,32 @@ const Register = React.lazy(() => import("./views/pages/register/Register"));
 const Page404 = React.lazy(() => import("./views/pages/page404/Page404"));
 const Page500 = React.lazy(() => import("./views/pages/page500/Page500"));
 
-const App = () => {
-  const { isAuthenticated } = useUserState();
+class App extends Component {
+  // const { isAuthenticated } = useUserState();
 
-  const PublicRoute = () => {
-    return isAuthenticated || Boolean(localStorage.getItem("token")) ? (
-      <Navigate to="/dashboard" />
-    ) : (
-      <LoginLayout />
-    );
-  };
+  // const PublicRoute = () => {
+  //   return isAuthenticated || Boolean(localStorage.getItem("token")) ? (
+  //     <Navigate to="/dashboard" />
+  //   ) : (
+  //     <LoginLayout />
+  //   );
+  // };
 
-  const PrivateRoute = () => {
-    return isAuthenticated || Boolean(localStorage.getItem("token")) ? (
-      <DefaultLayout />
-    ) : (
-      <Navigate to="/" />
-    );
-  };
+  // const PrivateRoute = () => {
+  //   return isAuthenticated || Boolean(localStorage.getItem("token")) ? (
+  //     <DefaultLayout />
+  //   ) : (
+  //     <Navigate to="/" />
+  //   );
+  // };
   // render() {
-  return (
-    <BrowserRouter>
-      <Suspense fallback={loading}>
-        <Routes>
-          <Route path="/" element={<PublicRoute />}>
+  render() {
+    return (
+      <BrowserRouter>
+        <Suspense fallback={loading}>
+          <Routes>
+            <Route exact path="*" name="Home" element={<DefaultLayout />} />
+            {/* <Route path="/" element={<PublicRoute />}>
             <Route exact path="/" index element={<Login />} />
             <Route
               exact
@@ -66,25 +68,16 @@ const App = () => {
 
           <Route path="/" element={<PrivateRoute />}>
             <Route path="*" name="Home" element={<DefaultLayout />} />
-          </Route>
-          {/* <Routes>
-          
-          <Route exact path="*" name="Home" element={<DefaultLayout />} />
-          <Route
-            exact
-            path="/register"
-            name="Register Page"
-            element={<Register />}
-          />
-          <Route exact path="/404" name="Page 404" element={<Page404 />} />
-          <Route exact path="/500" name="Page 500" element={<Page500 />} />
-          <Route path="/" name="Login Page" element={<Login />} />
-        </Routes> */}
-        </Routes>
-      </Suspense>
-    </BrowserRouter>
-  );
-};
-// }
+          </Route> */}
+
+            <Route exact path="/404" name="Page 404" element={<Page404 />} />
+            <Route exact path="/500" name="Page 500" element={<Page500 />} />
+            <Route path="/" name="Login Page" element={<Login />} />
+          </Routes>
+        </Suspense>
+      </BrowserRouter>
+    );
+  }
+}
 
 export default App;

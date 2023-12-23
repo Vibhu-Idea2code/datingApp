@@ -65,7 +65,7 @@ const _nav = [
       {
         component: CNavItem,
         name: "Interests",
-        to: "/interests",
+        to: "/interest",
       },
       {
         component: CNavItem,

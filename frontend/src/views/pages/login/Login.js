@@ -4,12 +4,12 @@ import axios from "axios";
 // import HomeLayout from 'src/layout/HomeLayout';
 
 const Login = () => {
-  const [email, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
-  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
-  const navigate = useNavigate();
-  const handleLogin = async () => {
+const [email, setUsername] = useState("");
+const [password, setPassword] = useState("");
+const [error, setError] = useState(null);
+const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+const navigate = useNavigate();
+const handleLogin = async () => {
     try {
       // Make an API call to your login endpoint
       const response = await axios.post(
@@ -19,13 +19,11 @@ const Login = () => {
           password,
         }
       );
-
       // Handle successful login (redirect, set authentication token, etc.)
       console.log("Login successful:", response.data);
       localStorage.setItem("token", response.data.refreshToken);
       console.log(response.data.refreshToken);
       setShowSuccessAlert(true);
-
       // Hide the success alert after 3 seconds (adjust the timeout as needed)
       setTimeout(() => {
         setShowSuccessAlert(false);
@@ -37,7 +35,6 @@ const Login = () => {
       console.error("Login error:", err);
     }
   };
-
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <div className="container">
