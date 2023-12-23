@@ -113,6 +113,10 @@ const userSchema = new mongoose.Schema(
     city: {
       type: String,
     },
+    online:{
+      type:Boolean,
+    },
+      
     aboutMe: {
       type: String,
     },

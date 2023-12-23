@@ -10,5 +10,4 @@ module.exports.Plan = require("./plan.model");
 module.exports.Like = require("./like.model");
 module.exports.Token = require("./token.model");
 module.exports.Subscription = require("./subscription.model");
-
-
+module.exports.Message = require("./message.model");
