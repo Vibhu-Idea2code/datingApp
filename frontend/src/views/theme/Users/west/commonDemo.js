@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Users from './Users';
+import Users from '../Users';
 // import UserDetail from './UserDetails';
 import UserDetails from './UserDetDemo';
 

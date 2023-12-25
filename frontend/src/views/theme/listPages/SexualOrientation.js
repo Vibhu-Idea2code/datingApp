@@ -17,13 +17,13 @@ import { Grid, Switch } from "@mui/material";
 import * as Icons from "@mui/icons-material";
 import no_profile from "../../../assets/images/users/no_profile.jpg";
 
-export default function Users() {
+export default function SexualOrientation() {
   const navigate = useNavigate();
   // const [rows, setRows] = useState([]);
   const [datatableData, setdatatableData] = useState([]);
 
   const getData = async () => {
-    await axios.get("http://localhost:9500/v1/admin/user-list").then((res) => {
+    await axios.get("http://localhost:9500/v1/sexual/list").then((res) => {
       setdatatableData(res.data.data);
     });
   };
@@ -34,44 +34,8 @@ export default function Users() {
 
   const columns = [
     {
-      name: "user_img",
-      label: "Profile",
-      options: {
-        customBodyRender: (user_img) =>
-          user_img ? (
-            <img
-              src={`http://localhost:9500/profile_images/${user_img}`}
-              // alt={user_img}
-              style={{ height: "50px", width: "50px", borderRadius: "50%" }}
-            />
-          ) : (
-            <img
-              src={no_profile}
-              alt={user_img}
-              style={{ height: "50px", width: "50px", borderRadius: "50%" }}
-            />
-          ),
-      },
-    },
-    {
-      name: "first_name",
+      name: "name",
       label: "Name",
-      options: {
-        filter: true,
-        sort: true,
-      },
-    },
-    {
-      name: "email",
-      label: "Email",
-      options: {
-        filter: true,
-        sort: true,
-      },
-    },
-    {
-      name: "phoneNumber",
-      label: "Mobile No",
       options: {
         filter: true,
         sort: true,
@@ -270,13 +234,13 @@ export default function Users() {
         variant="contained"
         color="primary"
         onClick={() => {
-          navigate("/indexForm");
+          navigate("/AddSeexualOrientation");
         }}>
-        Add User
+        Add Sexual
       </Button>
 
       <MUIDataTable
-        title={"Users"}
+        title={"SexualOrientation"}
         data={datatableData}
         columns={columns}
         options={options}

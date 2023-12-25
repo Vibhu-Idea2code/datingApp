@@ -17,13 +17,13 @@ import { Grid, Switch } from "@mui/material";
 import * as Icons from "@mui/icons-material";
 import no_profile from "../../../assets/images/users/no_profile.jpg";
 
-export default function Lists() {
+export default function Sign() {
   const navigate = useNavigate();
   // const [rows, setRows] = useState([]);
   const [datatableData, setdatatableData] = useState([]);
 
   const getData = async () => {
-    await axios.get("http://localhost:9500/v1/sexual/list").then((res) => {
+    await axios.get("http://localhost:9500/v1/sign/list").then((res) => {
       setdatatableData(res.data.data);
     });
   };
@@ -33,26 +33,7 @@ export default function Lists() {
   }, []);
 
   const columns = [
-    // {
-    //   name: "user_img",
-    //   label: "Profile",
-    //   options: {
-    //     customBodyRender: (user_img) =>
-    //       user_img ? (
-    //         <img
-    //           src={`http://localhost:9500/profile_images/${user_img}`}
-    //           // alt={user_img}
-    //           style={{ height: "50px", width: "50px", borderRadius: "50%" }}
-    //         />
-    //       ) : (
-    //         <img
-    //           src={no_profile}
-    //           alt={user_img}
-    //           style={{ height: "50px", width: "50px", borderRadius: "50%" }}
-    //         />
-    //       ),
-    //   },
-    // },
+    /* ---------------------------- COLUMNS FOR NAME ---------------------------- */
     {
       name: "name",
       label: "Name",
@@ -61,22 +42,7 @@ export default function Lists() {
         sort: true,
       },
     },
-    // {
-    //   name: "email",
-    //   label: "Email",
-    //   options: {
-    //     filter: true,
-    //     sort: true,
-    //   },
-    // },
-    // {
-    //   name: "phoneNumber",
-    //   label: "Mobile No",
-    //   options: {
-    //     filter: true,
-    //     sort: true,
-    //   },
-    // },
+    /* --------------------------- COLUMNS FOR STATUS --------------------------- */
     {
       name: "status",
       label: "Status",
@@ -110,6 +76,7 @@ export default function Lists() {
         },
       },
     },
+    /* --------------------------- COLUMNS FOR ACTIONS -------------------------- */
     {
       name: "_id",
       label: "Action",
@@ -270,13 +237,13 @@ export default function Lists() {
         variant="contained"
         color="primary"
         onClick={() => {
-          navigate("/sexual");
+          navigate("/AddSign");
         }}>
-        Add Sexual
+        Add Sign
       </Button>
 
       <MUIDataTable
-        title={"Users"}
+        title={"Sign"}
         data={datatableData}
         columns={columns}
         options={options}

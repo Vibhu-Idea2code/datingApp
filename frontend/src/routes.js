@@ -2,12 +2,40 @@ import React from "react";
 // import Popup from './views/theme/colors/Popup'
 
 const Dashboard = React.lazy(() => import("./views/dashboard/Dashboard"));
-const Users = React.lazy(() => import("./views/theme/colors/Users"));
-const Test = React.lazy(() => import("./views/theme/colors/test"));
-const View = React.lazy(() => import("./views/theme/colors/ViewDemo"));
-const indexForm = React.lazy(() => import("./views/theme/colors/indexForm"));
-const List = React.lazy(() => import("./views/theme/listPages/List"));
+
+/* ----------------------- USER DETAILS WITH LIST ADD ----------------------- */
+const Users = React.lazy(() => import("./views/theme/Users/Users"));
+const indexForm = React.lazy(() => import("./views/theme/Users/indexForm"));
+
+/* --------------------------- SEXUAL ORIENTATION --------------------------- */
+const List = React.lazy(() =>
+  import("./views/theme/listPages/SexualOrientation")
+);
+const AddSeexualOrientation = React.lazy(() =>
+  import("./views/theme/listPages/AddSeexualOrientation")
+);
+
+/* --------------------------------- HOBBIES -------------------------------- */
 const Interest = React.lazy(() => import("./views/theme/listPages/Interest"));
+const AddInterest = React.lazy(() =>
+  import("./views/theme/listPages/AddInterest")
+);
+
+/* ---------------------------------- PETS ---------------------------------- */
+const Pets = React.lazy(() => import("./views/theme/listPages/Pets"));
+const AddPet = React.lazy(() => import("./views/theme/listPages/AddPet"));
+
+/* ------------------------------- ZODIAC SIGN ------------------------------ */
+const Sign = React.lazy(() => import("./views/theme/listPages/Sign"));
+const AddSign = React.lazy(() => import("./views/theme/listPages/AddSign"));
+
+
+
+
+// const View = React.lazy(() => import("./views/theme/Users/west/ViewDemo"));
+// const Test = React.lazy(() => import("./views/theme/colors/west/test"));
+
+// const Interest = React.lazy(() => import("./views/theme/listPages/Interest"));
 
 // const common = React.lazy(() => import('./views/theme/colors/common'))
 
@@ -62,11 +90,33 @@ const Interest = React.lazy(() => import("./views/theme/listPages/Interest"));
 const routes = [
   { path: "/", exact: true, name: "Home" },
   { path: "/dashboard", name: "Dashboard", element: Dashboard },
+
+  /* ------------------------ user routes with list add ----------------------- */
   { path: "/user", name: "", element: Users, exact: true },
-  { path: "/test", name: "", element: Test, exact: true },
+  // { path: "/test", name: "", element: Test, exact: true },
   { path: "/indexForm", name: "", element: indexForm, exact: true },
-  { path: "/sexual_orientation", name: "", element: List, exact: true },
-  { path: "/interest", name: "", element: Interest, exact: true },
+
+/* ----------------- SEXUAL ORIENTATION ROUTES WITH ADD,LIST ---------------- */
+{ path: "/sexual_orientation", name: "", element: List, exact: true },
+{
+  path: "/AddSeexualOrientation",
+  name: "",
+  element: AddSeexualOrientation,
+  exact: true,
+},
+
+/* ---------------------- HOBBIES ROUTES WITH ADD,LIST ---------------------- */
+{ path: "/interest", name: "", element: Interest, exact: true },
+{ path: "/AddInterest", name: "", element: AddInterest, exact: true },
+
+/* ------------------------ PETS ROUTES WITH ADD,LIST ----------------------- */
+{ path: "/pets_list", name: "", element: Pets, exact: true },
+{ path: "/AddPet", name: "", element: AddPet, exact: true },
+
+
+/* -------------------- ZODIAC SIGN ROUTES WITH ADD,LIST -------------------- */
+  { path: "/zodiac_sign_list", name: "", element: Sign, exact: true },
+  { path: "/AddSign", name: "", element: AddSign, exact: true },
 
   // { path: '/user/views', name: 'User', element: Users },
   // { path: '/user/common', name: 'common', element: common },

@@ -41,39 +41,56 @@ const _nav = [
   },
   {
     component: CNavItem,
-    name: "test",
-    to: "/test",
+    name: "SexualOrientation",
+    to: "/sexual_orientation",
     icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
   },
-
   {
-    component: CNavTitle,
-    name: "",
+    component: CNavItem,
+    name: "Interest",
+    to: "/interest",
+    icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
   },
   {
-    component: CNavGroup,
-    name: "Base",
-    to: "",
-    icon: <CIcon icon={cilPuzzle} customClassName="nav-icon" />,
-    items: [
-      {
-        component: CNavItem,
-        name: "SexualOrientation",
-        to: "/sexual_orientation",
-      },
-
-      {
-        component: CNavItem,
-        name: "Interests",
-        to: "/interest",
-      },
-      {
-        component: CNavItem,
-        name: "Pets",
-        to: "/pet",
-      },
-    ],
+    component: CNavItem,
+    name: "Pet",
+    to: "/pets_list",
+    icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
   },
+  {
+    component: CNavItem,
+    name: "Zodiac Sign",
+    to: "/zodiac_sign_list",
+    icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
+  },
+  // {
+  //   component: CNavTitle,
+  //   name: "",
+  // },
+  // {
+  //   component: CNavGroup,
+  //   name: "Base",
+  //   to: "",
+  //   icon: <CIcon icon={cilPuzzle} customClassName="nav-icon" />,
+  //   items: [
+  //     {
+  //       component: CNavItem,
+  //       name: "SexualOrientation",
+  //       to: "/sexual_orientation",
+  //     },
+
+  //     {
+  //       component: CNavItem,
+  //       name: "Interests",
+  //       to: "/interest",
+  //     },
+  //     {
+  //       component: CNavItem,
+  //       name: "Pets",
+  //       to: "/pet",
+  //     },
+  //   ],
+  // },
   //     {
   //       component: CNavItem,
   //       name: 'Cards',
