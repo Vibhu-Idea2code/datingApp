@@ -159,46 +159,35 @@ const register = async (req, res) => {
   // const { email, password, role } = req.body;
   try {
     const reqBody = req.body;
-    // reqBody.user_img = "";
-    if (req.file) {
-      reqBody.user_img = req.file.filename;
-    }
-
-    // console.log(req.body);
     const existingUser = await userService.findUserByEmail(reqBody.email);
-
     if (existingUser) {
-      return res.status(400).json({
-        success: false,
-        message: "User with this email already exists.",
-      });
+      throw new Error("User with this email already exists.");
     }
 
-    // Validate that at least 3 out of 5 interests are provided
-    // if (!reqBody.interest || reqBody.interest.length < 3) {
-    //   throw new Error("At least 3 out of 5 interests are required.");
-    // }
+    if (!req.files || req.files.length <= 1 || req.files.length >= 7) {
+      throw new Error(`Between 2 and 6 images are required.`);
+    }
+    user_img = [];
+    if (req.files) {
+      for (let ele of req.files) {
+        user_img.push(ele.filename);
+      }
+    } else {
+      throw new Error("user image is required!");
+    }
+    reqBody.user_img = user_img;
 
-    // // Validate that at least 3 out of 5 sexual are provided
-    // if (!reqBody.sexual || reqBody.sexual.length < 3) {
-    //   throw new Error("At least 3 out of 5 sexual are required.");
-    // }
-
-    // if (!reqBody.birthDate) {
-    //   throw new Error("Birthdate is required for age calculation.");
-    // }
-
+    if (!reqBody.birthDate) {
+      throw new Error("Birthdate is required for age calculation.");
+    }
     // Use helper to calculate age
     const age = userHelper.calculateAge(reqBody.birthDate);
-
     let option = {
       email: reqBody.email,
       role: reqBody.role,
       exp: moment().add(1, "days").unix(),
     };
-
     const token = await jwt.sign(option, jwtSecrectKey);
-
     const filter = {
       ...reqBody,
       email: reqBody.email,
@@ -220,16 +209,15 @@ const register = async (req, res) => {
       last_name: reqBody.last_name,
       phoneNumber: reqBody.phoneNumber,
       jobTitle: reqBody.jobTitle,
+      // user_img: reqBody.user_img,
       // age:reqBody.age,
       age,
       token,
     };
-
-    const data = await userService.createUser(filter);
-
-    res.status(200).json({ success: true, data: data });
+    const abcd = await userService.createUser(filter);
+    res.status(200).json({ success: true, data: abcd });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ err: err.message });
   }
 };
 

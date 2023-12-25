@@ -113,10 +113,10 @@ const userSchema = new mongoose.Schema(
     city: {
       type: String,
     },
-    online:{
-      type:Boolean,
+    online: {
+      type: Boolean,
     },
-      
+
     aboutMe: {
       type: String,
     },
@@ -129,21 +129,21 @@ const userSchema = new mongoose.Schema(
       default: "user",
       enum: ["admin", "user", "subadmin"], // 1-admin  2 -user   3-superadmin
     },
-  },
-
-  {
-    timestamps: true,
-    versionKey: false,
-    toJSON: {
-      transform: function (doc, data) {
-        if (Array.isArray(data.user_img)) {
-          data.user_img = data.user_img.map(
-            (user_img) => `${config.base_url}profile_images/${user_img}`
-          );
-        }
-      },
-    },
   }
+
+  // {
+  //   timestamps: true,
+  //   versionKey: false,
+  //   toJSON: {
+  //     transform: function (doc, data) {
+  //       if (Array.isArray(data.user_img)) {
+  //         data.user_img = data.user_img.map(
+  //           (user_img) => `${config.base_url}profile_images/${user_img}`
+  //         );
+  //       }
+  //     },
+  //   },
+  // }
 );
 
 const User = mongoose.model("user", userSchema);
