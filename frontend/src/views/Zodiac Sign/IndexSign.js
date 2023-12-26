@@ -1,33 +1,23 @@
 import * as React from "react";
-
-import Box from "@mui/material/Box";
-import { DataGrid } from "@mui/x-data-grid";
 import { useState } from "react";
 import axios from "axios";
 import { useEffect } from "react";
-// import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import { Grid, Switch } from "@mui/material";
 import * as Icons from "@mui/icons-material";
-import no_profile from "../../../assets/images/users/no_profile.jpg";
 
-export default function Interest() {
+export default function Sign() {
+  
   const navigate = useNavigate();
   // const [rows, setRows] = useState([]);
   const [datatableData, setdatatableData] = useState([]);
 
   const getData = async () => {
-    await axios
-      .get("http://localhost:9500/v1/list/list-interest")
-      .then((res) => {
-        setdatatableData(res.data.data.getHob);
-      });
+    await axios.get("http://localhost:9500/v1/sign/list").then((res) => {
+      setdatatableData(res.data.data);
+    });
   };
 
   useEffect(() => {
@@ -35,26 +25,7 @@ export default function Interest() {
   }, []);
 
   const columns = [
-    // {
-    //   name: "logo",
-    //   label: "Profile",
-    //   options: {
-    //     customBodyRender: (logo) =>
-    //       logo ? (
-    //         <img
-    //           src={`http://localhost:9500/profile_images/${logo}`}
-    //           // alt={logo}
-    //           style={{ height: "50px", width: "50px", borderRadius: "50%" }}
-    //         />
-    //       ) : (
-    //         <img
-    //           src={no_profile}
-    //           alt={logo}
-    //           style={{ height: "50px", width: "50px", borderRadius: "50%" }}
-    //         />
-    //       ),
-    //   },
-    // },
+    /* ---------------------------- COLUMNS FOR NAME ---------------------------- */
     {
       name: "name",
       label: "Name",
@@ -63,22 +34,7 @@ export default function Interest() {
         sort: true,
       },
     },
-    // {
-    //   name: "email",
-    //   label: "Email",
-    //   options: {
-    //     filter: true,
-    //     sort: true,
-    //   },
-    // },
-    // {
-    //   name: "phoneNumber",
-    //   label: "Mobile No",
-    //   options: {
-    //     filter: true,
-    //     sort: true,
-    //   },
-    // },
+    /* --------------------------- COLUMNS FOR STATUS --------------------------- */
     {
       name: "status",
       label: "Status",
@@ -112,6 +68,7 @@ export default function Interest() {
         },
       },
     },
+    /* --------------------------- COLUMNS FOR ACTIONS -------------------------- */
     {
       name: "_id",
       label: "Action",
@@ -272,13 +229,13 @@ export default function Interest() {
         variant="contained"
         color="primary"
         onClick={() => {
-          navigate("/AddInterest");
+          navigate("/AddSign");
         }}>
-        Add Hobbies
+        Add Sign
       </Button>
 
       <MUIDataTable
-        title={"Interest"}
+        title={"IndexSign"}
         data={datatableData}
         columns={columns}
         options={options}

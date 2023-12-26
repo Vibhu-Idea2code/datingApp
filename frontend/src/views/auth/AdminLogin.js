@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 // import HomeLayout from 'src/layout/HomeLayout';
 
-const Login = () => {
+const AdminLogin = () => {
 const [email, setUsername] = useState("");
 const [password, setPassword] = useState("");
 const [error, setError] = useState(null);
@@ -116,4 +116,4 @@ const handleLogin = async () => {
   );
 };
 
-export default Login;
+export default AdminLogin;

@@ -15,16 +15,17 @@ import { useNavigate } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import { Grid, Switch } from "@mui/material";
 import * as Icons from "@mui/icons-material";
-import no_profile from "../../../assets/images/users/no_profile.jpg";
+// import no_profile from "../../../assets/images/users/no_profile.jpg";
 
-export default function Pets() {
+export default function IndexUser() {
   const navigate = useNavigate();
   // const [rows, setRows] = useState([]);
   const [datatableData, setdatatableData] = useState([]);
-
+  const [baseurl, setbaseurl] = useState([]);
   const getData = async () => {
-    await axios.get("http://localhost:9500/v1/pet/list").then((res) => {
+    await axios.get("http://localhost:9500/v1/admin/user-list").then((res) => {
       setdatatableData(res.data.data);
+      setbaseurl(res.data.baseUrl);
     });
   };
 
@@ -33,9 +34,45 @@ export default function Pets() {
   }, []);
 
   const columns = [
+    // {
+    //   name: "user_img",
+    //   label: "Profile",
+    //   options: {
+    //     customBodyRender: (user_img) =>
+    //       user_img ? (
+    //         <img
+    //           src={`http://localhost:9500/profile_images/${user_img}`}
+    //           alt={user_img}
+    //           style={{ height: "50px", width: "50px", borderRadius: "50%" }}
+    //         />
+    //       ) : (
+    //         <img
+    //           src={no_profile}
+    //           alt={user_img}
+    //           style={{ height: "50px", width: "50px", borderRadius: "50%" }}
+    //         />
+    //       ),
+    //   },
+    // },
     {
-      name: "name",
+      name: "first_name",
       label: "Name",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "email",
+      label: "Email",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "phoneNumber",
+      label: "Mobile No",
       options: {
         filter: true,
         sort: true,
@@ -106,7 +143,7 @@ export default function Pets() {
                     state: {
                       userdata: userdata,
                       insightdata: insightdata,
-                      imageurl: baseurl,
+                      baseurl: baseurl,
                     },
                   });
                 }}
@@ -117,9 +154,11 @@ export default function Pets() {
                   const editdata = datatableData.find(
                     (data) => data._id === value
                   );
-                  navigate("/user/manage", {
-                    state: { editdata: editdata, imageurl: baseurl },
+                  navigate("/indexForm", {
+                    state: { editdata: editdata, baseurl: baseurl },
                   });
+                  // console.log(editdata,"editdata-user list : line number :- 159");
+                  // console.log(imageurl);
                 }}
               />
               <Icons.Delete
@@ -234,13 +273,13 @@ export default function Pets() {
         variant="contained"
         color="primary"
         onClick={() => {
-          navigate("/AddPet");
+          navigate("/indexForm");
         }}>
-        Add Pet
+        Add User
       </Button>
 
       <MUIDataTable
-        title={"Pets"}
+        title={"Users"}
         data={datatableData}
         columns={columns}
         options={options}

@@ -4,33 +4,30 @@ import React from "react";
 const Dashboard = React.lazy(() => import("./views/dashboard/Dashboard"));
 
 /* ----------------------- USER DETAILS WITH LIST ADD ----------------------- */
-const Users = React.lazy(() => import("./views/theme/Users/Users"));
-const indexForm = React.lazy(() => import("./views/theme/Users/indexForm"));
+const IndexForm = React.lazy(() => import("./views/User/IndexUser"));
+const UserForm = React.lazy(() => import("./views/User/UserForm"));
 
 /* --------------------------- SEXUAL ORIENTATION --------------------------- */
 const List = React.lazy(() =>
-  import("./views/theme/listPages/SexualOrientation")
+  import("./views/Sexual Orientation/IndexSexualOrientation")
 );
 const AddSeexualOrientation = React.lazy(() =>
-  import("./views/theme/listPages/AddSeexualOrientation")
+  import("./views/Sexual Orientation/AddSeexualOrientation")
 );
 
 /* --------------------------------- HOBBIES -------------------------------- */
-const Interest = React.lazy(() => import("./views/theme/listPages/Interest"));
+const Interest = React.lazy(() => import("./views/Hobbies/IndexInterest"));
 const AddInterest = React.lazy(() =>
-  import("./views/theme/listPages/AddInterest")
+  import("./views/Hobbies/AddInterest")
 );
 
 /* ---------------------------------- PETS ---------------------------------- */
-const Pets = React.lazy(() => import("./views/theme/listPages/Pets"));
-const AddPet = React.lazy(() => import("./views/theme/listPages/AddPet"));
+const Pets = React.lazy(() => import("./views/Pet/IndexPets"));
+const AddPet = React.lazy(() => import("./views/Pet/AddPet"));
 
 /* ------------------------------- ZODIAC SIGN ------------------------------ */
-const Sign = React.lazy(() => import("./views/theme/listPages/Sign"));
-const AddSign = React.lazy(() => import("./views/theme/listPages/AddSign"));
-
-
-
+const Sign = React.lazy(() => import("./views/Zodiac Sign/IndexSign"));
+const AddSign = React.lazy(() => import("./views/Zodiac Sign/AddSign"));
 
 // const View = React.lazy(() => import("./views/theme/Users/west/ViewDemo"));
 // const Test = React.lazy(() => import("./views/theme/colors/west/test"));
@@ -92,35 +89,34 @@ const routes = [
   { path: "/dashboard", name: "Dashboard", element: Dashboard },
 
   /* ------------------------ user routes with list add ----------------------- */
-  { path: "/user", name: "", element: Users, exact: true },
+  { path: "/user", name: "", element: IndexForm, exact: true },
   // { path: "/test", name: "", element: Test, exact: true },
-  { path: "/indexForm", name: "", element: indexForm, exact: true },
+  { path: "/indexForm", name: "", element: UserForm, exact: true },
 
-/* ----------------- SEXUAL ORIENTATION ROUTES WITH ADD,LIST ---------------- */
-{ path: "/sexual_orientation", name: "", element: List, exact: true },
-{
-  path: "/AddSeexualOrientation",
-  name: "",
-  element: AddSeexualOrientation,
-  exact: true,
-},
+  /* ----------------- SEXUAL ORIENTATION ROUTES WITH ADD,LIST ---------------- */
+  { path: "/sexual_orientation", name: "", element: List, exact: true },
+  {
+    path: "/AddSeexualOrientation",
+    name: "",
+    element: AddSeexualOrientation,
+    exact: true,
+  },
 
-/* ---------------------- HOBBIES ROUTES WITH ADD,LIST ---------------------- */
-{ path: "/interest", name: "", element: Interest, exact: true },
-{ path: "/AddInterest", name: "", element: AddInterest, exact: true },
+  /* ---------------------- HOBBIES ROUTES WITH ADD,LIST ---------------------- */
+  { path: "/interest", name: "", element: Interest, exact: true },
+  { path: "/AddInterest", name: "", element: AddInterest, exact: true },
 
-/* ------------------------ PETS ROUTES WITH ADD,LIST ----------------------- */
-{ path: "/pets_list", name: "", element: Pets, exact: true },
-{ path: "/AddPet", name: "", element: AddPet, exact: true },
+  /* ------------------------ PETS ROUTES WITH ADD,LIST ----------------------- */
+  { path: "/pets_list", name: "", element: Pets, exact: true },
+  { path: "/AddPet", name: "", element: AddPet, exact: true },
 
-
-/* -------------------- ZODIAC SIGN ROUTES WITH ADD,LIST -------------------- */
+  /* -------------------- ZODIAC SIGN ROUTES WITH ADD,LIST -------------------- */
   { path: "/zodiac_sign_list", name: "", element: Sign, exact: true },
   { path: "/AddSign", name: "", element: AddSign, exact: true },
 
   // { path: '/user/views', name: 'User', element: Users },
   // { path: '/user/common', name: 'common', element: common },
-  { path: "/view", name: "", element: View },
+  // { path: "/view", name: "", element: View },
   // { path: '/base', name: 'Base', element: Cards, exact: true },
   // { path: '/base/accordion', name: 'Accordion', element: Accordion },
   // { path: '/base/breadcrumbs', name: 'Breadcrumbs', element: Breadcrumbs },

@@ -1,21 +1,15 @@
 import * as React from "react";
-
-import Box from "@mui/material/Box";
-import { DataGrid } from "@mui/x-data-grid";
 import { useState } from "react";
 import axios from "axios";
 import { useEffect } from "react";
 // import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import VisibilityIcon from "@mui/icons-material/Visibility";
+
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import { Grid, Switch } from "@mui/material";
 import * as Icons from "@mui/icons-material";
-import no_profile from "../../../assets/images/users/no_profile.jpg";
+
 
 export default function SexualOrientation() {
   const navigate = useNavigate();

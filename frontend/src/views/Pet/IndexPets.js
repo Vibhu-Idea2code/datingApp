@@ -1,29 +1,21 @@
 import * as React from "react";
-
-import Box from "@mui/material/Box";
-import { DataGrid } from "@mui/x-data-grid";
 import { useState } from "react";
 import axios from "axios";
 import { useEffect } from "react";
-// import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import { Grid, Switch } from "@mui/material";
 import * as Icons from "@mui/icons-material";
-import no_profile from "../../../assets/images/users/no_profile.jpg";
 
-export default function Users() {
+
+export default function Pets() {
   const navigate = useNavigate();
   // const [rows, setRows] = useState([]);
   const [datatableData, setdatatableData] = useState([]);
 
   const getData = async () => {
-    await axios.get("http://localhost:9500/v1/admin/user-list").then((res) => {
+    await axios.get("http://localhost:9500/v1/pet/list").then((res) => {
       setdatatableData(res.data.data);
     });
   };
@@ -33,45 +25,9 @@ export default function Users() {
   }, []);
 
   const columns = [
-    // {
-    //   name: "user_img",
-    //   label: "Profile",
-    //   options: {
-    //     customBodyRender: (user_img) =>
-    //       user_img ? (
-    //         <img
-    //           src={`http://localhost:9500/profile_images/${user_img}`}
-    //           alt={user_img}
-    //           style={{ height: "50px", width: "50px", borderRadius: "50%" }}
-    //         />
-    //       ) : (
-    //         <img
-    //           src={no_profile}
-    //           alt={user_img}
-    //           style={{ height: "50px", width: "50px", borderRadius: "50%" }}
-    //         />
-    //       ),
-    //   },
-    // },
     {
-      name: "first_name",
+      name: "name",
       label: "Name",
-      options: {
-        filter: true,
-        sort: true,
-      },
-    },
-    {
-      name: "email",
-      label: "Email",
-      options: {
-        filter: true,
-        sort: true,
-      },
-    },
-    {
-      name: "phoneNumber",
-      label: "Mobile No",
       options: {
         filter: true,
         sort: true,
@@ -270,13 +226,13 @@ export default function Users() {
         variant="contained"
         color="primary"
         onClick={() => {
-          navigate("/indexForm");
+          navigate("/AddPet");
         }}>
-        Add User
+        Add Pet
       </Button>
 
       <MUIDataTable
-        title={"Users"}
+        title={"Pets"}
         data={datatableData}
         columns={columns}
         options={options}

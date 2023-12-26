@@ -10,17 +10,9 @@ import {
   CFormFeedback,
   CFormLabel,
   CFormInput,
-  CInputGroup,
-  CFormCheck,
-  CFormSelect,
-  CMultiSelect,
   CRow,
-  CFormTextarea,
-  CInputGroupText,
 } from "@coreui/react";
 import axios from "axios";
-import { DocsExample } from "src/components";
-import { array } from "prop-types";
 
 const AddSign = () => {
   const {

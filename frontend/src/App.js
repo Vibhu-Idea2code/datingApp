@@ -13,7 +13,7 @@ const loading = (
 
 const DefaultLayout = React.lazy(() => import("./layout/DefaultLayout"));
 // const LoginLayout = React.lazy(() => import("./layout/LoginLayout"));
-const Login = React.lazy(() => import("./views/pages/login/Login"));
+const AdminLogin = React.lazy(() => import("./views/auth/AdminLogin"));
 
 // Pages
 const Register = React.lazy(() => import("./views/pages/register/Register"));
@@ -72,7 +72,7 @@ class App extends Component {
 
             <Route exact path="/404" name="Page 404" element={<Page404 />} />
             <Route exact path="/500" name="Page 500" element={<Page500 />} />
-            <Route path="/" name="Login Page" element={<Login />} />
+            <Route path="/" name="Login Page" element={<AdminLogin />} />
           </Routes>
         </Suspense>
       </BrowserRouter>

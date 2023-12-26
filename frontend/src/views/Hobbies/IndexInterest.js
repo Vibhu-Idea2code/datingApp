@@ -15,17 +15,19 @@ import { useNavigate } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import { Grid, Switch } from "@mui/material";
 import * as Icons from "@mui/icons-material";
-import no_profile from "../../../assets/images/users/no_profile.jpg";
+// import no_profile from "../../../assets/images/users/no_profile.jpg";
 
-export default function Sign() {
+export default function Interest() {
   const navigate = useNavigate();
   // const [rows, setRows] = useState([]);
   const [datatableData, setdatatableData] = useState([]);
 
   const getData = async () => {
-    await axios.get("http://localhost:9500/v1/sign/list").then((res) => {
-      setdatatableData(res.data.data);
-    });
+    await axios
+      .get("http://localhost:9500/v1/interest/list-interest")
+      .then((res) => {
+        setdatatableData(res.data.data.getHob);
+      });
   };
 
   useEffect(() => {
@@ -33,7 +35,26 @@ export default function Sign() {
   }, []);
 
   const columns = [
-    /* ---------------------------- COLUMNS FOR NAME ---------------------------- */
+    // {
+    //   name: "logo",
+    //   label: "Profile",
+    //   options: {
+    //     customBodyRender: (logo) =>
+    //       logo ? (
+    //         <img
+    //           src={`http://localhost:9500/profile_images/${logo}`}
+    //           // alt={logo}
+    //           style={{ height: "50px", width: "50px", borderRadius: "50%" }}
+    //         />
+    //       ) : (
+    //         <img
+    //           src={no_profile}
+    //           alt={logo}
+    //           style={{ height: "50px", width: "50px", borderRadius: "50%" }}
+    //         />
+    //       ),
+    //   },
+    // },
     {
       name: "name",
       label: "Name",
@@ -42,7 +63,22 @@ export default function Sign() {
         sort: true,
       },
     },
-    /* --------------------------- COLUMNS FOR STATUS --------------------------- */
+    // {
+    //   name: "email",
+    //   label: "Email",
+    //   options: {
+    //     filter: true,
+    //     sort: true,
+    //   },
+    // },
+    // {
+    //   name: "phoneNumber",
+    //   label: "Mobile No",
+    //   options: {
+    //     filter: true,
+    //     sort: true,
+    //   },
+    // },
     {
       name: "status",
       label: "Status",
@@ -76,7 +112,6 @@ export default function Sign() {
         },
       },
     },
-    /* --------------------------- COLUMNS FOR ACTIONS -------------------------- */
     {
       name: "_id",
       label: "Action",
@@ -237,13 +272,13 @@ export default function Sign() {
         variant="contained"
         color="primary"
         onClick={() => {
-          navigate("/AddSign");
+          navigate("/AddInterest");
         }}>
-        Add Sign
+        Add Hobbies
       </Button>
 
       <MUIDataTable
-        title={"Sign"}
+        title={"Interest"}
         data={datatableData}
         columns={columns}
         options={options}
