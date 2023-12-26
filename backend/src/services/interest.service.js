@@ -24,6 +24,11 @@ const deleteHobbies = async (hobbiesId) => {
   return Hobbies.findByIdAndDelete(hobbiesId);
 };
 
+/**get Hobbies list */
+// const getHobbiesList = async (req, res) => {
+//   return Hobbies.find();
+// };
+
 module.exports = {
   createHobbies,
   getHobbiesList,

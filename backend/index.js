@@ -31,6 +31,10 @@ io.on("connection", (socket) => {
 app.use(express.static(path.resolve(__dirname, `./src/views`)));
 
 app.use("/v1", routes);
+app.use(
+  "/profile",
+  express.static(path.join(__dirname, "./src/public/profile_images"))
+);
 
 app.use(express.static(path.resolve("./src/views/index.html")));
 
