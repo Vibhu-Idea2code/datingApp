@@ -88,4 +88,10 @@ const updatePets = async (req, res) => {
     });
   }
 };
+
+
+
+const undoPets=async(req, res, next) => {
+  
+}
 module.exports = { createPets, getPetsList, getPetsId, deletePets,updatePets };

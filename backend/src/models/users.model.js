@@ -122,7 +122,7 @@ const userSchema = new mongoose.Schema(
     },
 
     user_img: {
-      type: Array,
+      type: [String],
     },
     role: {
       type: String,

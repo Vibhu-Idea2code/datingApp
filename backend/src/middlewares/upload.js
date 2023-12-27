@@ -5,7 +5,12 @@ const path = require("path");
 /** Image upload using disk storage */
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    if (file.fieldname == "profile" || file.fieldname == "logo" || file.fieldname == "admin_image" || file.fieldname == "user_img" ) {
+    if (
+      file.fieldname == "profile" ||
+      file.fieldname == "logo" ||
+      file.fieldname == "admin_image" ||
+      file.fieldname == "user_img"
+    ) {
       fs.mkdirSync(path.join(__dirname, "../public/profile_images"), {
         recursive: true,
       });
@@ -16,7 +21,12 @@ const storage = multer.diskStorage({
   filename: function (req, file, cb) {
     const ext = path.extname(file.originalname);
 
-    if (ext !== ".png" && ext !== ".jpg" && ext !== ".jpeg") {
+    if (
+      ext !== ".png" &&
+      ext !== ".jpg" &&
+      ext !== ".jpeg" &&
+      ext !== ".json"
+    ) {
       cb("Only .png, .jpg and .jpeg format are allowed!");
     }
     cb(null, new Date().getTime() + ext);

@@ -97,13 +97,18 @@ const updateInterest = async (req, res) => {
 const interestList = async (req, res) => {
   try {
     const getHob = await interestService.getHobbiesList();
-
+    const baseUrl =
+    req.protocol +
+    "://" +
+    req.get("host") +
+    process.env.BASE_URL_PROFILE_PATH;
     res.status(200).json({
       success: true,
       message: "interest List!",
       data: {
         getHob,
       },
+      baseUrl: baseUrl,
     });
   } catch (error) {
     res.status(400).json({
