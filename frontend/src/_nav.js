@@ -3,17 +3,12 @@ import CIcon from "@coreui/icons-react";
 // import { CIcon } from '@coreui/icons-react';
 import { cilList, cilPeople } from "@coreui/icons";
 import {
-  cilBell,
-  cilCalculator,
-  cilChartPie,
-  cilCursor,
-  cilDescription,
-  cilDrop,
-  cilNotes,
-  cilPencil,
-  cilPuzzle,
+  cilAnimal,
   cilSpeedometer,
-  cilStar,
+  cilMusicNote
+,
+  cilStarHalf,
+  cilWc,
 } from "@coreui/icons";
 import { CNavGroup, CNavItem, CNavTitle } from "@coreui/react";
 
@@ -37,31 +32,38 @@ const _nav = [
     name: "User",
     to: "/user",
     // to: '/user/users',
-    icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
+    icon: (
+      <CIcon
+        icon={cilPeople}
+        className="text-danger"
+        customClassName="nav-icon"
+      />
+    ),
   },
   {
     component: CNavItem,
     name: "SexualOrientation",
     to: "/sexual_orientation",
-    icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilWc} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
     name: "Interest",
     to: "/interest",
-    icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilMusicNote
+    } customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
     name: "Pet",
     to: "/pets_list",
-    icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilAnimal} customClassName="nav-icon" />,
   },
   {
     component: CNavItem,
     name: "Zodiac Sign",
     to: "/zodiac_sign_list",
-    icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilStarHalf} customClassName="nav-icon" />,
   },
   // {
   //   component: CNavTitle,

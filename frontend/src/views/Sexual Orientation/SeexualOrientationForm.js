@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   CButton,
   CCard,
@@ -22,27 +23,55 @@ import axios from "axios";
 import { DocsExample } from "src/components";
 import { array } from "prop-types";
 
-const AddSeexualOrientation = () => {
+const SeexualOrientationForm = () => {
+  const { state } = useLocation();
+  console.log(state, "addseexual orientation state  line no :-28");
+  const [isupdate, setisupdate] = useState("");
+  let navigate = useNavigate();
   const {
     handleSubmit,
     control,
     register,
+    getValues,
     setValue,
     formState: { errors },
   } = useForm();
 
+  var [defaultLoading, setdefaultLoading] = useState(true);
+  useEffect(() => {
+    // setIsLoading(false);
+    if (state) {
+      const { editdata, baseurl } = state;
+      setisupdate(editdata._id);
+      setValue("name", editdata.name);
+      setdefaultLoading(false);
+    } else {
+      setdefaultLoading(false);
+    }
+  }, [state]);
   const onSubmit = async (data) => {
+    console.log(data);
     try {
-      console.log(data);
-
-     
-
-      await axios.post("http://localhost:9500/v1/sexual/create-sexual", data);
+      console.log(data, "addseexualorienattion line no :-74");
+      if (isupdate) {
+        await axios.put(
+          `http://localhost:9500/v1/sexual/update/${isupdate}`,
+          data
+        );
+      } else {
+        await axios.post("http://localhost:9500/v1/sexual/create-sexual", data);
+      }
+      localStorage.setItem("redirectSuccess", "true");
+      localStorage.setItem(
+        "redirectMessage",
+        isupdate === "" ? "Added successfully!" : "Updated successfully!"
+      );
+      navigate("/sexual_orientation");
+      // Additional logic or navigation if needed
     } catch (error) {
       console.error("Error submitting form:", error);
     }
   };
-
 
   return (
     <CRow>
@@ -56,20 +85,23 @@ const AddSeexualOrientation = () => {
               className="row g-3 needs-validation"
               onSubmit={handleSubmit(onSubmit)}>
               <CCol md={4}>
-                <CFormLabel htmlFor="name">Sexual Orientation</CFormLabel>
+                <CFormLabel htmlFor="name">
+                  {isupdate === "" ? "Add" : "Update"}Sexual Orientation
+                </CFormLabel>
                 <CFormInput
                   type="text"
                   name="name"
                   {...register("name", {
                     required: "This field is required",
                   })}
+                  defaultValue={getValues("name")}
+                  onChange={(e) => setValue("name", e.target.value)}
                   invalid={!!errors.name}
                 />
                 <CFormFeedback invalid>
                   Please Enter Sexual Orientation
                 </CFormFeedback>
               </CCol>
-             
 
               <CCol xs={12}>
                 <CButton color="primary" type="submit">
@@ -84,4 +116,4 @@ const AddSeexualOrientation = () => {
   );
 };
 
-export default AddSeexualOrientation;
+export default SeexualOrientationForm;

@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import { Grid, Switch } from "@mui/material";
 import * as Icons from "@mui/icons-material";
-
+import swal from "sweetalert";
 
 export default function SexualOrientation() {
   const navigate = useNavigate();
@@ -77,7 +77,7 @@ export default function SexualOrientation() {
           // console.log(editdata);
           return (
             <div>
-              <Icons.BarChart
+              {/* <Icons.BarChart
                 className="insightsIcon"
                 onClick={() => {
                   const userdata = datatableData.find(
@@ -100,19 +100,19 @@ export default function SexualOrientation() {
                     state: {
                       userdata: userdata,
                       insightdata: insightdata,
-                      imageurl: baseurl,
+                      // imageurl: baseurl,
                     },
                   });
                 }}
-              />
+              /> */}
               <Icons.Edit
                 className="editIcon"
                 onClick={() => {
                   const editdata = datatableData.find(
                     (data) => data._id === value
                   );
-                  navigate("/user/manage", {
-                    state: { editdata: editdata, imageurl: baseurl },
+                  navigate("/SeexualOrientationForm", {
+                    state: { editdata: editdata },
                   });
                 }}
               />
@@ -127,18 +127,18 @@ export default function SexualOrientation() {
                     dangerMode: true,
                   });
                   if (confirm) {
-                    // console.log(value);
-                    deleteUser(value)
-                      .then(() => {
-                        toast.success("deleted successfully!", {
-                          key: value,
-                        });
-                        list();
+                    // console.log(confirm);
+                    await axios
+                      .delete(
+                        `http://localhost:9500/v1/sexual/delete/${value}`,
+                        value
+                      )
+                      .then((res) => {
+                        console.log("deleted successfully!");
+                        getData();
                       })
                       .catch(() => {
-                        toast.error("something went wrong!", {
-                          key: value,
-                        });
+                        console.error("something went wrong!", {});
                       });
                   }
                 }}
@@ -181,7 +181,7 @@ export default function SexualOrientation() {
   };
 
   const SelectedRowsToolbar = ({ selectedRows, data }) => {
-    return console.log(data);
+    return console.log(data, "indexsexual orientation : line no : 184");
     // <div>
     //   <IconButton onClick={() => deleteMultiple(selectedRows, data)}>
     //     <Icons.Delete />
@@ -228,7 +228,7 @@ export default function SexualOrientation() {
         variant="contained"
         color="primary"
         onClick={() => {
-          navigate("/AddSeexualOrientation");
+          navigate("/SeexualOrientationForm");
         }}>
         Add Sexual
       </Button>

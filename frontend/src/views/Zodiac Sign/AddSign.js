@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import {
   CButton,
@@ -13,21 +13,54 @@ import {
   CRow,
 } from "@coreui/react";
 import axios from "axios";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const AddSign = () => {
+  const { state } = useLocation();
+  const [isupdate, setisupdate] = useState("");
+  let navigate = useNavigate();
   const {
     handleSubmit,
     control,
     register,
+    getValues,
     setValue,
     formState: { errors },
   } = useForm();
+
+  var [defaultLoading, setdefaultLoading] = useState(true);
+
+  useEffect(() => {
+    // setIsLoading(false);
+    if (state) {
+      const { editdata, baseurl } = state;
+      setisupdate(editdata._id);
+      setValue("name", editdata.name);
+      setdefaultLoading(false);
+    } else {
+      setdefaultLoading(false);
+    }
+  }, [state]);
 
   const onSubmit = async (data) => {
     try {
       console.log(data);
 
-      await axios.post("http://localhost:9500/v1/sign/create-sign", data);
+      if (isupdate) {
+        await axios.put(
+          `http://localhost:9500/v1/sign/update/${isupdate}`,
+          data
+        );
+      } else {
+        await axios.post("http://localhost:9500/v1/sign/create-sign", data);
+      }
+      localStorage.setItem("redirectSuccess", "true");
+      localStorage.setItem(
+        "redirectMessage",
+        isupdate === "" ? "Added successfully!" : "Updated successfully!"
+      );
+      navigate("/zodiac_sign_list");
+      // Additional logic or navigation if needed
     } catch (error) {
       console.error("Error submitting form:", error);
     }
@@ -45,13 +78,18 @@ const AddSign = () => {
               className="row g-3 needs-validation"
               onSubmit={handleSubmit(onSubmit)}>
               <CCol md={4}>
-                <CFormLabel htmlFor="name"> Zodiac Sign</CFormLabel>
+                <CFormLabel htmlFor="name">
+                  {" "}
+                  {isupdate === "" ? "Add" : "Update"}Zodiac Sign
+                </CFormLabel>
                 <CFormInput
                   type="text"
                   name="name"
                   {...register("name", {
                     required: "This field is required",
                   })}
+                  defaultValue={getValues("name")}
+                  onChange={(e) => setValue("name", e.target.value)}
                   invalid={!!errors.name}
                 />
                 <CFormFeedback invalid>Please Enter Zodiac Sign</CFormFeedback>

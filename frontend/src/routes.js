@@ -8,18 +8,14 @@ const IndexForm = React.lazy(() => import("./views/User/IndexUser"));
 const UserForm = React.lazy(() => import("./views/User/UserForm"));
 
 /* --------------------------- SEXUAL ORIENTATION --------------------------- */
-const List = React.lazy(() =>
-  import("./views/Sexual Orientation/IndexSexualOrientation")
-);
-const AddSeexualOrientation = React.lazy(() =>
-  import("./views/Sexual Orientation/AddSeexualOrientation")
+const List = React.lazy(() => import("./views/Sexual Orientation/Index"));
+const SeexualOrientationForm = React.lazy(() =>
+  import("./views/Sexual Orientation/SeexualOrientationForm")
 );
 
 /* --------------------------------- HOBBIES -------------------------------- */
-const Interest = React.lazy(() => import("./views/Hobbies/IndexInterest"));
-const AddInterest = React.lazy(() =>
-  import("./views/Hobbies/AddInterest")
-);
+const Interest = React.lazy(() => import("./views/Hobbies/Index"));
+const InterestForm = React.lazy(() => import("./views/Hobbies/InterestForm"));
 
 /* ---------------------------------- PETS ---------------------------------- */
 const Pets = React.lazy(() => import("./views/Pet/IndexPets"));
@@ -96,15 +92,15 @@ const routes = [
   /* ----------------- SEXUAL ORIENTATION ROUTES WITH ADD,LIST ---------------- */
   { path: "/sexual_orientation", name: "", element: List, exact: true },
   {
-    path: "/AddSeexualOrientation",
+    path: "/SeexualOrientationForm",
     name: "",
-    element: AddSeexualOrientation,
+    element: SeexualOrientationForm,
     exact: true,
   },
 
   /* ---------------------- HOBBIES ROUTES WITH ADD,LIST ---------------------- */
   { path: "/interest", name: "", element: Interest, exact: true },
-  { path: "/AddInterest", name: "", element: AddInterest, exact: true },
+  { path: "/InterestForm", name: "", element: InterestForm, exact: true },
 
   /* ------------------------ PETS ROUTES WITH ADD,LIST ----------------------- */
   { path: "/pets_list", name: "", element: Pets, exact: true },

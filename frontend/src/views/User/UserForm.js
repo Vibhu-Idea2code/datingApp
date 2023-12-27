@@ -47,7 +47,8 @@ const UserForm = () => {
 
     // setIsLoading(false);
     if (state) {
-      setValue("pass1", "123456");
+      
+      
       // Access the state data (editdata and baseUrl)
       const { editdata, baseurl } = state;
 

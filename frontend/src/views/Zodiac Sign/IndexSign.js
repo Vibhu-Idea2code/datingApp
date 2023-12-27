@@ -7,9 +7,9 @@ import { useNavigate } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import { Grid, Switch } from "@mui/material";
 import * as Icons from "@mui/icons-material";
+import swal from "sweetalert";
 
 export default function Sign() {
-  
   const navigate = useNavigate();
   // const [rows, setRows] = useState([]);
   const [datatableData, setdatatableData] = useState([]);
@@ -78,7 +78,7 @@ export default function Sign() {
           // console.log(editdata);
           return (
             <div>
-              <Icons.BarChart
+              {/* <Icons.BarChart
                 className="insightsIcon"
                 onClick={() => {
                   const userdata = datatableData.find(
@@ -101,19 +101,18 @@ export default function Sign() {
                     state: {
                       userdata: userdata,
                       insightdata: insightdata,
-                      imageurl: baseurl,
                     },
                   });
                 }}
-              />
+              /> */}
               <Icons.Edit
                 className="editIcon"
                 onClick={() => {
                   const editdata = datatableData.find(
                     (data) => data._id === value
                   );
-                  navigate("/user/manage", {
-                    state: { editdata: editdata, imageurl: baseurl },
+                  navigate("/AddSign", {
+                    state: { editdata: editdata },
                   });
                 }}
               />
@@ -128,18 +127,18 @@ export default function Sign() {
                     dangerMode: true,
                   });
                   if (confirm) {
-                    // console.log(value);
-                    deleteUser(value)
-                      .then(() => {
-                        toast.success("deleted successfully!", {
-                          key: value,
-                        });
-                        list();
+                    // console.log(confirm);
+                    await axios
+                      .delete(
+                        `http://localhost:9500/v1/sign/delete/${value}`,
+                        value
+                      )
+                      .then((res) => {
+                        console.log("deleted successfully!");
+                        getData();
                       })
                       .catch(() => {
-                        toast.error("something went wrong!", {
-                          key: value,
-                        });
+                        console.error("something went wrong!", {});
                       });
                   }
                 }}

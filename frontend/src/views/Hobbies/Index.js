@@ -21,12 +21,13 @@ export default function Interest() {
   const navigate = useNavigate();
   // const [rows, setRows] = useState([]);
   const [datatableData, setdatatableData] = useState([]);
-
+  const [baseurl, setbaseurl] = useState("");
   const getData = async () => {
     await axios
       .get("http://localhost:9500/v1/interest/list-interest")
       .then((res) => {
         setdatatableData(res.data.data.getHob);
+        setbaseurl(res.data.baseUrl);
       });
   };
 
@@ -121,7 +122,7 @@ export default function Interest() {
           // console.log(editdata);
           return (
             <div>
-              <Icons.BarChart
+              {/* <Icons.BarChart
                 className="insightsIcon"
                 onClick={() => {
                   const userdata = datatableData.find(
@@ -144,19 +145,19 @@ export default function Interest() {
                     state: {
                       userdata: userdata,
                       insightdata: insightdata,
-                      imageurl: baseurl,
+                      baseurl: baseurl,
                     },
                   });
                 }}
-              />
+              /> */}
               <Icons.Edit
                 className="editIcon"
                 onClick={() => {
                   const editdata = datatableData.find(
                     (data) => data._id === value
                   );
-                  navigate("/user/manage", {
-                    state: { editdata: editdata, imageurl: baseurl },
+                  navigate("/InterestForm", {
+                    state: { editdata: editdata, baseurl: baseurl },
                   });
                 }}
               />
@@ -272,7 +273,7 @@ export default function Interest() {
         variant="contained"
         color="primary"
         onClick={() => {
-          navigate("/AddInterest");
+          navigate("/InterestForm");
         }}>
         Add Hobbies
       </Button>

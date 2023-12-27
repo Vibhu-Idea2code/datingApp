@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import { Grid, Switch } from "@mui/material";
 import * as Icons from "@mui/icons-material";
-
+import swal from "sweetalert";
 
 export default function Pets() {
   const navigate = useNavigate();
@@ -75,7 +75,7 @@ export default function Pets() {
           // console.log(editdata);
           return (
             <div>
-              <Icons.BarChart
+              {/* <Icons.BarChart
                 className="insightsIcon"
                 onClick={() => {
                   const userdata = datatableData.find(
@@ -98,24 +98,34 @@ export default function Pets() {
                     state: {
                       userdata: userdata,
                       insightdata: insightdata,
-                      imageurl: baseurl,
                     },
                   });
                 }}
-              />
+              /> */}
               <Icons.Edit
                 className="editIcon"
+                style={{
+                  marginRight: "10px",
+                  marginBottom: "5px",
+                  color: "green",
+                }}
                 onClick={() => {
                   const editdata = datatableData.find(
                     (data) => data._id === value
                   );
-                  navigate("/user/manage", {
-                    state: { editdata: editdata, imageurl: baseurl },
+                  navigate("/AddPet", {
+                    state: { editdata: editdata },
                   });
                 }}
               />
+
               <Icons.Delete
                 className="deleteIcon"
+                style={{
+                  marginRight: "10px",
+                  marginBottom: "5px",
+                  color: "Salmon",
+                }}
                 onClick={async () => {
                   const confirm = await swal({
                     title: "Are you sure?",
@@ -125,18 +135,18 @@ export default function Pets() {
                     dangerMode: true,
                   });
                   if (confirm) {
-                    // console.log(value);
-                    deleteUser(value)
-                      .then(() => {
-                        toast.success("deleted successfully!", {
-                          key: value,
-                        });
-                        list();
+                    // console.log(confirm);
+                    await axios
+                      .delete(
+                        `http://localhost:9500/v1/pet/delete/${value}`,
+                        value
+                      )
+                      .then((res) => {
+                        console.log("deleted successfully!");
+                        getData();
                       })
                       .catch(() => {
-                        toast.error("something went wrong!", {
-                          key: value,
-                        });
+                        console.error("something went wrong!", {});
                       });
                   }
                 }}
