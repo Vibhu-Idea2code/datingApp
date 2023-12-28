@@ -107,6 +107,11 @@ export default function SexualOrientation() {
               /> */}
               <Icons.Edit
                 className="editIcon"
+                style={{
+                  marginRight: "10px",
+                  marginBottom: "5px",
+                  color: "green",
+                }}
                 onClick={() => {
                   const editdata = datatableData.find(
                     (data) => data._id === value
@@ -118,6 +123,11 @@ export default function SexualOrientation() {
               />
               <Icons.Delete
                 className="deleteIcon"
+                style={{
+                  marginRight: "10px",
+                  marginBottom: "5px",
+                  color: "6E260E",
+                }}
                 onClick={async () => {
                   const confirm = await swal({
                     title: "Are you sure?",
@@ -224,17 +234,18 @@ export default function SexualOrientation() {
           borderRadius: 1,
           fontWeight: "bold",
           marginBottom: "10px",
+          backgroundColor: "#ff4d67",
         }}
         variant="contained"
         color="primary"
         onClick={() => {
           navigate("/SeexualOrientationForm");
         }}>
-        Add Sexual
+        Add Sexual Orientation
       </Button>
 
       <MUIDataTable
-        title={"SexualOrientation"}
+        title={"Sexual Orientation"}
         data={datatableData}
         columns={columns}
         options={options}

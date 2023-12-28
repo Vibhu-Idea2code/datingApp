@@ -152,6 +152,11 @@ export default function Interest() {
               /> */}
               <Icons.Edit
                 className="editIcon"
+                style={{
+                  marginRight: "10px",
+                  marginBottom: "5px",
+                  color: "green",
+                }}
                 onClick={() => {
                   const editdata = datatableData.find(
                     (data) => data._id === value
@@ -163,6 +168,11 @@ export default function Interest() {
               />
               <Icons.Delete
                 className="deleteIcon"
+                style={{
+                  marginRight: "10px",
+                  marginBottom: "5px",
+                  color: "6E260E",
+                }}
                 onClick={async () => {
                   const confirm = await swal({
                     title: "Are you sure?",
@@ -269,6 +279,9 @@ export default function Interest() {
           borderRadius: 1,
           fontWeight: "bold",
           marginBottom: "10px",
+          background: "#FF4D67",
+          borderColor: "#FD788C",
+          fontStyle: "Source Sans Pro",
         }}
         variant="contained"
         color="primary"

@@ -22,6 +22,8 @@ import axios from "axios";
 import { DocsExample } from "src/components";
 import { array } from "prop-types";
 import { useNavigate, useLocation } from "react-router-dom";
+import "../../scss/_custom.scss";
+
 
 const AddPet = () => {
   const { state } = useLocation();
@@ -84,17 +86,14 @@ const AddPet = () => {
       <CCol xs={12}>
         <CCard className="mb-4">
           <CCardHeader>
-            <strong>User</strong>
+            <strong>{isupdate === "" ? "Add" : "Update"} Pet Name</strong>
           </CCardHeader>
           <CCardBody>
             <CForm
               className="row g-3 needs-validation"
               onSubmit={handleSubmit(onSubmit)}>
               <CCol md={4}>
-                <CFormLabel htmlFor="name">
-                  {" "}
-                  {isupdate === "" ? "Add" : "Update"}Pets Name
-                </CFormLabel>
+                <CFormLabel htmlFor="name"> Name</CFormLabel>
                 <CFormInput
                   type="text"
                   name="name"
@@ -111,7 +110,7 @@ const AddPet = () => {
               </CCol>
 
               <CCol xs={12}>
-                <CButton color="primary" type="submit">
+                <CButton color="primary" type="submit" className="commanBtn">
                   Submit
                 </CButton>
               </CCol>

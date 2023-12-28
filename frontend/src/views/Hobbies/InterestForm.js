@@ -19,15 +19,17 @@ import {
   CInputGroupText,
 } from "@coreui/react";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import no_profile from "../../assets/images/users/no_profile.jpg";
+import "../../scss/_custom.scss";
 
 const InterestForm = () => {
   const { state } = useLocation();
-  const [imgPreviews, setImgPreviews] = useState([]);
+  const [imgPreview, setImgPreview] = useState([]);
   const [isupdate, setisupdate] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
-  const [NewUrl, setNewUrl] = useState("");
+  const [NewUrl, setNewUrl] = useState(no_profile);
+  let navigate = useNavigate();
   const {
     handleSubmit,
     control,
@@ -45,20 +47,13 @@ const InterestForm = () => {
     // setIsLoading(false);
     if (state) {
       const { editdata, baseurl } = state;
-
       setisupdate(editdata._id);
       setValue("name", editdata.name);
-      // setValue("active_status", editdata.active_status);
+      setImgPreview(baseurl + editdata.logo);
       setNewUrl(baseurl + editdata.logo);
-      // editdata.logo
-      // ? setNewUrl(baseurl + editdata.logo)
-      // : setNewUrl(no_profile);
-      console.log(NewUrl);
-    } else {
-      setNewUrl(no_profile);
     }
     setdefaultLoading(false);
-  }, [state]);
+  }, []);
 
   var [isLoading, setIsLoading] = useState(false);
 
@@ -87,11 +82,7 @@ const InterestForm = () => {
         }
       });
 
-      //   await axios.post("http://localhost:9500/v1/interest/create", formData);
-      // } catch (error) {
-      //   console.error("Error submitting form:", error);
-      // }
-      if (isupdate === "") {
+      if (isupdate) {
         await axios.put(
           `http://localhost:9500/v1/interest/update/${isupdate}`,
           formData
@@ -108,33 +99,22 @@ const InterestForm = () => {
         navigate("/interest");
       }
     } catch (err) {
-      if (err.response && err.response.data && !err.response.data.isSuccess) {
-        // Iterate through the error object to extract keys and values
-        Object.keys(err.response.data.message).forEach((key) => {
-          // Set the error message for each field
-          setError(key, {
-            type: "manual",
-            message: err.response.data.message[key],
-          });
-        });
-      } else {
-        console.error("Something Went Wrong!");
-      }
+      console.error("Something Went Wrong!");
       setIsLoading(false);
     }
   };
 
   const handleImageChange = (e) => {
-    // const file = e.target.files[0];
-    const files = e.target.files;
+    const file = e.target.files[0];
+    // const files = e.target.files;
     // Display a preview of the selected image
-    // if (file) {
-    //   setImgPreview(URL.createObjectURL(file));
-    // }
+    if (file) {
+      setImgPreview(URL.createObjectURL(file));
+    }
 
     // Display previews of the selected images
-    const previews = Array.from(files).map((file) => URL.createObjectURL(file));
-    setImgPreviews(previews);
+    // const previews = Array.from(files).map((file) => URL.createObjectURL(file));
+    // setImgPreviews(previews);
 
     // Set the value of the form field
     setValue("logo", e.target.files);
@@ -146,16 +126,14 @@ const InterestForm = () => {
         <CCol xs={12}>
           <CCard className="mb-4">
             <CCardHeader>
-              <strong>User</strong>
+              <strong> {isupdate === "" ? "Add" : "Update"} Interest</strong>
             </CCardHeader>
             <CCardBody>
               <CForm
                 className="row g-3 needs-validation"
                 onSubmit={handleSubmit(onSubmit)}>
                 <CCol md={4}>
-                  <CFormLabel htmlFor="name">
-                    {isupdate === "" ? "Add" : "Update"}Hobbies
-                  </CFormLabel>
+                  <CFormLabel htmlFor="name">Name</CFormLabel>
                   <CFormInput
                     type="text"
                     name="name"
@@ -182,7 +160,18 @@ const InterestForm = () => {
                           onChange={handleImageChange}
                           multiple
                         />
-                        {imgPreviews.map((preview, index) => (
+
+                        {imgPreview && (
+                          <img
+                            // src={imgPreview}
+                            key={1}
+                            src={imgPreview}
+                            alt="img"
+                            width="100"
+                            height="100"
+                          />
+                        )}
+                        {/* {imgPreviews.map((preview, index) => (
                           <img
                             key={index}
                             src={preview}
@@ -190,14 +179,22 @@ const InterestForm = () => {
                             width="100"
                             height="100"
                           />
-                        ))}
+                        ))} */}
                       </>
                     )}
                   />
                 </CCol>
 
                 <CCol xs={12}>
-                  <CButton color="primary" type="submit">
+                  <CButton
+                    type="submit"
+                    className="commanBtn"
+                    // style={{
+                    //   background: "#FF4D67",
+                    //   borderColor: "#FD788C",
+                    //   fontStyle: "Source Sans Pro",
+                    // }}
+                  >
                     Submit
                   </CButton>
                 </CCol>

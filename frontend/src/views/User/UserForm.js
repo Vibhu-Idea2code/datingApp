@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   CButton,
   CCard,
@@ -25,11 +25,13 @@ import { array } from "prop-types";
 import no_profile from "../../assets/images/users/no_profile.jpg";
 
 const UserForm = () => {
-  const [imgPreviews, setImgPreviews] = useState([]);
+  const [imgPreviews, setImgPreview] = useState([]);
   const { state } = useLocation();
-  console.log(state);
+  // console.log(state);
   const [isupdate, setisupdate] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
+  let navigate = useNavigate();
+  const [newUrl, setNewUrl] = useState(no_profile);
   const {
     handleSubmit,
     control,
@@ -38,17 +40,10 @@ const UserForm = () => {
     setValue,
     formState: { errors },
   } = useForm();
-
   var [defaultLoading, setdefaultLoading] = useState(true);
   useEffect(() => {
-    // getActiveMedicalCon().then((response) => {
-    //   // setMedicalCon(response.data.info);
-    // });
-
     // setIsLoading(false);
     if (state) {
-      
-      
       // Access the state data (editdata and baseUrl)
       const { editdata, baseurl } = state;
 
@@ -62,25 +57,21 @@ const UserForm = () => {
       setSelectedDate(birthDate);
       setValue("birthDate", formattedBirthDate);
       setValue("active_status", editdata.active_status);
-      // setValue("user_img", editdata.user_img);
-      console.log(editdata.user_img);
+
+      const imageUrlArray = editdata.user_img.map((imageName) => {
+        return baseurl + imageName;
+      });
       editdata.user_img
-        ? setNewUrl(baseurl + editdata.user_img)
-        : setNewUrl(no_profile);
-      setdefaultLoading(false);
-    } else {
-      setNewUrl(no_profile);
-      setdefaultLoading(false);
+        ? setImgPreview(imageUrlArray)
+        : setImgPreview(no_profile);
     }
-  }, [state]);
-  const [newUrl, setNewUrl] = useState("");
+    setdefaultLoading(false);
+  }, []);
+
   var [isLoading, setIsLoading] = useState(false);
   const onSubmit = async (data) => {
     try {
-      // console.log(data);
-
       let formData = new FormData(); //formdata object
-
       Object.entries(data).forEach(([key, value]) => {
         if (
           key === "user_img" &&
@@ -99,62 +90,33 @@ const UserForm = () => {
           formData.append(key, data[key]);
         }
       });
-      if (isupdate === "") {
+      if (isupdate) {
+        await axios.post(
+          `http://localhost:9500/v1/admin/update-user/${isupdate}`,
+          formData
+        );
+        localStorage.setItem("redirectSuccess", "true");
+        localStorage.setItem("redirectMessage", "Added user successfully!");
+        // navigate("/user");
+      } else {
         await axios.post(
           "http://localhost:9500/v1/admin/create-user",
           formData
         );
-        localStorage.setItem("redirectSuccess", "true");
-        localStorage.setItem("redirectMessage", "Added successfully!");
-        navigate("/users");
-      } else {
-        await axios.post(
-          `http://localhost:9500/v1/admin/update-user/${id}`,
-          formData,
-          isupdate
-        );
         // await updateUserProfile(formData, isupdate);
         localStorage.setItem("redirectSuccess", "true");
-        localStorage.setItem("redirectMessage", "Updated successfully!");
-        navigate("/users");
+        localStorage.setItem("redirectMessage", "Updated user successfully!");
+        // navigate("/user");
       }
     } catch (err) {
-      if (err.response && err.response.data && !err.response.data.isSuccess) {
-        // Iterate through the error object to extract keys and values
-        Object.keys(err.response.data.message).forEach((key) => {
-          // Set the error message for each field
-          setError(key, {
-            type: "manual",
-            message: err.response.data.message[key],
-          });
-        });
-      } else {
-        console.error("Something Went Wrong!", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        });
-      }
+      console.error("Something Went Wrong!");
       setIsLoading(false);
     }
   };
-
   const handleImageChange = (e) => {
-    // const file = e.target.files[0];
     const files = e.target.files;
-    // Display a preview of the selected image
-    // if (file) {
-    //   setImgPreview(URL.createObjectURL(file));
-    // }
-
-    // Display previews of the selected images
     const previews = Array.from(files).map((file) => URL.createObjectURL(file));
-    setImgPreviews(previews);
-
+    setImgPreview(previews);
     // Set the value of the form field
     setValue("user_img", e.target.files);
   };
@@ -279,9 +241,9 @@ const UserForm = () => {
                         <img
                           key={index}
                           src={preview}
-                          alt={`Preview ${index + 1}`}
-                          width="100"
-                          height="100"
+                          alt={`preview${index + 1}`}
+                          width="60"
+                          height="60"
                         />
                       ))}
                     </>
@@ -290,7 +252,7 @@ const UserForm = () => {
               </CCol>
 
               <CCol xs={12}>
-                <CButton color="primary" type="submit">
+                <CButton color="primary" type="submit" className="commanBtn">
                   Submit
                 </CButton>
               </CCol>

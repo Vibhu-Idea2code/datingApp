@@ -8,6 +8,7 @@ import MUIDataTable from "mui-datatables";
 import { Grid, Switch } from "@mui/material";
 import * as Icons from "@mui/icons-material";
 import swal from "sweetalert";
+import "../../scss/_custom.scss";
 
 export default function Pets() {
   const navigate = useNavigate();
@@ -124,7 +125,7 @@ export default function Pets() {
                 style={{
                   marginRight: "10px",
                   marginBottom: "5px",
-                  color: "Salmon",
+                  color: "6E260E",
                 }}
                 onClick={async () => {
                   const confirm = await swal({
@@ -225,6 +226,7 @@ export default function Pets() {
       </div>
 
       <Button
+        className="btn btn-primary"
         style={{
           position: "absolute",
           top: 129,
@@ -232,6 +234,7 @@ export default function Pets() {
           borderRadius: 1,
           fontWeight: "bold",
           marginBottom: "10px",
+          backgroundColor: "#ff4d67",
         }}
         variant="contained"
         color="primary"
@@ -242,7 +245,7 @@ export default function Pets() {
       </Button>
 
       <MUIDataTable
-        title={"Pets"}
+        title={"Pet"}
         data={datatableData}
         columns={columns}
         options={options}

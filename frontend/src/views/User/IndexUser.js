@@ -16,6 +16,7 @@ import MUIDataTable from "mui-datatables";
 import { Grid, Switch } from "@mui/material";
 import * as Icons from "@mui/icons-material";
 // import no_profile from "../../../assets/images/users/no_profile.jpg";
+import swal from "sweetalert";
 
 export default function IndexUser() {
   const navigate = useNavigate();
@@ -29,31 +30,13 @@ export default function IndexUser() {
     });
   };
 
+
+
   useEffect(() => {
     getData();
   }, []);
 
   const columns = [
-    // {
-    //   name: "user_img",
-    //   label: "Profile",
-    //   options: {
-    //     customBodyRender: (user_img) =>
-    //       user_img ? (
-    //         <img
-    //           src={`http://localhost:9500/profile_images/${user_img}`}
-    //           alt={user_img}
-    //           style={{ height: "50px", width: "50px", borderRadius: "50%" }}
-    //         />
-    //       ) : (
-    //         <img
-    //           src={no_profile}
-    //           alt={user_img}
-    //           style={{ height: "50px", width: "50px", borderRadius: "50%" }}
-    //         />
-    //       ),
-    //   },
-    // },
     {
       name: "first_name",
       label: "Name",
@@ -73,6 +56,22 @@ export default function IndexUser() {
     {
       name: "phoneNumber",
       label: "Mobile No",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "age",
+      label: "Age",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "gender",
+      label: "Gender",
       options: {
         filter: true,
         sort: true,
@@ -120,36 +119,13 @@ export default function IndexUser() {
           // console.log(editdata);
           return (
             <div>
-              <Icons.BarChart
-                className="insightsIcon"
-                onClick={() => {
-                  const userdata = datatableData.find(
-                    (data) => data._id === value
-                  );
-
-                  const currentDate = new Date();
-                  const options = {
-                    year: "numeric",
-                    month: "2-digit",
-                    day: "2-digit",
-                  };
-                  const formattedDate = new Intl.DateTimeFormat(
-                    "en-US",
-                    options
-                  ).format(currentDate);
-                  const insightdata = { userid: value, date: formattedDate };
-
-                  navigate("/popup", {
-                    state: {
-                      userdata: userdata,
-                      insightdata: insightdata,
-                      baseurl: baseurl,
-                    },
-                  });
-                }}
-              />
               <Icons.Edit
                 className="editIcon"
+                style={{
+                  marginRight: "10px",
+                  marginBottom: "5px",
+                  color: "green",
+                }}
                 onClick={() => {
                   const editdata = datatableData.find(
                     (data) => data._id === value
@@ -163,6 +139,11 @@ export default function IndexUser() {
               />
               <Icons.Delete
                 className="deleteIcon"
+                style={{
+                  marginRight: "10px",
+                  marginBottom: "5px",
+                  color: "6E260E",
+                }}
                 onClick={async () => {
                   const confirm = await swal({
                     title: "Are you sure?",
@@ -171,19 +152,19 @@ export default function IndexUser() {
                     buttons: ["No, cancel it!", "Yes, I am sure!"],
                     dangerMode: true,
                   });
-                  if (confirm) {
-                    // console.log(value);
-                    deleteUser(value)
-                      .then(() => {
-                        toast.success("deleted successfully!", {
-                          key: value,
-                        });
-                        list();
+                         if (confirm) {
+                    // console.log(confirm);
+                    await axios
+                      .delete(
+                        `http://localhost:9500/v1/admin/delete-user/${value}`,
+                        value
+                      )
+                      .then((res) => {
+                        console.log("deleted successfully!");
+                        getData();
                       })
                       .catch(() => {
-                        toast.error("something went wrong!", {
-                          key: value,
-                        });
+                        console.error("something went wrong!", {});
                       });
                   }
                 }}
@@ -269,6 +250,7 @@ export default function IndexUser() {
           borderRadius: 1,
           fontWeight: "bold",
           marginBottom: "10px",
+          backgroundColor: "#ff4d67",
         }}
         variant="contained"
         color="primary"

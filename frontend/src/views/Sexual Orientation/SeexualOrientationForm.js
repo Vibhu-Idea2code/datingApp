@@ -22,6 +22,7 @@ import {
 import axios from "axios";
 import { DocsExample } from "src/components";
 import { array } from "prop-types";
+import "../../scss/_custom.scss";
 
 const SeexualOrientationForm = () => {
   const { state } = useLocation();
@@ -78,16 +79,16 @@ const SeexualOrientationForm = () => {
       <CCol xs={12}>
         <CCard className="mb-4">
           <CCardHeader>
-            <strong>User</strong>
+            <strong>
+              {isupdate === "" ? "Add" : "Update"} Sexual Orientation
+            </strong>
           </CCardHeader>
           <CCardBody>
             <CForm
               className="row g-3 needs-validation"
               onSubmit={handleSubmit(onSubmit)}>
               <CCol md={4}>
-                <CFormLabel htmlFor="name">
-                  {isupdate === "" ? "Add" : "Update"}Sexual Orientation
-                </CFormLabel>
+                <CFormLabel htmlFor="name">Name </CFormLabel>
                 <CFormInput
                   type="text"
                   name="name"
@@ -104,7 +105,7 @@ const SeexualOrientationForm = () => {
               </CCol>
 
               <CCol xs={12}>
-                <CButton color="primary" type="submit">
+                <CButton type="submit" className="commanBtn">
                   Submit
                 </CButton>
               </CCol>
