@@ -1,5 +1,6 @@
 const fs = require("fs");
 const { interestService } = require("../../services");
+const { Hobbies } = require("../../models");
 
 /** Create Interest */
 const createInterest = async (req, res) => {
@@ -98,10 +99,10 @@ const interestList = async (req, res) => {
   try {
     const getHob = await interestService.getHobbiesList();
     const baseUrl =
-    req.protocol +
-    "://" +
-    req.get("host") +
-    process.env.BASE_URL_PROFILE_PATH;
+      req.protocol +
+      "://" +
+      req.get("host") +
+      process.env.BASE_URL_PROFILE_PATH;
     res.status(200).json({
       success: true,
       message: "interest List!",
@@ -195,10 +196,31 @@ const deleteInterest = async (req, res) => {
   }
 };
 
+const multipleDelete = async (req, res) => {
+  try {
+    const { _id } = req.body;
+    const result = await Hobbies.deleteMany({ _id: { $in: _id } });
+    if (result.deletedCount === 0) {
+      throw new Error("No users deleted");
+    }
+    return res.status(200).send({
+      success: true,
+      message: "Deleted Successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send({
+      success: false,
+      message: `${err}`,
+    });
+  }
+};
+
 module.exports = {
   createInterest,
   interestList,
   getDetailsById,
+  multipleDelete,
   // getInterestList,
   updateInterest,
   // manageInterestStatus,

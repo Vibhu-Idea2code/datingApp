@@ -2,7 +2,7 @@ const express = require("express");
 const {
   adminController,
   authAdminController,
-  adminUserController
+  adminUserController,
 } = require("../../../controllers");
 const { upload } = require("../../../middlewares/upload");
 const router = express.Router();
@@ -31,17 +31,21 @@ router.post(
   authAdminController.changePassword
 );
 
-router.put("/resetPassword", accessToken(), authAdminController.resetPassword);
+router.put("/resetPassword",
+//  accessToken(),
+ authAdminController.resetPassword);
 
-router.get("/list", accessToken(), adminController.getAdminList);
+router.get(
+  "/list",
+  //  accessToken(),
+  adminController.getAdminList
+);
 router.put(
   "/update/:adminId",
   upload.single("admin_image"),
   adminController.updateAdmin
 );
 router.delete("/delete-admin/:adminId", adminController.deleteAdmin);
-
-
 
 /* -------------------------- CREATE USER BY ADMIN -------------------------- */
 router.get("/user-list", adminUserController.getAllUser);

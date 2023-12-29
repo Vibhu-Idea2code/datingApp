@@ -16,4 +16,7 @@ zodiacSignController.deleteZodiac);
 
 router.put('/update/:signId',
 zodiacSignController.updateZodiac);
+
+router.delete("/delete-many", zodiacSignController.multipleDelete);
+
 module.exports=router;

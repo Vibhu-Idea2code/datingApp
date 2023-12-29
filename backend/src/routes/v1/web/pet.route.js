@@ -16,4 +16,7 @@ petController.deletePets);
 
 router.put('/update/:petsId',
 petController.updatePets);
+
+router.delete("/delete-many", petController.multipleDelete);
+
 module.exports=router;

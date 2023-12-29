@@ -1,3 +1,4 @@
+const Sexual = require("../../models/sexual.oriantetaion.model");
 const { sexualService } = require("../../services");
 
 const createSexual= async (req, res) => {
@@ -88,4 +89,24 @@ const updateSexual= async (req, res) => {
     });
   }
 };
-module.exports = { createSexual, getSexualList, getSexualId, deleteSexual,updateSexual};
+
+const multipleDelete = async (req, res) => {
+  try {
+    const { _id } = req.body;
+    const result = await Sexual.deleteMany({ _id: { $in: _id } });
+    if (result.deletedCount === 0) {
+      throw new Error("No users deleted");
+    }
+    return res.status(200).send({
+      success: true,
+      message: "Deleted Successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send({
+      success: false,
+      message: `${err}`,
+    });
+  }
+};
+module.exports = { createSexual, getSexualList, getSexualId, deleteSexual,updateSexual,multipleDelete};

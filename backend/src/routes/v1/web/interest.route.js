@@ -29,6 +29,8 @@ router.put(
 );
 router.delete("/delete/:hobbiesId",hobbiesController.deleteInterest);
 
+router.delete("/delete-many", hobbiesController.multipleDelete);
+
 /** Get product details */
 // router.get(
 //   "/details/:productId",

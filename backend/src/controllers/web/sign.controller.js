@@ -1,3 +1,4 @@
+const { Sign } = require("../../models");
 const { zodiacService } = require("../../services");
 
 const createZodiac = async (req, res) => {
@@ -88,4 +89,24 @@ const updateZodiac = async (req, res) => {
     });
   }
 };
-module.exports = { createZodiac, getZodiacList, getZodiacId, deleteZodiac,updateZodiac };
+
+const multipleDelete = async (req, res) => {
+  try {
+    const { _id } = req.body;
+    const result = await Sign.deleteMany({ _id: { $in: _id } });
+    if (result.deletedCount === 0) {
+      throw new Error("No users deleted");
+    }
+    return res.status(200).send({
+      success: true,
+      message: "Deleted Successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send({
+      success: false,
+      message: `${err}`,
+    });
+  }
+};
+module.exports = { createZodiac, getZodiacList, getZodiacId, deleteZodiac,updateZodiac ,multipleDelete};

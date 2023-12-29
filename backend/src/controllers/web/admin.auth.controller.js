@@ -1,5 +1,9 @@
-const { adminService, emailService, verifyOtpService } = require("../../services");
-const refreshSecret= "cdccsvavsvfssbtybnjnukiradhe";
+const {
+  adminService,
+  emailService,
+  verifyOtpService,
+} = require("../../services");
+const refreshSecret = "cdccsvavsvfssbtybnjnukiradhe";
 const ejs = require("ejs");
 const path = require("path");
 const bcrypt = require("bcrypt");
@@ -8,6 +12,7 @@ const jwt = require("jsonwebtoken");
 const jwtSecrectKey = "cdccsvavsvfssbtybnjnuki";
 const fs = require("fs");
 const Admin = require("../../models/admin.model");
+const crypto = require("crypto");
 
 /* -------------------------- REGISTER/CREATE ADMIN ------------------------- */
 const register = async (req, res) => {
@@ -30,24 +35,28 @@ const register = async (req, res) => {
     role: reqBody.role,
     exp: moment().add(5, "minutes").unix(),
   };
-  
+
   const token = await jwt.sign(option, jwtSecrectKey);
- /**   generate Refresh Token */
- const generateRefreshToken = (option) => {
-  return jwt.sign(option, refreshSecret);
-};
-const refreshToken = generateRefreshToken(option);
+  /**   generate Refresh Token */
+  const generateRefreshToken = (option) => {
+    return jwt.sign(option, refreshSecret);
+  };
+  const refreshToken = generateRefreshToken(option);
   const filter = {
     ...reqBody,
-    email:reqBody.email,
-    role:reqBody.role,
+    email: reqBody.email,
+    role: reqBody.role,
     password: hashPassword,
     token,
   };
   const data = await adminService.createAdmin(filter, reqBody);
-  res.status(200).json({ success: true, data: data,token:token,refreshToken: refreshToken});
+  res.status(200).json({
+    success: true,
+    data: data,
+    token: token,
+    refreshToken: refreshToken,
+  });
 };
-
 
 // /* -------------------------- LOGIN/SIGNIN ADMIN -------------------------- */
 const login = async (req, res) => {
@@ -55,7 +64,7 @@ const login = async (req, res) => {
     // validation;
     const { email, password } = req.body;
     console.log(req.body);
-    const findUser = await adminService.findAdminByLogonEmail({email} );
+    const findUser = await adminService.findAdminByLogonEmail({ email });
     console.log(findUser, "++++");
     if (!findUser) throw Error("User not found");
     const successPassword = await bcrypt.compare(password, findUser.password);
@@ -76,18 +85,18 @@ const login = async (req, res) => {
 
     let token;
     if (findUser && successPassword) {
-      token = await jwt.sign(option,jwtSecrectKey);
+      token = await jwt.sign(option, jwtSecrectKey);
     }
-const generateRefreshToken = (option) => {
-  return jwt.sign(option, refreshSecret);
-};
-const refreshToken = generateRefreshToken(option);
+    const generateRefreshToken = (option) => {
+      return jwt.sign(option, refreshSecret);
+    };
+    const refreshToken = generateRefreshToken(option);
 
     let data;
     if (token) {
       data = await adminService.findAdminAndUpdate(findUser._id, token);
     }
-    res.status(200).json({ data:token,refreshToken:refreshToken });
+    res.status(200).json({ data: token, refreshToken: refreshToken });
   } catch (error) {
     res.status(404).json({ error: error.message });
   }
@@ -96,32 +105,27 @@ const refreshToken = generateRefreshToken(option);
 // /* ------------------------------- VERIFY OTP ------------------------------- */
 const verifyOtp = async (req, res) => {
   try {
-    const { email, otp } = req.body;
+    const { email, otp, newPassword, confirmPassword } = req.body;
     const user = await verifyOtpService.findOtpByOtpAdmin({ otp });
-    console.log("user", user);
+
     if (!user) {
       throw new Error("Invalid OTP entered!");
     }
-    const findEmail = await verifyOtpService.findOtpByEmailAdmin({ email });
-    console.log("findEmail", findEmail);
-    if (!findEmail) {
-      throw new Error("User not found");
+
+    // Match new password with confirm password
+    if (newPassword !== confirmPassword) {
+      throw new Error("New password and confirm password do not match!");
     }
-    findEmail.otp = otp;
-    await findEmail.save();
-    if (findEmail.otp === otp) {
-      return res.status(200).json({
-        success: true,
-        message: "your otp is right thank you",
-        data: user,
-      });
-    } else {
-      return res.status(401).json({ success: false, message: "Invalid OTP" });
-    }
+
+    // Update the user's password in your database (assuming verifyOtpService.updatePassword is a function to update the password)
+    await verifyOtpService.updatePassword({ email, newPassword });
+
+    res.status(200).json({ message: "Password updated successfully!" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
+
 // /* ----------------------------- CHANGE PASSWORD ---------------------------- */
 const changePassword = async (req, res) => {
   try {
@@ -131,23 +135,22 @@ const changePassword = async (req, res) => {
     if (!admin) {
       return res.status(404).json({ error: "User not found" });
     }
-  // Verify the old password
-  const isPasswordCorrect = await bcrypt.compare(oldpass, admin.password);
-  if (!isPasswordCorrect) {
-    return res.status(401).json({ error: "Incorrect old password" });
-  }
-  // Check if the new password and confirm password match
-  if (newpass !== confirmpass) {
-    return res
-      .status(400)
-      .json({ error: "New password and confirm password do not match" });
-  }
-  // Hash the new password and update it in the database
-  const hashedPassword = await bcrypt.hash(newpass, 10);
-  admin.password = hashedPassword;
-  await admin.save();
+    // Verify the old password
+    const isPasswordCorrect = await bcrypt.compare(oldpass, admin.password);
+    if (!isPasswordCorrect) {
+      return res.status(401).json({ error: "Incorrect old password" });
+    }
+    // Check if the new password and confirm password match
+    if (newpass !== confirmpass) {
+      return res
+        .status(400)
+        .json({ error: "New password and confirm password do not match" });
+    }
+    // Hash the new password and update it in the database
+    const hashedPassword = await bcrypt.hash(newpass, 10);
+    admin.password = hashedPassword;
+    await admin.save();
 
- 
     return res
       .status(200)
       .json({ success: true, message: "Password updated successfully" });
@@ -161,19 +164,25 @@ const forgetPassword = async (req, res) => {
   try {
     const { email, admin_name } = req.body;
     const findUser = await adminService.findAdminByEmailForgot(email);
-    console.log(findUser);
+    // console.log(findUser);
     if (!findUser) throw Error("User not found");
+    let resetCode = crypto.randomBytes(32).toString("hex");
     const otp = ("0".repeat(4) + Math.floor(Math.random() * 10 ** 4)).slice(-4);
+    const expireOtpTime = Date.now() + 900000; //Valid upto 15 min
     findUser.otp = otp;
+    findUser.resetCode = resetCode;
+    findUser.expireOtpTime = expireOtpTime;
     await findUser.save();
     ejs.renderFile(
-      path.join(__dirname, "../views/login-template-admin.ejs"),
+      path.join(__dirname, "../../views/login-template-admin.ejs"),
       {
         email: email,
         otp: otp,
+        otpURL: `http://localhost:3000/reset-password/${resetCode}/${findUser._id}`,
         admin_name: admin_name,
       },
       async (err, data) => {
+        // console.log(__dirname)
         if (err) {
           let userCreated = await adminService.findAdminByEmailForgot(email);
           if (userCreated) {
@@ -181,7 +190,13 @@ const forgetPassword = async (req, res) => {
           }
           // throw new Error("Something went wrong, please try again.");
         } else {
-          emailService.sendMail(email, data, "Verify Email");
+          emailService.sendMail(
+            email,
+            data,
+            "Verify Email"
+
+            // reset_link: process.env.BACKEND_URL + `/doctor4you/reset-password/${resetCode}/${admin._id}`,
+          );
         }
       }
     );
@@ -199,7 +214,7 @@ const forgetPassword = async (req, res) => {
 // /* ----------------------------- RESET PASSWORD ----------------------------- */
 const resetPassword = async (req, res) => {
   try {
-    const { email, newPassword, confirmPassword } = req.body;
+    const { otp, newPassword, confirmPassword } = req.body;
 
     if (newPassword !== confirmPassword) {
       return res.status(400).json({
@@ -207,13 +222,20 @@ const resetPassword = async (req, res) => {
         message: "New password and confirm password do not match.",
       });
     }
-    const user = await adminService.findAdminByEmail(email);
+    const user = await adminService.findAdminByEmail(otp);
     if (!user) {
       return res.status(404).json({
         success: false,
         message: "User not found.",
       });
     }
+      // Verify OTP
+      if (user.otp !== otp) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid OTP.",
+        });
+      }
     const hashPassword = await bcrypt.hash(newPassword, 8);
     await adminService.updatePassword(user._id, hashPassword);
     // Optionally, you can add more password validation logic here.
@@ -226,6 +248,7 @@ const resetPassword = async (req, res) => {
   }
 };
 
+const verifyOtpResetPass = async (req, res) => {};
 module.exports = {
   register,
   login,
@@ -233,5 +256,4 @@ module.exports = {
   forgetPassword,
   resetPassword,
   changePassword,
-
 };

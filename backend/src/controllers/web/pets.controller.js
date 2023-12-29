@@ -1,3 +1,4 @@
+const { Pets } = require("../../models");
 const { petsService } = require("../../services");
 
 const createPets = async (req, res) => {
@@ -89,9 +90,27 @@ const updatePets = async (req, res) => {
   }
 };
 
+const multipleDelete = async (req, res) => {
+  try {
+    const { _id } = req.body;
+    const result = await Pets.deleteMany({ _id: { $in: _id } });
+    if (result.deletedCount === 0) {
+      throw new Error("No users deleted");
+    }
+    return res.status(200).send({
+      success: true,
+      message: "Deleted Successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send({
+      success: false,
+      message: `${err}`,
+    });
+  }
+};
 
-
-const undoPets=async(req, res, next) => {
+// const undoPets=async(req, res, next) => {
   
-}
-module.exports = { createPets, getPetsList, getPetsId, deletePets,updatePets };
+// }
+module.exports = { createPets, getPetsList, getPetsId, deletePets,updatePets,multipleDelete };
