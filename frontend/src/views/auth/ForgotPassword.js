@@ -1,138 +1,81 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+// import HomeLayout from 'src/layout/HomeLayout';
 
-const Register = () => {
-  const [admin_name, setAdminName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [role, setRole] = useState("");
-  const [admin_image, setAdminImage] = useState(null); // For file input
+const AdminLogin = () => {
+  const [email, setUsername] = useState("");
+
   const [error, setError] = useState(null);
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const navigate = useNavigate();
-const [showSuccessAlert, setShowSuccessAlert] = useState(false);
-
-
-  const handleRegister = async () => {
+  const handleLogin = async () => {
     try {
-      // Check if passwords match
-      // if (password !== repeatPassword) {
-      //   setError('Passwords do not match');
-      //   return;
-      // }
-
-      // Create FormData for sending files (e.g., adminImage)
-    //   const formData = new FormData();
-      //   formData.append('admin_name', admin_name);
-    //   formData.append("email", email);
-      //   formData.append('password', password);
-      //   formData.append('phoneNumber', phoneNumber);
-      // formData.append('role', role);
-      //   formData.append('admin_image', admin_image);
-
-      // Make an API call to your register endpoint
+      // Make an API call to your login endpoint
       const response = await axios.post(
-        "http://localhost:9500/v1/admin/login",
+        "http://localhost:9500/v1/admin/forgot",
         {
           email,
-          password,
         }
       );
-      console.log("Login successful:", response.data);
+      // Handle successful login (redirect, set authentication token, etc.)
+      console.log("Forgot Password successfully:", response.data);
       localStorage.setItem("token", response.data.refreshToken);
       console.log(response.data.refreshToken);
       setShowSuccessAlert(true);
       // Hide the success alert after 3 seconds (adjust the timeout as needed)
       setTimeout(() => {
         setShowSuccessAlert(false);
-        navigate("/login");
+        navigate("/reset-password");
       }, 1000);
-    }
-     catch (err) {
-      // Handle registration error
-      setError("Error during registration");
-      console.error("Registration error:", err);
+    } catch (err) {
+      // Handle login error
+      setError("Invalid username or password");
+      console.error("Login error:", err);
     }
   };
-
-  // Handle file input change
-//   const handleImageChange = (e) => {
-//     const file = e.target.files[0];
-//     setAdminImage(file);
-//   };
-
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <div className="container">
         <div className="row justify-content-center">
-          <div className="col-md-8">
-            <div className="card">
-              <div className="card-body">
-                <h1>Forgot Password</h1>
-                {/* <p>Create your account</p>   */}
-                {error && <div className="alert alert-danger">{error}</div>}
-                <div className="mb-3">
-                  {/* <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Admin Name"
-                    value={admin_name}
-                    onChange={(e) => setAdminName(e.target.value)}
-                  /> */}
-                </div>
-                <div className="mb-3">
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </div>
-                {/* <div className="mb-3">
-                  <input
-                    type="password"
-                    className="form-control"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </div>
-                <div className="mb-3">
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Phone Number"
-                    value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e.target.value)}
-                  />
-                </div> */}
-                {/* <div className="mb-3">
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Role"
-                    value={role}
-                    onChange={(e) => setRole(e.target.value)}
-                  />
-                </div> */}
-                {/* <div className="mb-3" encType="multipart/form-data" method="POST">
-                  <label htmlFor="adminImage" className="form-label">
-                    Admin Image
-                  </label>
-                  <input
-                    type="file"
-                    className="form-control"
-                    id="adminImage"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                  />
-                </div> */}
-                <div className="d-grid">
-                  <button className="btn btn-success" onClick={handleRegister}>
-                    Submit
-                  </button>
+          <div className="col-md-6">
+            <div className="card-group">
+              <div className="card p-2">
+                <div className="card-body">
+                  <h1>Forgot Password</h1>
+                  <p className="text-medium-emphasis"></p>
+                  {error && <div className="alert alert-danger">{error}</div>}
+                  {showSuccessAlert && (
+                    <div className="alert alert-success">
+                      Check Your Mail To Reset Password
+                    </div>
+                  )}
+                  <div className="input-group mb-3">
+                    <span className="input-group-text">
+                      <i className="cil-user"></i>
+                    </span>
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="email"
+                      value={email}
+                      onChange={(e) => setUsername(e.target.value)}
+                    />
+                  </div>
+                  <div className="row">
+                    <div className="col-6">
+                      <button
+                        className="btn btn-primary px-4"
+                        onClick={handleLogin}>
+                        Submit
+                      </button>
+                    </div>
+                    <div className="col-6 text-end">
+                      <Link to="/" className="btn btn-link px-0">
+                        Back To Login
+                      </Link>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -143,4 +86,4 @@ const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   );
 };
 
-export default Register;
+export default AdminLogin;

@@ -15,6 +15,7 @@ const DefaultLayout = React.lazy(() => import("./layout/DefaultLayout"));
 // const LoginLayout = React.lazy(() => import("./layout/LoginLayout"));
 const AdminLogin = React.lazy(() => import("./views/auth/AdminLogin"));
 const ForgotPassword= React.lazy(()=> import("./views/auth/ForgotPassword"));
+const ResetPassword= React.lazy(()=> import("./views/auth/ResetPassword"));
 
 // Pages
 const Register = React.lazy(() => import("./views/auth/Register"));
@@ -76,7 +77,8 @@ class App extends Component {
             <Route path="/" name="Login Page" element={<AdminLogin />} />
             <Route path="/register" name="Login Page" element={<Register />} />
             <Route path="/forgot-password" name="Login Page" element={<ForgotPassword />} />
-
+            <Route path="/reset-password/:token/:userid" name="Login Page" element={<ResetPassword />} />
+            
 
           </Routes>
         </Suspense>
