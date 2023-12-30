@@ -21,72 +21,35 @@ import {
   cilUser,
 } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
-
+import { useNavigate } from 'react-router-dom'
 import avatar8 from './../../assets/images/avatars/8.jpg'
+import { useUserDispatch, signOut, useUserState } from '../../context/UserContext'
 
 const AppHeaderDropdown = () => {
+  var userDispatch = useUserDispatch()
+  let navigate = useNavigate()
+  const { user } = useUserState()
+
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
-        <CAvatar src={avatar8} size="md" />
+      <CAvatar src={avatar8} size="md" />
+        {/* &nbsp; {user.username} */}
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
-        {/* <CDropdownHeader className="bg-light fw-semibold py-2">Account</CDropdownHeader>
-        <CDropdownItem href="#">
-          <CIcon icon={cilBell} className="me-2" />
-          Updates
-          <CBadge color="info" className="ms-2">
-            42
-          </CBadge>
-        </CDropdownItem>
-        <CDropdownItem href="#">
-          <CIcon icon={cilEnvelopeOpen} className="me-2" />
-          Messages
-          <CBadge color="success" className="ms-2">
-            42
-          </CBadge>
-        </CDropdownItem>
-        <CDropdownItem href="#">
-          <CIcon icon={cilTask} className="me-2" />
-          Tasks
-          <CBadge color="danger" className="ms-2">
-            42
-          </CBadge>
-        </CDropdownItem>
-        <CDropdownItem href="#">
-          <CIcon icon={cilCommentSquare} className="me-2" />
-          Comments
-          <CBadge color="warning" className="ms-2">
-            42
-          </CBadge>
-        </CDropdownItem> */}
-        <CDropdownHeader className="bg-light fw-semibold py-2">Settings</CDropdownHeader>
-        <CDropdownItem href="#">
+        <CDropdownHeader className="bg-light fw-semibold py-2">Manage Account</CDropdownHeader>
+        <CDropdownItem href="profile">
           <CIcon icon={cilUser} className="me-2" />
-          Profile
+          Update Profile
         </CDropdownItem>
-        {/* <CDropdownItem href="#">
+        <CDropdownItem href="changePassword">
           <CIcon icon={cilSettings} className="me-2" />
-          Settings
+          Change Password
         </CDropdownItem>
-        <CDropdownItem href="#">
-          <CIcon icon={cilCreditCard} className="me-2" />
-          Payments
-          <CBadge color="secondary" className="ms-2">
-            42
-          </CBadge>
-        </CDropdownItem>
-        <CDropdownItem href="#">
-          <CIcon icon={cilFile} className="me-2" />
-          Projects
-          <CBadge color="primary" className="ms-2">
-            42
-          </CBadge>
-        </CDropdownItem>
-        <CDropdownDivider /> */}
-        <CDropdownItem href="#">
+        <CDropdownDivider />
+        <CDropdownItem className="cursor-pointer">
           <CIcon icon={cilLockLocked} className="me-2" />
-          Logout
+          Lock Account
         </CDropdownItem>
       </CDropdownMenu>
     </CDropdown>

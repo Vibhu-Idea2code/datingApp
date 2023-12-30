@@ -14,8 +14,8 @@ const loading = (
 const DefaultLayout = React.lazy(() => import("./layout/DefaultLayout"));
 // const LoginLayout = React.lazy(() => import("./layout/LoginLayout"));
 const AdminLogin = React.lazy(() => import("./views/auth/AdminLogin"));
-const ForgotPassword= React.lazy(()=> import("./views/auth/ForgotPassword"));
-const ResetPassword= React.lazy(()=> import("./views/auth/ResetPassword"));
+const ForgotPassword = React.lazy(() => import("./views/auth/ForgotPassword"));
+const ResetPassword = React.lazy(() => import("./views/auth/ResetPassword"));
 
 // Pages
 const Register = React.lazy(() => import("./views/auth/Register"));
@@ -78,7 +78,6 @@ class App extends Component {
             <Route path="/register" name="Login Page" element={<Register />} />
             <Route path="/forgot-password" name="Login Page" element={<ForgotPassword />} />
             <Route path="/reset-password/:token/:userid" name="Login Page" element={<ResetPassword />} />
-            
 
           </Routes>
         </Suspense>
@@ -86,5 +85,56 @@ class App extends Component {
     );
   }
 }
+// const App = () => {
+//   const { isAuthenticated } = useUserState();
+
+//   const PublicRoute = () => {
+//     return isAuthenticated || Boolean(localStorage.getItem("token")) ? (
+//       <Navigate to="/dashboard" />
+//     ) : (
+//       <LoginLayout />
+//     );
+//   };
+
+//   const PrivateRoute = () => {
+//     return isAuthenticated || Boolean(localStorage.getItem("token")) ? (
+//       <DefaultLayout />
+//     ) : (
+//       <Navigate to="/" />
+//     );
+//   };
+//   return (
+//     <BrowserRouter>
+//       <Suspense fallback={loading}>
+//         <Routes>
+//           <Route path="/" element={<PublicRoute />}>
+//             <Route exact path="/" index element={<AdminLogin />} />
+//             <Route
+//               exact
+//               path="/register"
+//               name="Register Page"
+//               element={<Register />}
+//             />
+//             <Route
+//               exact
+//               path="/forgot-password"
+//               name="Forgot Password Page"
+//               element={<ForgotPassword />}
+//             />
+//             <Route
+//               path="reset-password/:token/:userid"
+//               name="Reset Password Page"
+//               element={<ResetPassword />}
+//             />
+//           </Route>
+
+//           <Route path="/" element={<PrivateRoute />}>
+//             <Route path="*" name="Home" element={<DefaultLayout />} />
+//           </Route>
+//         </Routes>
+//       </Suspense>
+//     </BrowserRouter>
+//   );
+// };
 
 export default App;

@@ -1,5 +1,6 @@
 import axios from "axios";
 
+const mainUrl =
 process.env.NODE_ENV === "development"
   ? "http://localhost:9500"
   : "http://167.71.227.102:9500";
@@ -59,9 +60,11 @@ export const adminDetails = () =>
 // http://localhost:8500/v1/
 // Get admin profile
 export const changePassword = (data) =>
-  axios.post(`${mainUrl}/admin/change-password/${id}`, data, {
-    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-  });
+  axios.post(`http://localhost:9500/v1/admin/change-password`, data
+  // {
+  //   headers: { Authorization: `Bearer ${localStorage.getItem("refreshToken")}` },
+  // }
+  );
 
 //Update Admin Profile
 export const UpdateProfile = (data) =>

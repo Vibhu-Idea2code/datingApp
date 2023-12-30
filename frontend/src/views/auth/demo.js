@@ -46,7 +46,6 @@ const ResetPassword = () => {
       .then((response) => {
         console.log(response.data.message); //check what is back response data in consloe
         setSuccess(response.data.message);
-        
         navigate("/");
         reset();
       })
@@ -107,12 +106,9 @@ const ResetPassword = () => {
                               placeholder="OTP"
                               autoComplete="otp"
                               variant="outlined"
-                              rules={{ required: "OTP is required" }}
                             />
-                            
                           )}
                         />
-                        
                       </CInputGroup>
                       {errors.otp && (
                         <div className="error-msg mb-3">
@@ -143,9 +139,9 @@ const ResetPassword = () => {
                           )}
                         />
                       </CInputGroup>
-                      {errors.newPassword && (
+                      {errors.new_password && (
                         <div className="error-msg mb-2">
-                          {errors.newPassword.message}
+                          {errors.new_password.message}
                         </div>
                       )}
                     </div>
@@ -172,9 +168,9 @@ const ResetPassword = () => {
                           )}
                         />
                       </CInputGroup>
-                      {errors.confirmPassword && (
+                      {errors.confirm_password && (
                         <div className="error-msg mb-2">
-                          {errors.confirmPassword.message}
+                          {errors.confirm_password.message}
                         </div>
                       )}
                     </div>
@@ -187,14 +183,6 @@ const ResetPassword = () => {
                       render={({ field }) => (
                         <CFormInput {...field} type="hidden" />
                       )}
-                    />
-
-<Controller
-                      name="resetCode"
-                      control={control}
-                      defaultValue={token}
-                      rules={{ required: 'Reset Code is required' }}
-                      render={({ field }) => <CFormInput {...field} type="hidden" />}
                     />
 
                     <CRow>

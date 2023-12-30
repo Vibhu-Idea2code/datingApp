@@ -2,6 +2,8 @@ import React from "react";
 // import Popup from './views/theme/colors/Popup'
 
 const Dashboard = React.lazy(() => import("./views/dashboard/Dashboard"));
+// const Profile = React.lazy(() => import('./views/auth/Profile'))
+const ChangePassword = React.lazy(() => import('./views/auth/ChangePassword'))
 
 /* ----------------------- USER DETAILS WITH LIST ADD ----------------------- */
 const IndexForm = React.lazy(() => import("./views/User/IndexUser"));
@@ -110,6 +112,8 @@ const routes = [
   { path: "/zodiac_sign_list", name: "", element: Sign, exact: true },
   { path: "/AddSign", name: "", element: AddSign, exact: true },
 
+  // { path: '/profile', name: 'Profile', element: Profile },
+  { path: '/changePassword', name: 'Change Password', element: ChangePassword },
   // { path: '/user/views', name: 'User', element: Users },
   // { path: '/user/common', name: 'common', element: common },
   // { path: "/view", name: "", element: View },

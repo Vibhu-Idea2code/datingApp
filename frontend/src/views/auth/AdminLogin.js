@@ -1,119 +1,168 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React from "react";
+import { Link } from "react-router-dom";
+import {
+  CButton,
+  CCard,
+  CCardBody,
+  CCardGroup,
+  CCol,
+  CContainer,
+  CForm,
+  CFormInput,
+  CInputGroup,
+  CInputGroupText,
+  CRow,
+} from "@coreui/react";
+import CIcon from "@coreui/icons-react";
+import { cilEnvelopeClosed, cilLockLocked, cilUser } from "@coreui/icons";
+import { useNavigate } from "react-router-dom";
+import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
-// import HomeLayout from 'src/layout/HomeLayout';
 
-const AdminLogin = () => {
-const [email, setUsername] = useState("");
-const [password, setPassword] = useState("");
-const [error, setError] = useState(null);
-const [showSuccessAlert, setShowSuccessAlert] = useState(false);
-const navigate = useNavigate();
-const handleLogin = async () => {
+const Login = () => {
+  const {
+    register,
+    handleSubmit,
+    setError,
+    control,
+    formState: { errors },
+  } = useForm();
+  const navigate = useNavigate();
+
+  const onSubmit = async (data) => {
     try {
-      // Make an API call to your login endpoint
       const response = await axios.post(
         "http://localhost:9500/v1/admin/login",
         {
-          email,
-          password,
+          email: data.email,
+          password: data.password,
         }
       );
-      // Handle successful login (redirect, set authentication token, etc.)
+
       console.log("Login successful:", response.data);
       localStorage.setItem("token", response.data.refreshToken);
-      console.log(response.data.refreshToken);
-      setShowSuccessAlert(true);
-      // Hide the success alert after 3 seconds (adjust the timeout as needed)
-      setTimeout(() => {
-        setShowSuccessAlert(false);
-        navigate("/dashboard");
-      }, 1000);
+
+      // Redirect to the dashboard
+      navigate("/dashboard");
     } catch (err) {
-      // Handle login error
-      setError("Invalid username or password");
+      setError("password", {
+        type: "manual",
+        message: "Invalid username or password",
+      });
       console.error("Login error:", err);
     }
   };
+
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
-      <div className="container">
-        <div className="row justify-content-center">
-          <div className="col-md-8">
-            <div className="card-group">
-              <div className="card p-4">
-                <div className="card-body">
-                  <h1>Login</h1>
-                  <p className="text-medium-emphasis">
-                    Sign In to your account
-                  </p>
-                  {error && <div className="alert alert-danger">{error}</div>}
-                  {showSuccessAlert && (
-                    <div className="alert alert-success">
-                      Login successful! Redirecting to the dashboard...
-                    </div>
-                  )}
-                  <div className="input-group mb-3">
-                    <span className="input-group-text">
-                      <i className="cil-user"></i>
-                    </span>
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="email"
-                      value={email}
-                      onChange={(e) => setUsername(e.target.value)}
-                    />
-                  </div>
-                  <div className="input-group mb-4">
-                    <span className="input-group-text">
-                      <i className="cil-lock-locked"></i>
-                    </span>
-                    <input
-                      type="password"
-                      className="form-control"
-                      placeholder="Password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
-                  </div>
-                  <div className="row">
-                    <div className="col-6">
-                      <button
-                        className="btn btn-primary px-4"
-                        onClick={handleLogin}>
-                        Login
-                      </button>
-                    </div>
-                    <div className="col-6 text-end">
-                      <Link to="/forgot-password" className="btn btn-link px-0">
-                        Forgot password?
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="card text-white bg-primary py-5"
-                style={{ width: "44%" }}>
-                <div className="card-body text-center">
+      <CContainer>
+        <CRow className="justify-content-center">
+          <CCol md={8}>
+            <CCardGroup>
+              <CCard className="p-4 col-md-7">
+                <CCardBody>
+                  <CForm onSubmit={handleSubmit(onSubmit)}>
+                    <h1>Login</h1>
+                    <p className="text-medium-emphasis">
+                      Sign In to your account
+                    </p>
+                    <CInputGroup className="mb-3">
+                      <CInputGroup>
+                        <CInputGroupText>
+                          <CIcon icon={cilEnvelopeClosed} />
+                        </CInputGroupText>
+                        <Controller
+                          name="email"
+                          control={control}
+                          defaultValue=""
+                          rules={{ required: "Email is required" }}
+                          render={({ field }) => (
+                            <>
+                              <CFormInput
+                                {...field}
+                                placeholder="Email"
+                                autoComplete="email"
+                                variant="outlined"
+                              />
+                            </>
+                          )}
+                        />
+                      </CInputGroup>
+                      {errors.email && (
+                        <div className="error-msg mb-3">
+                          {errors.email.message}
+                        </div>
+                      )}
+                    </CInputGroup>
+                    <CInputGroup>
+                        <CInputGroupText>
+                          <CIcon icon={cilLockLocked} />
+                        </CInputGroupText>
+                        <Controller
+                          name="password"
+                          control={control}
+                          defaultValue=""
+                          rules={{ required: 'Password is required' }}
+                          render={({ field }) => (
+                            <>
+                              <CFormInput
+                                {...field}
+                                type="password"
+                                placeholder="Password"
+                                autoComplete="current-password"
+                                variant="outlined" // Custom prop for the outlined variant
+                              />
+                            </>
+                          )}
+                        />
+                      </CInputGroup>
+                      {errors.password && (
+                        <div className="error-msg mb-2">{errors.password.message}</div>
+                      )}
+                    <CRow>
+                      <CCol xs={6}>
+                        <CButton color="primary" className="px-4" type="submit">
+                          Login
+                        </CButton>
+                      </CCol>
+                      <CCol xs={6} className="text-right">
+                        <Link
+                          to="/forgot-password"
+                          className="btn btn-link px-0">
+                          Forgot password?
+                        </Link>
+                      </CCol>
+                    </CRow>
+                  </CForm>
+                </CCardBody>
+              </CCard>
+              <CCard className="text-white col-md-5 bg-primary py-5">
+                <CCardBody className="text-center">
                   <div>
                     <h2>Sign up</h2>
                     <p>
-                      Sorry!! you have to register for access to our fesilities.
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                      sed do eiusmod tempor incididunt ut labore et dolore magna
+                      aliqua.
                     </p>
-                    <Link to="/register" className="btn btn-primary mt-3">
-                      Register Now!
+                    <Link to="/register">
+                      <CButton
+                        color="primary"
+                        className="mt-3"
+                        active
+                        tabIndex={-1}>
+                        Register Now!
+                      </CButton>
                     </Link>
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+                </CCardBody>
+              </CCard>
+            </CCardGroup>
+          </CCol>
+        </CRow>
+      </CContainer>
     </div>
   );
 };
 
-export default AdminLogin;
+export default Login;

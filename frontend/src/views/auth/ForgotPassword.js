@@ -1,87 +1,157 @@
-import React, { useState } from "react";
+import React,{useState} from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useForm,Controller } from "react-hook-form";
 import axios from "axios";
-// import HomeLayout from 'src/layout/HomeLayout';
+import {
+  CButton,
+  CCard,
+  CCardBody,
+  CCardGroup,
+  CCol,
+  CContainer,
+  CForm,
+  CFormInput,
+  CInputGroup,
+  CInputGroupText,
+  CRow,
+} from "@coreui/react";
+import CIcon from "@coreui/icons-react";
+import { cilEnvelopeClosed, cilLockLocked, cilUser } from "@coreui/icons";
+import { ToastContainer, toast } from 'react-toastify'
+
+
+
 
 const AdminLogin = () => {
-  const [email, setUsername] = useState("");
-
-  const [error, setError] = useState(null);
-  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    setError,
+    control,
+    formState: { errors },
+  } = useForm();
   const navigate = useNavigate();
-  const handleLogin = async () => {
+  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  var [isLoading, setIsLoading] = useState(false)
+  var [success, setSuccess] = useState()
+
+  const onSubmit = async (data) => {
     try {
-      // Make an API call to your login endpoint
       const response = await axios.post(
         "http://localhost:9500/v1/admin/forgot",
         {
-          email,
+       email: data.email,
         }
       );
-      // Handle successful login (redirect, set authentication token, etc.)
+
       console.log("Forgot Password successfully:", response.data);
-      localStorage.setItem("token", response.data.refreshToken);
-      console.log(response.data.refreshToken);
       setShowSuccessAlert(true);
-      // Hide the success alert after 3 seconds (adjust the timeout as needed)
+      setIsLoading(false)
+      setSuccess('Check your mail box.')
+      // toast.success(response.data.message)
+
       setTimeout(() => {
         setShowSuccessAlert(false);
-        navigate("/reset-password");
+        // navigate("/reset-password");
       }, 1000);
     } catch (err) {
-      // Handle login error
-      setError("Invalid username or password");
-      console.error("Login error:", err);
+      setError("email", {
+        type: "manual",
+        message: "Invalid email address",
+      });
+      console.error("Forgot Password error:", err);
     }
   };
+
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
-      <div className="container">
-        <div className="row justify-content-center">
-          <div className="col-md-6">
-            <div className="card-group">
-              <div className="card p-2">
-                <div className="card-body">
-                  <h1>Forgot Password</h1>
-                  <p className="text-medium-emphasis"></p>
-                  {error && <div className="alert alert-danger">{error}</div>}
-                  {showSuccessAlert && (
-                    <div className="alert alert-success">
-                      Check Your Mail To Reset Password
+      <CContainer>
+      <ToastContainer />
+        <CRow className="justify-content-center">
+          <CCol md={6}>
+            <CCardGroup>
+              <CCard className="p-4">
+                <CCardBody>
+                  <CForm onSubmit={handleSubmit(onSubmit)}>
+                  <h3 className="theme-color mb-3">Forgot Password</h3>
+
+                    <div in={success}>
+                      <p className="success-msg">{success ? success : ''}</p>
                     </div>
-                  )}
-                  <div className="input-group mb-3">
-                    <span className="input-group-text">
-                      <i className="cil-user"></i>
-                    </span>
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="email"
-                      value={email}
-                      onChange={(e) => setUsername(e.target.value)}
-                    />
-                  </div>
-                  <div className="row">
-                    <div className="col-6">
-                      <button
-                        className="btn btn-primary px-4"
-                        onClick={handleLogin}>
-                        Submit
-                      </button>
-                    </div>
-                    <div className="col-6 text-end">
-                      <Link to="/" className="btn btn-link px-0">
-                        Back To Login
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+                    <CInputGroup className="mb-3">
+                      <CInputGroup>
+                        <CInputGroupText>
+                          <CIcon icon={cilEnvelopeClosed} />
+                        </CInputGroupText>
+                        <Controller
+                          name="email"
+                          control={control}
+                          defaultValue=""
+                          rules={{ required: "Email is required" }}
+                          render={({ field }) => (
+                            <>
+                              <CFormInput
+                                {...field}
+                                placeholder="Email"
+                                autoComplete="email"
+                                variant="outlined"
+                              />
+                            </>
+                          )}
+                        />
+                      </CInputGroup>
+                      {errors.email && (
+                        <div className="error-msg mb-3">
+                          {errors.email.message}
+                        </div>
+                      )}
+                    </CInputGroup>
+                    {/* <CInputGroup>
+                        <CInputGroupText>
+                          <CIcon icon={cilLockLocked} />
+                        </CInputGroupText>
+                        <Controller
+                          name="password"
+                          control={control}
+                          defaultValue=""
+                          rules={{ required: 'Password is required' }}
+                          render={({ field }) => (
+                            <>
+                              <CFormInput
+                                {...field}
+                                type="password"
+                                placeholder="Password"
+                                autoComplete="current-password"
+                                variant="outlined" // Custom prop for the outlined variant
+                              />
+                            </>
+                          )}
+                        />
+                      </CInputGroup>
+                      {errors.password && (
+                        <div className="error-msg mb-2">{errors.password.message}</div>
+                      )} */}
+                    <CRow>
+                      <CCol xs={6}>
+                        <CButton color="primary" className="px-4" type="submit">
+                          Submit
+                        </CButton>
+                      </CCol>
+                      <CCol xs={6} className="text-right">
+                        {' '}
+                        <CButton color="link" className="px-0 forgot-link">
+                            Back to Login?
+                          </CButton>
+                      </CCol>
+                    </CRow>
+                  </CForm>
+                </CCardBody>
+              </CCard>
+            
+            </CCardGroup>
+          </CCol>
+        </CRow>
+      </CContainer>
     </div>
   );
 };
