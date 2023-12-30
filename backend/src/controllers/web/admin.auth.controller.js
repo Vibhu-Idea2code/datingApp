@@ -13,6 +13,11 @@ const jwtSecrectKey = "cdccsvavsvfssbtybnjnuki";
 const fs = require("fs");
 const Admin = require("../../models/admin.model");
 const crypto = require("crypto");
+const {
+  createResponse,
+  queryErrorRelatedResponse,
+  successResponse,
+} = require("../../helpers/sendResponse");
 
 /* -------------------------- REGISTER/CREATE ADMIN ------------------------- */
 const register = async (req, res) => {
@@ -214,7 +219,9 @@ const forgetPassword = async (req, res) => {
 // /* ----------------------------- RESET PASSWORD ----------------------------- */
 const resetPassword = async (req, res) => {
   try {
-    const { otp, newPassword, confirmPassword } = req.body;
+    const { otp, newPassword, confirmPassword, id } = req.body;
+
+    console.log(id);
 
     if (newPassword !== confirmPassword) {
       return res.status(400).json({
@@ -223,19 +230,18 @@ const resetPassword = async (req, res) => {
       });
     }
     const user = await adminService.findAdminByEmail(otp);
+
     if (!user) {
       return res.status(404).json({
         success: false,
         message: "User not found.",
       });
     }
-      // Verify OTP
-      if (user.otp !== otp) {
-        return res.status(400).json({
-          success: false,
-          message: "Invalid OTP.",
-        });
-      }
+
+    // Verify OTP
+    const checkotp = await Admin.findOne({ otp: req.body.otp, _id: req.body.id });
+    if (!checkotp) return queryErrorRelatedResponse(req, res, 401, { otp: "Invalid OTP!" });
+  
     const hashPassword = await bcrypt.hash(newPassword, 8);
     await adminService.updatePassword(user._id, hashPassword);
     // Optionally, you can add more password validation logic here.
@@ -248,7 +254,7 @@ const resetPassword = async (req, res) => {
   }
 };
 
-const verifyOtpResetPass = async (req, res) => {};
+// const verifyOtpResetPass = async (req, res) => {};
 module.exports = {
   register,
   login,
