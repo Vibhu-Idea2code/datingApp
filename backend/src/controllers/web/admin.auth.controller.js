@@ -101,7 +101,7 @@ const login = async (req, res) => {
     if (token) {
       data = await adminService.findAdminAndUpdate(findUser._id, token);
     }
-    res.status(200).json({ data: token, refreshToken: refreshToken });
+    res.status(200).json({ data: data, token:token,refreshToken: refreshToken });
   } catch (error) {
     res.status(404).json({ error: error.message });
   }
@@ -136,12 +136,14 @@ const changePassword = async (req, res) => {
   try {
     const { oldpass, newpass, confirmpass } = req.body;
     console.log(req.body, "++++++++++++++");
-    const admin = await Admin.findById(req.params.id);
+    const admin = await Admin.findById(req.body.id);
     if (!admin) {
       return res.status(404).json({ error: "User not found" });
     }
+    console.log(admin, "++++++++++++++admin");
     // Verify the old password
     const isPasswordCorrect = await bcrypt.compare(oldpass, admin.password);
+
     if (!isPasswordCorrect) {
       return res.status(401).json({ error: "Incorrect old password" });
     }
@@ -199,8 +201,6 @@ const forgetPassword = async (req, res) => {
             email,
             data,
             "Verify Email"
-
-            // reset_link: process.env.BACKEND_URL + `/doctor4you/reset-password/${resetCode}/${admin._id}`,
           );
         }
       }
@@ -239,9 +239,13 @@ const resetPassword = async (req, res) => {
     }
 
     // Verify OTP
-    const checkotp = await Admin.findOne({ otp: req.body.otp, _id: req.body.id });
-    if (!checkotp) return queryErrorRelatedResponse(req, res, 401, { otp: "Invalid OTP!" });
-  
+    const checkotp = await Admin.findOne({
+      otp: req.body.otp,
+      _id: req.body.id,
+    });
+    if (!checkotp)
+      return queryErrorRelatedResponse(req, res, 401, { otp: "Invalid OTP!" });
+
     const hashPassword = await bcrypt.hash(newPassword, 8);
     await adminService.updatePassword(user._id, hashPassword);
     // Optionally, you can add more password validation logic here.
