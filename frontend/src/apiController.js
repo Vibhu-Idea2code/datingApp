@@ -37,7 +37,7 @@ axios.interceptors.response.use(
   }
 );
 
-export const adminLogin = (data) => axios.post(`${mainUrl}/admin/login`, data);
+export const adminLogin = (data) => axios.post(`${mainUrl}/v1/admin/login`, data);
 export const adminRegister = (data) =>
   axios.post(`${mainUrl}/admin/forgot`, data);
 
@@ -67,10 +67,12 @@ export const changePassword = (data) =>
   );
 
 //Update Admin Profile
-export const UpdateProfile = (data) =>
-  axios.post(`${mainUrl}admin/update/${id}`, data, {
-    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-  });
+export const UpdateProfile = (adminId) =>
+  axios.put(`${mainUrl}/v1/admin/update/:${adminId}`, 
+  //  {
+  //   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  // }
+  );
 
 //Get All users
 export const allUsers = (data) =>

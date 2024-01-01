@@ -106,8 +106,8 @@ export default function Pets() {
               <Icons.Edit
                 className="editIcon"
                 style={{
-                  width: "1.5em",
-                  height: "1.5em",
+                  width: "1em",
+                  height: "1em",
                 }}
                 onClick={() => {
                   const editdata = datatableData.find(
@@ -122,8 +122,8 @@ export default function Pets() {
               <Icons.Delete
                 className="deleteIcon"
                 style={{
-                  width: "1.5em",
-                  height: "1.5em",
+                  width: "1em",
+                  height: "1em",
                 }}
                 onClick={async () => {
                   const confirm = await swal({

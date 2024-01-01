@@ -15,11 +15,14 @@ import { useNavigate } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import { Grid, Switch } from "@mui/material";
 import * as Icons from "@mui/icons-material";
+import { useUserState } from "src/context/UserContext";
 // import no_profile from "../../../assets/images/users/no_profile.jpg";
 
 export default function Interest() {
   const navigate = useNavigate();
   // const [rows, setRows] = useState([]);
+  const { userRole } = useUserState();
+  console.log(userRole);
   const [datatableData, setdatatableData] = useState([]);
   const [baseurl, setbaseurl] = useState("");
   const getData = async () => {
@@ -153,8 +156,8 @@ export default function Interest() {
               <Icons.Edit
                 className="editIcon"
                 style={{
-                  width: "1.5em",
-                  height: "1.5em",
+                  width: "1em",
+                  height: "1em",
                 }}
                 onClick={() => {
                   const editdata = datatableData.find(
@@ -168,8 +171,8 @@ export default function Interest() {
               <Icons.Delete
                 className="deleteIcon"
                 style={{
-                  width: "1.5em",
-                  height: "1.5em",
+                  width: "1em",
+                  height: "1em",
                 }}
                 onClick={async () => {
                   const confirm = await swal({

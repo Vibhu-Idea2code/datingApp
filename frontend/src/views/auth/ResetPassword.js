@@ -189,7 +189,7 @@ const ResetPassword = () => {
                       )}
                     />
 
-<Controller
+                   <Controller
                       name="resetCode"
                       control={control}
                       defaultValue={token}

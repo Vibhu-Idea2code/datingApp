@@ -47,7 +47,7 @@ const AppHeaderDropdown = () => {
           Change Password
         </CDropdownItem>
         <CDropdownDivider />
-        <CDropdownItem className="cursor-pointer">
+        <CDropdownItem onClick={() => signOut(userDispatch, navigate)} className="cursor-pointer">
           <CIcon icon={cilLockLocked} className="me-2" />
           Lock Account
         </CDropdownItem>

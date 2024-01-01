@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import { Link } from "react-router-dom";
 import {
   CButton,
@@ -18,6 +18,7 @@ import { cilEnvelopeClosed, cilLockLocked, cilUser } from "@coreui/icons";
 import { useNavigate } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
+import { loginUser, useUserDispatch } from '../../context/UserContext'
 
 const Login = () => {
   const {
@@ -28,30 +29,38 @@ const Login = () => {
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
+  var userDispatch = useUserDispatch()
 
+  var [isLoading, setIsLoading] = useState(false)
+
+  // console.log(errors)
   const onSubmit = async (data) => {
-    try {
-      const response = await axios.post(
-        "http://localhost:9500/v1/admin/login",
-        {
-          email: data.email,
-          password: data.password,
-        }
-      );
+    loginUser(userDispatch, data, navigate, setIsLoading, setError)
+    console.log
+  }
+  // const onSubmit = async (data) => {
+  //   try {
+  //     // const response = await axios.post(
+  //     //   "http://localhost:9500/v1/admin/login",
+  //     //   {
+  //     //     email: data.email,
+  //     //     password: data.password,
+  //     //   },userDispatch,navigate,setIsLoading,setError
+  //     // );
 
-      console.log("Login successful:", response.data);
-      localStorage.setItem("token", response.data.refreshToken);
+  //     console.log("Login successful:", response.data);
+  //     localStorage.setItem("token", response.data.refreshToken);
 
-      // Redirect to the dashboard
-      navigate("/dashboard");
-    } catch (err) {
-      setError("password", {
-        type: "manual",
-        message: "Invalid username or password",
-      });
-      console.error("Login error:", err);
-    }
-  };
+  //     // Redirect to the dashboard
+  //     navigate("/dashboard");
+  //   } catch (err) {
+  //     setError("password", {
+  //       type: "manual",
+  //       message: "Invalid username or password",
+  //     });
+  //     console.error("Login error:", err);
+  //   }
+  // };
 
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
