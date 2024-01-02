@@ -1,8 +1,8 @@
-const Admin = require("../../src/models/admin.model");
+const Admin = require("../models/admin.model");
 const dotenv = require("dotenv").config();
 const jwt = require("jsonwebtoken");
 // const refreshSecret = process.env.JWT_REFRESH_SECRET_KEY;
-const refreshSecret= "cdccsvavsvfssbtybnjnukiradhe";
+const refreshSecret = "cdccsvavsvfssbtybnjnukiradhe";
 
 /* ------------------------------ Access Token ------------------------------ */
 
@@ -22,13 +22,13 @@ const accessToken = () => async (req, res, next) => {
       token.replace("Bearer ", ""),
       process.env.JWT_SECRET_KEY
     );
-    
-       if (!decoded) {
+
+    if (!decoded) {
       return next(new Error("Please enter valid token!"));
     }
     const admin = await Admin.findOne({ email: decoded.email });
 
-     if (!admin) {
+    if (!admin) {
       return next(new Error("Please authenticate!"));
     }
     req.admin = admin;
@@ -55,7 +55,7 @@ const refreshToken = async (req, res, next) => {
     const decoded = jwt.verify(
       refreshToken,
       process.env.JWT_REFRESH_SECRET_KEY
-    ); 
+    );
 
     if (!decoded) {
       return next(new Error("Please enter valid token!"));
@@ -66,11 +66,10 @@ const refreshToken = async (req, res, next) => {
       process.env.JWT_SECRET_KEY,
       { expiresIn: "1h" }
     );
-  
+
     next();
 
     res.json({ refreshToken: refreshToken, newAccessToken: newAccessToken });
-
   } catch (err) {
     res.status(401).json({
       status: false,

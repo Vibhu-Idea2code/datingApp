@@ -54,12 +54,15 @@ const register = async (req, res) => {
     password: hashPassword,
     token,
   };
+
+  // const baseUrl = req.protocol + "://" + req.get("host") + process.env.BASE_URL_PROFILE_PATH;
   const data = await adminService.createAdmin(filter, reqBody);
   res.status(200).json({
     success: true,
     data: data,
     token: token,
     refreshToken: refreshToken,
+    // baseUrl:baseUrl,
   });
 };
 
@@ -85,7 +88,7 @@ const login = async (req, res) => {
     let option = {
       email,
       role: findUser.role,
-      exp: moment().add(1, "day").unix(),
+      exp: moment().add(1, "minutes").unix(),
     };
 
     let token;
@@ -97,11 +100,17 @@ const login = async (req, res) => {
     };
     const refreshToken = generateRefreshToken(option);
 
+ 
+    const baseUrl =
+    req.protocol +
+    "://" +
+    req.get("host") +
+    process.env.BASE_URL_PROFILE_PATH;
     let data;
     if (token) {
       data = await adminService.findAdminAndUpdate(findUser._id, token);
     }
-    res.status(200).json({ data: data, token:token,refreshToken: refreshToken });
+    res.status(200).json({ data: data, token:token,refreshToken: refreshToken ,baseUrl:baseUrl});
   } catch (error) {
     res.status(404).json({ error: error.message });
   }
@@ -160,7 +169,7 @@ const changePassword = async (req, res) => {
 
     return res
       .status(200)
-      .json({ success: true, message: "Password updated successfully" });
+      .json({ success: true, message: "Password updated successfully" ,data:admin});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

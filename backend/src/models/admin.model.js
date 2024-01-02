@@ -53,13 +53,13 @@ const adminSchema = new mongoose.Schema(
   {
     timestamps: true,
     versionKey: false,
-    toJSON: {
-      transform: function (doc, data) {
-        if (data?.admin_image) {
-          data.admin_image = `${config.base_url}profile_images/${data.admin_image}`;
-        }
-      },
-    },
+    // toJSON: {
+    //   transform: function (doc, data) {
+    //     if (data?.admin_image) {
+    //       data.admin_image = `${config.base_url}profile_images/${data.admin_image}`;
+    //     }
+    //   },
+    // },
   }
 );
 

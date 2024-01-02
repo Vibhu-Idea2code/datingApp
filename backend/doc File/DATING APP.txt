@@ -118,3 +118,18 @@ UPDATE SHOW ME (done)
 7.LOGOUT
 
 
+
+
+
+
+
+reming(2-jan)
+
+-update STATUS(both side)
+-token (expiry)
+-update profile(frontend side)
+-change password(frontend side)
+
+work done
+-(list)frontend side
+-auth (token verify)

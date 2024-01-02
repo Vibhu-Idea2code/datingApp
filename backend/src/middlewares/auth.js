@@ -79,4 +79,5 @@ const refreshToken = async (req, res, next) => {
   }
 };
 
-module.exports = { accessToken, refreshToken };
+module.exports = { accessToken, refreshToken 
+};

@@ -7,7 +7,10 @@ const {
 const { upload } = require("../../../middlewares/upload");
 const router = express.Router();
 // const auth = require("../../middlewares/auth");
-const { refreshToken, accessToken } = require("../../../middlewares/auth3");
+const {
+  refreshToken,
+  accessToken,
+} = require("../../../middlewares/AdminAuth");
 
 /* ------------------------------ ADMIN ROUTES [AUTH]------------------------------ */
 router.post(
@@ -31,9 +34,11 @@ router.post(
   authAdminController.changePassword
 );
 
-router.put("/resetPassword",
-//  accessToken(),
- authAdminController.resetPassword);
+router.put(
+  "/resetPassword",
+  //  accessToken(),
+  authAdminController.resetPassword
+);
 
 router.get(
   "/list",
@@ -61,6 +66,8 @@ router.put(
 );
 router.delete("/delete-user/:userId", adminUserController.deleteUserByAdmin);
 router.delete("/delete-many", adminUserController.deleteManyUsersByAdmin);
+
+router.put("/updateUserStatus/:id",adminUserController.updateUserStatus);
 
 // router.get("/role", auth());
 

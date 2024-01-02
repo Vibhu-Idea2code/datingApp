@@ -4,6 +4,8 @@ const {    userService  } = require("../../services");
   const jwt = require("jsonwebtoken");
   const jwtSecrectKey = "cdccsvavsvfssbtybnjnuki";
   const fs = require("fs");
+const { User } = require("../../models");
+const mongoose = require("mongoose");
 
 /* -------------------------- UPDATE USER BY ADMIN -------------------------- */
   const UserUpdateDetailsByAdmin = async (req, res) => {
@@ -59,12 +61,18 @@ const {    userService  } = require("../../services");
       userExists.email = email; // Update the 'firstName' field
       userExists.user_img = user_img; // Update the 'firstName
   
+      const baseUrl =
+      req.protocol +
+      "://" +
+      req.get("host") +
+      process.env.BASE_URL_PROFILE_PATH;
       await userService.updateUser(userId, userExists); // Save the updated user
   
       res.status(200).json({
         success: true,
         message: "User details updated successfully!",
         data: userExists,
+        baseUrl:baseUrl,
       });
     } catch (error) {
       res.status(400).json({ success: false, message: error.message });
@@ -131,6 +139,7 @@ const {    userService  } = require("../../services");
         age,
         token,
       };
+
       const abcd = await userService.createUser(filter);
       res.status(200).json({ success: true, data: abcd });
     } catch (err) {
@@ -201,11 +210,36 @@ const getAllUser = async (req, res) => {
     }
   };
   
+  /* ------------------------------ UPDATE STATUS ----------------------------- */
+  const updateUserStatus = async (req, res, next) => {
+    try {
+      const id = new mongoose.Types.ObjectId(req.params.id);
+      const user = await User.findById(id);
+  
+      if (!user) {
+        throw new Error("User not found!");
+      }
+  
+      user.status = !user.status;
+      const result = await user.save();
+  
+      res.status(200).json({
+        success: true,
+        message: "User list successfully!",
+        data: result,
+      
+      });
+    } catch (err) {
+      next(err);
+    }
+  };
+  
   module.exports = {
     UserUpdateDetailsByAdmin,
     UserRegisterByAdmin,
     deleteUserByAdmin,
     deleteManyUsersByAdmin,
     getAllUser,
+    updateUserStatus,
   };
   
