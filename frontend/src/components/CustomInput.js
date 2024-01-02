@@ -15,7 +15,7 @@ const CustomInput = ({
   ...rest
 }) => {
   return (
-    <div>
+    <div> 
       <CFormLabel htmlFor={id}>{label}</CFormLabel>
       <CInputGroup>
         <CFormInput

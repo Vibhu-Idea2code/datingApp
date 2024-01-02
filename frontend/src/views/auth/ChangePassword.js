@@ -3,42 +3,22 @@ import {
   CButton,
   CCard,
   CCardBody,
-  CCardGroup,
   CCardHeader,
   CCol,
-  CContainer,
   CForm,
-  CFormFeedback,
-  CFormInput,
-  CFormLabel,
-  CInputGroup,
-  CInputGroupText,
   CRow,
+  CFormLabel,
+  CSpinner,
+  CFormInput,
 } from "@coreui/react";
-// import {
-//   CButton,
-//   CCard,
-//   CCardBody,
-//   CCardHeader,
-//   CCol,
-//   CForm,
-//   CRow,
-//   CFormLabel,
-//   CSpinner,
-//   CFormInput,
-// } from "@coreui/react";
 import { useForm, Controller } from "react-hook-form";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import CIcon from "@coreui/icons-react";
-import { cilEnvelopeClosed, cilLockLocked } from "@coreui/icons";
-
-// import CustomInput from "../../components/CustomInput";
+import CustomInput from "../../components/CustomInput";
 import { handleInputChange } from "../../components/formUtils";
+import { changePasswords } from "../../apiController";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useUserState } from "src/context/UserContext";
 
 import { toast } from "react-toastify";
-import axios from "axios";
-// import { handleInputChange } from "src/components/formUtils";
-
 const changePassword = () => {
   const {
     register,
@@ -52,203 +32,137 @@ const changePassword = () => {
     reset,
   } = useForm();
   var [isLoading, setIsLoading] = useState(false);
-  var [AuthError, setAuthError] = useState();
-  var [isLoading, setIsLoading] = useState(false);
-  const { token, userid } = useParams();
+  const { token, adminid } = useParams();
+  // const{user}= 
 
-  const navigate = useNavigate();
-  var [isLoading, setIsLoading] = useState(false);
-  var [AuthError, setAuthError] = useState();
-  // const { token, userid } = useParams();
-  var [success, setSuccess] = useState("");
-  const [showSuccessAlert, setShowSuccessAlert] = useState("");
-
-  const [validated, setValidated] = useState(false);
-  
-  const onSubmit = async (data) => {
-    console.log("data", data);
-    // console.log(data);
+  const onSubmit = (data) => {
     // setIsLoading(true);
-    // const response = await axios
-    //   .post("http://localhost:9500/v1/admin/change-password", data)
-    //   //   // resetPassword(data)
-    //   .then((response) => {
-    //     console.log(response.data); //check what is back response data in consloe
-    //     setSuccess(response.data.info);
+    console.log(data);
 
-    //     navigate("/");
-    //     reset();
-    // })
+    changePasswords(data).then((response) => {
+      console.log(response.data.data);
+    // if (response.data.data === 200 && response.data) {
+    //   reset()
+    //   toast.success(response.data.message)
+    //   setIsLoading(false)
+    // } else {
+    //   setError(response.data.messages)
+    //   setIsLoading(false)
+    // }
+    });
     // .catch((err) => {
-    //   if (err.response.data.status === 403) {
-    //     setAuthError(err.response.data.message);
-    //     setIsLoading(false);
-    //   } else if (
-    //     err.response.data.status === 401 ||
-    //     !err.response.data.isSuccess
-    //   ) {
-    //     Object.keys(err.response.data.message).forEach((key) => {
+    // if (err.response) {
+    //   const responseData = err.response.data;
+    //   if (responseData && (responseData.status === 401 || responseData.status === 400) && !responseData.isSuccess) {
+    //     // toast.error(responseData.message);
+
+    //     // Iterate through the error object to extract keys and values
+    //     Object.keys(responseData).forEach((key) => {
     //       // Set the error message for each field
     //       setError(key, {
-    //         type: "manual",
-    //         message: err.response.data.message[key],
+    //         type: 'manual',
+    //         message: responseData.message[key],
     //       });
     //     });
-    //     setIsLoading(false);
-    //   } else {
-    //     setAuthError(err.response.data.message);
-    //     setIsLoading(false);
     //   }
-    // });
+    // } else {
+    //   // Handle non-response errors here
+    //   // toast.error('Something went wrong!');
+    // }
+    // })
+    //       setIsLoading(false);
   };
+
   return (
     <CRow>
       <CCol xs={6}>
-        <CCard className="mb-2">
+        <CCard className="mb-4">
           <CCardHeader>
             <strong>Change Password</strong>
           </CCardHeader>
-          {/* <CCardGroup> */}
-          <CCard className="p-4">
-            <CCardBody>
-              <form onSubmit={handleSubmit(onSubmit())}>
-                {/* <h3 className="theme-color mb-3">Change Password</h3> */}
-                <div in={AuthError}>
-                  <p className="error-msg">{AuthError ? AuthError : ""}</p>
-                </div>
-                <div in={success}>
-                  <p className="success-msg">{success ? success : ""}</p>
-                </div>
-
-                <div className="mb-3">
-                  <CInputGroup>
-                    {/* <CInputGroupText>
-                      <CIcon icon={cilLockLocked} />
-                    </CInputGroupText> */}
-                    <Controller
-                      name="otp"
-                      control={control}
-                      defaultValue=""
-                      rules={{ required: "OTP is required" }}
-                      render={({ field }) => (
-                        <CFormInput
-                          {...field}
-                          placeholder="OTP"
-                          autoComplete="otp"
-                          variant="outlined"
-                          rules={{ required: "OTP is required" }}
-                        />
-                      )}
-                    />
-                  </CInputGroup>
-                  {errors.otp && (
-                    <div className="error-msg mb-3">{errors.otp.message}</div>
-                  )}
-                </div>
-
-                {/* <div className="mb-3">
-                  <CFormLabel htmlFor="validationCustom01">
-                    Old Password
-                  </CFormLabel>
-                  <Controller
-                    name="oldpass"
-                    text="password"
-                    control={control}
-                    defaultValue=""
-                    rules={{ required: "old password is required" }}
-                    render={({ field }) => (
-                      <CFormInput
-                        {...field}
-                        placeholder="Old password"
-                        autoComplete="oldpass"
-                        variant="outlined"
-                        rules={{ required: "old password is required" }}
-                      />
-                    )}
-                  />
-                  {errors.oldpass && (
-                    <div className="error-msg mb-3">
-                      {errors.oldpass.message}
-                    </div>
-                  )}
-                </div> */}
-
-                {/* <div className="mb-3">
-                  <CFormLabel htmlFor="validationCustom02">
-                    New Password
-                  </CFormLabel>
-                  <Controller
-                    name="newpass"
-                    control={control}
-                    defaultValue=""
-                    rules={{ required: "new password is required" }}
-                    render={({ field }) => (
-                      <CFormInput
-                        {...field}
-                        placeholder="New password"
-                        autoComplete="newpass"
-                        variant="outlined"
-                        rules={{ required: "new password is required" }}
-                      />
-                    )}
-                  />
-                  {errors.newpass && (
-                    <div className="error-msg mb-3">
-                      {errors.newpass.message}
-                    </div>
-                  )}
-                </div>
-
-                <div className="mb-3">
-                  <CFormLabel htmlFor="validationCustom03">
-                    confirm Password
-                  </CFormLabel>
-                  <Controller
-                    name="confirmpass"
-                    control={control}
-                    defaultValue=""
-                    rules={{ required: "confirm password is required" }}
-                    render={({ field }) => (
-                      <CFormInput
-                        {...field}
-                        placeholder="confirm password"
-                        autoComplete="confirmpass"
-                        variant="outlined"
-                        rules={{ required: "confirm password is required" }}
-                      />
-                    )}
-                  />
-                  {errors.confirmpass && (
-                    <div className="error-msg mb-3">
-                      {errors.confirmpass.message}
-                    </div>
-                  )}
-                </div> */}
-
-                <Controller
-                  name="id"
-                  control={control}
-                  defaultValue={userid}
-                  rules={{ required: "ID is required" }}
-                  render={({ field }) => (
-                    <CFormInput {...field} type="hidden" />
-                  )}
+          <CCardBody>
+            <CForm onSubmit={handleSubmit(onSubmit)}>
+              <CCol md={12} className="mb-3">
+                <CustomInput
+                  name="oldpass"
+                  type="text"
+                  label="Old Password"
+                  {...register("oldpass", {
+                    required: "Old Password is required",
+                  })}
+                  error={!!errors.oldpass}
+                  helperText={errors.oldpass && errors.oldpass.message}
+                  defaultValue={getValues("oldpass")}
+                  onChange={(e) =>
+                    handleInputChange("oldpass", e.target.value, {
+                      clearErrors,
+                      setValue,
+                    })
+                  }
                 />
+              </CCol>
+              <CCol md={12} className="mb-3">
+                <CustomInput
+                  name="newpass"
+                  type="text"
+                  label="New Password"
+                  {...register("newpass", {
+                    required: "New Password is required",
+                  })}
+                  error={!!errors.newpass}
+                  helperText={errors.newpass && errors.newpass.message}
+                  defaultValue={getValues("newpass")}
+                  onChange={(e) =>
+                    handleInputChange("newpass", e.target.value, {
+                      clearErrors,
+                      setValue,
+                    })
+                  }
+                />
+              </CCol>
 
-                <CRow>
-                  <CCol xs={6}>
-                    <CButton
-                      type="submit"
-                      color=""
-                      className="theme-btn-background">
-                      Submit
-                    </CButton>
-                  </CCol>
-                </CRow>
-              </form>
-            </CCardBody>
-          </CCard>
-          {/* </CCardGroup> */}
+              <Controller
+                name="adminid"
+                control={control}
+                defaultValue={adminid}
+                // rules={{ required: "ID is required" }}
+                render={({ field }) => <CFormInput {...field} type="hidden" />}
+              />
+
+              <CCol md={12} className="mb-3">
+                <CustomInput
+                  name="confirmpass"
+                  id="confirmpass"
+                  type="text"
+                  label="Confirm Password"
+                  {...register("confirmpass", {
+                    required: "Confirm Password is required",
+                  })}
+                  error={!!errors.confirmpass}
+                  helperText={errors.confirmpass && errors.confirmpass.message}
+                  defaultValue={getValues("confirmpass")}
+                  onChange={(e) =>
+                    handleInputChange("confirmpass", e.target.value, {
+                      clearErrors,
+                      setValue,
+                    })
+                  }
+                />
+              </CCol>
+              <CCol xs={12}>
+                {isLoading ? (
+                  <CSpinner className="theme-spinner-color" />
+                ) : (
+                  <CButton
+                    color="primary"
+                    type="submit"
+                    className="theme-btn-background">
+                    Submit
+                  </CButton>
+                )}
+              </CCol>
+            </CForm>
+          </CCardBody>
         </CCard>
       </CCol>
     </CRow>

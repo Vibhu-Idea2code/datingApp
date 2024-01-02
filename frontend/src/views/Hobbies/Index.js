@@ -22,7 +22,7 @@ export default function Interest() {
   const navigate = useNavigate();
   // const [rows, setRows] = useState([]);
   const { userRole } = useUserState();
-  console.log(userRole);
+  // console.log(userRole);
   const [datatableData, setdatatableData] = useState([]);
   const [baseurl, setbaseurl] = useState("");
   const getData = async () => {

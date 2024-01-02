@@ -5,8 +5,8 @@ var UserStateContext = React.createContext();
 var UserDispatchContext = React.createContext();
 
 function userReducer(state, action) {
-  console.log(action," login___________________")
-  console.log(state," login___________________")
+  // console.log(action," login___________________")
+  // console.log(state," login___________________")
 
   // console.log()
   switch (action.type) {
@@ -83,12 +83,12 @@ function loginUser(dispatch, data, navigate, setIsLoading, setError) {
         localStorage.setItem("token", response.data.data.token);
         localStorage.setItem("refreshToken", response.data.refreshToken);
         // localStorage.setItem("role", response.data.info.admin.role);
-
+          console.log(response.data.baseUrl);
         const userObject = {
           username: response.data.data.admin_name,
-          useremail: response.data.email,
+          useremail: response.data.data.email,
           userimage: response.data.data.admin_image
-            ? response.data.data.baseUrl + response.data.data.admin_image
+            ? response.data.baseUrl + response.data.data.admin_image
             : null,
           };
           // console.log(userObject.username,"dfhfghfhg")

@@ -23,8 +23,14 @@ import axios from "axios";
 import { DocsExample } from "src/components";
 import { array } from "prop-types";
 import no_profile from "../../assets/images/users/no_profile.jpg";
+import { MenuItem } from "@mui/material";
 
 const UserForm = () => {
+  const [sexualOrientationOptions, setSexualOrientationOptions] = useState([]);
+  const [sign, setSign] = useState([]);
+  const [pet, setPet] = useState([]);
+  const [interest, setInterest] = useState([]);
+
   const [imgPreviews, setImgPreview] = useState([]);
   const { state } = useLocation();
   // console.log(state);
@@ -42,6 +48,10 @@ const UserForm = () => {
   } = useForm();
   var [defaultLoading, setdefaultLoading] = useState(true);
   useEffect(() => {
+    Sexual();
+    Pet();
+    ZodiacSign();
+    Interest();
     // setIsLoading(false);
     if (state) {
       // Access the state data (editdata and baseUrl)
@@ -51,7 +61,13 @@ const UserForm = () => {
       setValue("first_name", editdata.first_name);
       setValue("last_name", editdata.last_name);
       setValue("email", editdata.email);
+      setValue("interest", editdata.interest);
+      setValue("sign", editdata.sign);
+      setValue("pets", editdata.pets);
+      setValue("sexual", editdata.sexual);
       setValue("phoneNumber", editdata.phoneNumber);
+
+
       const birthDate = new Date(editdata.birthDate);
       const formattedBirthDate = birthDate.toISOString().split("T")[0];
       setSelectedDate(birthDate);
@@ -68,7 +84,10 @@ const UserForm = () => {
     setdefaultLoading(false);
   }, []);
 
+
+   
   var [isLoading, setIsLoading] = useState(false);
+ 
   const onSubmit = async (data) => {
     try {
       let formData = new FormData(); //formdata object
@@ -91,13 +110,13 @@ const UserForm = () => {
         }
       });
       if (isupdate) {
-        await axios.post(
+        await axios.put(
           `http://localhost:9500/v1/admin/update-user/${isupdate}`,
           formData
         );
         localStorage.setItem("redirectSuccess", "true");
         localStorage.setItem("redirectMessage", "Added user successfully!");
-        // navigate("/user");
+        navigate("/user");
       } else {
         await axios.post(
           "http://localhost:9500/v1/admin/create-user",
@@ -106,7 +125,7 @@ const UserForm = () => {
         // await updateUserProfile(formData, isupdate);
         localStorage.setItem("redirectSuccess", "true");
         localStorage.setItem("redirectMessage", "Updated user successfully!");
-        // navigate("/user");
+        navigate("/user");
       }
     } catch (err) {
       console.error("Something Went Wrong!");
@@ -119,6 +138,42 @@ const UserForm = () => {
     setImgPreview(previews);
     // Set the value of the form field
     setValue("user_img", e.target.files);
+  };
+  const Sexual = async () => {
+    try {
+      const response = await axios.get('http://localhost:9500/v1/sexual/list');
+      setSexualOrientationOptions(response.data.data);
+    } catch (error) {
+      console.error('Error fetching Sexual data:', error);
+    }
+  };
+
+  const Pet = async () => {
+    try {
+      const response = await axios.get('http://localhost:9500/v1/pet/list');
+      setPet(response.data.data);
+    } catch (error) {
+      console.error('Error fetching Sexual data:', error);
+    }
+  };
+
+  const ZodiacSign = async () => {
+    try {
+      const response = await axios.get('http://localhost:9500/v1/sign/list');
+      setSign(response.data.data);
+    } catch (error) {
+      console.error('Error fetching Sexual data:', error);
+    }
+  };
+
+  const Interest = async () => {
+    try {
+      const response = await axios.get('http://localhost:9500/v1/interest/list-interest');
+      setInterest(response.data.data.getHob);
+      // console.log(response.data.data.getHob);
+    } catch (error) {
+      console.error('Error fetching Sexual data:', error);
+    }
   };
 
   return (
@@ -144,6 +199,8 @@ const UserForm = () => {
                   onChange={(e) => setValue("first_name", e.target.value)}
                   invalid={!!errors.first_name}
                 />
+
+
                 <CFormFeedback invalid>Please Enter First Name</CFormFeedback>
               </CCol>
               <CCol md={4}>
@@ -223,6 +280,70 @@ const UserForm = () => {
                   <option value="other">other</option>
                 </CFormSelect>
               </CCol>
+
+              <CCol md={4}>
+  <CFormLabel htmlFor="sexualOrientation">Sexual Orientation</CFormLabel>
+  <CFormSelect
+    {...register("sexualOrientation")}
+    className="mb-3"
+    defaultValue={getValues("sexualOrientation")}>
+    <option value="">Select Sexual Orientation</option>
+    {sexualOrientationOptions.map((option) => (
+      <option key={option._id} value={option.name} multiple>
+        {option.name}
+      </option>
+    ))}
+  </CFormSelect>
+</CCol>
+
+              
+<CCol md={4}>
+  <CFormLabel htmlFor="pets">Pet</CFormLabel>
+  <CFormSelect
+    {...register("pets")}
+    className="mb-3"
+    defaultValue={getValues("pets")}>
+    <option value="">Select Pets</option>
+    {pet.map((option) => (
+      <option key={option._id} value={option.name} multiple>
+        {option.name}
+      </option>
+    ))}
+  </CFormSelect>
+</CCol>
+
+<CCol md={4}>
+  <CFormLabel htmlFor="sign">Pet</CFormLabel>
+  <CFormSelect
+    {...register("sign")}
+    className="mb-3"
+    defaultValue={getValues("sign")}>
+    <option value="">Select Pets</option>
+    {sign.map((option) => (
+      <option key={option._id} value={option.name} multiple>
+        {option.name}
+      </option>
+    ))}
+  </CFormSelect>
+</CCol>
+
+<CCol md={4}>
+  <CFormLabel htmlFor="interest">Interest</CFormLabel>
+  <CFormSelect
+    {...register("interest")}
+    className="mb-3"
+    defaultValue={getValues("interest")}>
+    <option value="">Select Interest</option>
+    {interest.map((option) => (
+      <option key={option._id} value={option.name} multiple>
+        {option.name}
+      </option>
+    ))}
+  </CFormSelect>
+</CCol>
+
+
+ 
 
               <CCol md={4}>
                 <CFormLabel htmlFor="user_img">Image</CFormLabel>

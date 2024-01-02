@@ -210,3 +210,22 @@ const InterestForm = () => {
 };
 
 export default InterestForm;
+
+
+// const onSubmit = async (data) => {
+//   setIsLoading(true);
+
+//   const formData = new FormData();
+//   formData.append('admin_name', data.admin_name);
+//   formData.append('email', data.email);
+//   formData.append('phoneNumber', data.phoneNumber);
+//   formData.append('profileImage', data.profileImage);
+
+//   UpdateProfile(formData)
+//     .then((response) => {
+//       console.log(response.data.data);
+//     })
+//     .finally(() => {
+//       setIsLoading(false);
+//     });
+// };

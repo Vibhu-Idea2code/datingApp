@@ -36,7 +36,7 @@ const Login = () => {
   // console.log(errors)
   const onSubmit = async (data) => {
     loginUser(userDispatch, data, navigate, setIsLoading, setError)
-    console.log
+    // console.log
   }
   // const onSubmit = async (data) => {
   //   try {

@@ -59,16 +59,16 @@ export const adminDetails = () =>
 //   });
 // http://localhost:8500/v1/
 // Get admin profile
-export const changePassword = (data) =>
-  axios.post(`http://localhost:9500/v1/admin/change-password`, data
-  // {
-  //   headers: { Authorization: `Bearer ${localStorage.getItem("refreshToken")}` },
-  // }
+export const changePasswords = (data) =>
+  axios.post(`http://localhost:9500/v1/admin/change-password`, data,
+  {
+    headers: { Authorization: `Bearer ${localStorage.getItem("refreshToken")}` },
+  }
   );
 
 //Update Admin Profile
-export const UpdateProfile = (adminId) =>
-  axios.put(`${mainUrl}/v1/admin/update/:${adminId}`, 
+export const UpdateProfile = (id) =>
+  axios.put(`${mainUrl}/v1/admin/update/${id}`, 
   //  {
   //   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
   // }

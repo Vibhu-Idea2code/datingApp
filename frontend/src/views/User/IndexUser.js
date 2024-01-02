@@ -69,14 +69,16 @@ export default function IndexUser() {
         sort: true,
       },
     },
-    {
-      name: "gender",
-      label: "Gender",
-      options: {
-        filter: true,
-        sort: true,
-      },
-    },
+    // {
+    //   name: "gender",
+    //   label: "Gender",
+    //   options: {
+    //     filter: true,
+    //     sort: true,
+    //   },
+    // },
+
+    
     {
       name: "status",
       label: "Status",

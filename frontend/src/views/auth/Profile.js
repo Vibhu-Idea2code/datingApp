@@ -17,6 +17,7 @@ import { handleInputChange } from '../../components/formUtils'
 import { UpdateProfile } from '../../apiController'
 import { toast } from 'react-toastify'
 import { useUserState } from '../../context/UserContext'
+import { Form } from 'react-router-dom'
 
 const Profile = () => {
   const {
@@ -35,12 +36,18 @@ const Profile = () => {
   const [imgPreviews, setImgPreview] = useState([]);
 
 
-  console.log(user.userImage)
+  // console.log(user.userImage)
 
   const onSubmit = async (data) => {
-    setIsLoading(true)
     // console.log(data)
-    UpdateProfile(data)
+    setIsLoading(true);
+    const formData= new FormData();
+    formData.append('admin_name', data.admin_name);
+      formData.append('email', data.email);
+      formData.append('phoneNumber', data.phoneNumber);
+      formData.append('admin_image', data.admin_image);
+
+    UpdateProfile(formData)
       .then((response) => {
         console.log(response.data.data)
  
@@ -48,11 +55,15 @@ const Profile = () => {
 
   }
   const handleImageChange = (e) => {
-    const files = e.target.files;
-    const previews = Array.from(files).map((file) => URL.createObjectURL(file));
-    setImgPreview(previews);
+    const file = e.target.files;
+    // const previews = Array.from(files).map((file) => URL.createObjectURL(file));
+    // setImgPreview(previews);
     // Set the value of the form field
-    setValue("user_img", e.target.files);
+    // setValue("user_img", e.target.files);
+    if (file) {
+      setImgPreview(URL.createObjectURL(file));
+    }
+    setValue("logo", e.target.files);
   };
 
   return (
@@ -110,27 +121,28 @@ const Profile = () => {
               </CCol>
             
               <CCol md={4}>
-                <CFormLabel htmlFor="user_img">Image</CFormLabel>
+                <CFormLabel htmlFor="admin_image">Image</CFormLabel>
                 <Controller
-                  name="user_img"
+                  name="admin_image"
                   control={control}
                   render={({ field }) => (
                     <>
                       <CFormInput
                         type="file"
-                        id="user_img"
+                        id="admin_image"
+                        accept='image/*'
                         onChange={handleImageChange}
                         multiple
                       />
-                      {imgPreviews.map((preview, index) => (
+                      {imgPreviews && (
                         <img
-                          key={index}
-                          src={preview}
-                          alt={`preview${index + 1}`}
+                          key={1}
+                          src={imgPreviews}
+                          alt="img"
                           width="60"
                           height="60"
                         />
-                      ))}
+                      )}
                     </>
                   )}
                 />
@@ -138,13 +150,13 @@ const Profile = () => {
 
 
               <CCol xs={12}>
-                {isLoading ? (
-                  <CSpinner className="theme-spinner-color" />
-                ) : (
                   <CButton color="primary" type="submit" className="theme-btn-background">
                     Update
                   </CButton>
-                )}
+                {/* {isLoading ? (
+                  <CSpinner className="theme-spinner-color" />
+                ) : (
+                )} */}
               </CCol>
             </CForm>
           </CCardBody>
