@@ -1,5 +1,7 @@
 const { Sign } = require("../../models");
 const { zodiacService } = require("../../services");
+const mongoose = require("mongoose");
+
 
 const createZodiac = async (req, res) => {
   try {
@@ -92,8 +94,8 @@ const updateZodiac = async (req, res) => {
 
 const multipleDelete = async (req, res) => {
   try {
-    const { _id } = req.body;
-    const result = await Sign.deleteMany({ _id: { $in: _id } });
+    const { id } = req.body;
+    const result = await Sign.deleteMany({ _id: { $in: id } });
     if (result.deletedCount === 0) {
       throw new Error("No users deleted");
     }
@@ -109,4 +111,29 @@ const multipleDelete = async (req, res) => {
     });
   }
 };
-module.exports = { createZodiac, getZodiacList, getZodiacId, deleteZodiac,updateZodiac ,multipleDelete};
+
+
+/* ------------------------------ UPDATE STATUS ----------------------------- */
+const updateZodiacSignStatus = async (req, res, next) => {
+  try {
+    const id = new mongoose.Types.ObjectId(req.params.id);
+    const sign = await Sign.findById(id);
+
+    if (!sign) {
+      throw new Error("sign not found!");
+    }
+
+    sign.status = !sign.status;
+    const result = await sign.save();
+
+    res.status(200).json({
+      success: true,
+      message: "sign Status Update successfully!!",
+      data: result,
+    
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+module.exports = { createZodiac, getZodiacList, getZodiacId, deleteZodiac,updateZodiac ,multipleDelete,updateZodiacSignStatus};

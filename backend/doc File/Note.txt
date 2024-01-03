@@ -1,0 +1,56 @@
+1. multiple select always control thi thay in frontend side (કોઈ પણ ડેટાબેઝ માથી સૂચિ બતાવો = react-hook-from ઉપયોગ થાય છે)
+        FOR EXAMPLE LIKE THIS 
+  a.for multiple select--------------------------
+
+import { useForm, Controller } from "react-hook-form";
+              <CCol md={4}>
+                  <CFormLabel htmlFor="sexual">Sexual Oreintation</CFormLabel>
+                  <Controller
+                    name="sexual"
+                    style={{ marginTop: "16px", marginBottom: "16px" }}
+                    control={control}
+                    defaultValue={isupdate === "" ? [] : getValues("sexual")}
+                    error={!!errors.interest}
+                    rules={{ required: "Medical Conditions is required" }}
+                    render={({ field }) => (
+                      <>
+                        <Select
+                          {...field}
+                          labelId="sexual"
+                          id="sexual"
+                          style={{ marginTop: "16px", marginBottom: "16px" }}
+                          multiple>
+                          {sexualOrientationOptions.map((cat) => (
+                            <MenuItem key={cat._id} value={cat._id}>
+                              {cat.name}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </>
+                    )}
+                  />
+                </CCol>
+
+  b.for single select  ----------------------------
+
+     <CCol md={4}>
+                <CFormLabel htmlFor="sexualOrientation">
+                  Sexual Orientation
+                </CFormLabel>
+                <CFormSelect
+                  {...register("sexualOrientation")}
+                  className="mb-3"
+                  defaultValue={getValues("sexualOrientation")}>
+                  <option value="">Select Sexual Orientation</option>
+                  {sexualOrientationOptions.map((option) => (
+                    <option key={option._id} value={option.name} multiple>
+                      {option.name}
+                    </option>
+                  ))}
+                </CFormSelect>
+              </CCol>               
+
+
+
+
+

@@ -17,12 +17,10 @@ const accessToken = () => async (req, res, next) => {
         })
       );
     }
-
     const decoded = jwt.verify(
       token.replace("Bearer ", ""),
       process.env.JWT_SECRET_KEY
     );
-
     if (!decoded) {
       return next(new Error("Please enter valid token!"));
     }

@@ -5,6 +5,8 @@ const petsSchema = new mongoose.Schema({
   name: { type: String, required: true },
   logo: { type: String },
   is_active:{type:Boolean},
+  status:{type: Boolean,default: true},
+
 },{
   timestamps: true,
   versionKey: false

@@ -1,6 +1,8 @@
 const fs = require("fs");
 const { interestService } = require("../../services");
 const { Hobbies } = require("../../models");
+const mongoose = require("mongoose");
+
 
 /** Create Interest */
 const createInterest = async (req, res) => {
@@ -216,6 +218,54 @@ const multipleDelete = async (req, res) => {
   }
 };
 
+  // Delete a multiple banner  or sub banner  with there Id's
+  const deleteMultiInterest = async (req, res, next) => {
+    try {
+      const { Ids } = req.body;
+      Ids.map(async (item) => {
+        const id = new mongoose.Types.ObjectId(item);
+        const interest = await Hobbies.findById(id);
+        deleteFiles(interest.logo);
+        await Hobbies.deleteOne({ _id: id });
+      });
+       
+      res.status(200).json({
+        success: true,
+        message: "All selected Hobbies deleted successfully.!",
+        // data: result,
+      
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+
+const updateInterestStatus= async (req, res) => {
+ 
+    try {
+      const id = new mongoose.Types.ObjectId(req.params.id);
+      const interest = await Hobbies.findById(id);
+  
+      if (!interest) {
+        throw new Error("User not found!");
+      }
+  
+      interest.status = !interest.status;
+      const result = await interest.save();
+  
+      res.status(200).json({
+        success: true,
+        message: "Hobbies Status Update successfully!!",
+        data: result,
+      
+      });
+    } catch (err) {
+      next(err);
+    }
+
+};
+
 module.exports = {
   createInterest,
   interestList,
@@ -223,6 +273,8 @@ module.exports = {
   multipleDelete,
   // getInterestList,
   updateInterest,
+  updateInterestStatus,
   // manageInterestStatus,
   deleteInterest,
+  deleteMultiInterest
 };

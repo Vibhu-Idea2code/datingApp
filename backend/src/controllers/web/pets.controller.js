@@ -1,5 +1,7 @@
 const { Pets } = require("../../models");
 const { petsService } = require("../../services");
+const mongoose = require("mongoose");
+
 
 const createPets = async (req, res) => {
   try {
@@ -92,8 +94,8 @@ const updatePets = async (req, res) => {
 
 const multipleDelete = async (req, res) => {
   try {
-    const { _id } = req.body;
-    const result = await Pets.deleteMany({ _id: { $in: _id } });
+    const { id } = req.body;
+    const result = await Pets.deleteMany({ _id: { $in: id } });
     if (result.deletedCount === 0) {
       throw new Error("No users deleted");
     }
@@ -110,7 +112,32 @@ const multipleDelete = async (req, res) => {
   }
 };
 
+const updatePetStatus= async (req, res) => {
+ 
+  try {
+    const id = new mongoose.Types.ObjectId(req.params.id);
+    const pet = await Pets.findById(id);
+
+    if (!pet) {
+      throw new Error("Pets not found!");
+    }
+
+    pet.status = !pet.status;
+    const result = await pet.save();
+
+    res.status(200).json({
+      success: true,
+      message: "pet Status Update successfully!!",
+      data: result,
+    
+    });
+  } catch (err) {
+    next(err);
+  }
+
+};
+
 // const undoPets=async(req, res, next) => {
   
 // }
-module.exports = { createPets, getPetsList, getPetsId, deletePets,updatePets,multipleDelete };
+module.exports = { createPets, getPetsList, getPetsId, deletePets,updatePets,multipleDelete,updatePetStatus };

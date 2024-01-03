@@ -19,4 +19,7 @@ sexualController.updateSexual);
 
 router.delete("/delete-many", sexualController.multipleDelete);
 
+router.put("/updateSexualOrientationStatus/:id",sexualController.updateSexualOrientationStatus);
+
+
 module.exports=router;

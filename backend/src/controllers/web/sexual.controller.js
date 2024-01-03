@@ -1,5 +1,7 @@
 const Sexual = require("../../models/sexual.oriantetaion.model");
 const { sexualService } = require("../../services");
+const mongoose = require("mongoose");
+
 
 const createSexual= async (req, res) => {
   try {
@@ -92,10 +94,10 @@ const updateSexual= async (req, res) => {
 
 const multipleDelete = async (req, res) => {
   try {
-    const { _id } = req.body;
-    const result = await Sexual.deleteMany({ _id: { $in: _id } });
+    const { id } = req.body;
+    const result = await Sexual.deleteMany({ _id: { $in: id } });
     if (result.deletedCount === 0) {
-      throw new Error("No users deleted");
+      throw new Error("Not Find sexual Orientation ");
     }
     return res.status(200).send({
       success: true,
@@ -109,4 +111,51 @@ const multipleDelete = async (req, res) => {
     });
   }
 };
-module.exports = { createSexual, getSexualList, getSexualId, deleteSexual,updateSexual,multipleDelete};
+
+
+/* ------------------------------ UPDATE STATUS ----------------------------- */
+const updateSexualOrientationStatus = async (req, res, next) => {
+  try {
+    const id = new mongoose.Types.ObjectId(req.params.id);
+    const sexualOrien = await Sexual.findById(id);
+
+    if (!sexualOrien) {
+      throw new Error("User not found!");
+    }
+
+    sexualOrien.status = !sexualOrien.status;
+    const result = await sexualOrien.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Sexual Orientation Status Update successfully!!",
+      data: result,
+    
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// Delete a multiple banner  or sub banner  with there Id's
+const deleteMultiSexualOrientation = async (req, res, next) => {
+try {
+  const { Ids } = req.body;
+  Ids.map(async (item) => {
+    const id = new mongoose.Types.ObjectId(item);
+    const sexualOrien = await Sexual.findById(id);
+    // deleteFiles(sexualOrien.user_img);
+    await Sexual.deleteOne({ _id: id });
+  });
+   
+  res.status(200).json({
+    success: true,
+    message: "All selected sexual deleted successfully.!",
+    // data: result,
+  
+  });
+} catch (error) {
+  next(error);
+}
+};
+module.exports = { createSexual, getSexualList, getSexualId, deleteSexual,updateSexual,multipleDelete,updateSexualOrientationStatus,deleteMultiSexualOrientation};

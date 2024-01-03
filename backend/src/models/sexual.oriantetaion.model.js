@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const orientaionSchema = new mongoose.Schema({
   name: { type: String, required: true },
   logo: { type: String },
+  status:{type: Boolean,default: true},
 },{
   timestamps: true,
   versionKey: false

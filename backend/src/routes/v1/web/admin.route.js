@@ -16,8 +16,7 @@ const {
 router.post(
   "/create-admin",
   upload.single("admin_image"),
-  authAdminController.register
-);
+  authAdminController.register);
 
 router.post("/login", authAdminController.login);
 
@@ -34,6 +33,8 @@ router.post(
   authAdminController.changePassword
 );
 
+// router.post("/refreshToken", authAdminController.RefreshToken);
+
 router.put(
   "/resetPassword",
   //  accessToken(),
@@ -42,9 +43,12 @@ router.put(
 
 router.get(
   "/list",
-  //  accessToken(),
+   accessToken(),
+  // refreshToken(),
   adminController.getAdminList
 );
+
+
 router.put(
   "/update/:adminId",
   upload.single("admin_image"),
@@ -68,6 +72,8 @@ router.delete("/delete-user/:userId", adminUserController.deleteUserByAdmin);
 router.delete("/delete-many", adminUserController.deleteManyUsersByAdmin);
 
 router.put("/updateUserStatus/:id",adminUserController.updateUserStatus);
+
+router.delete("/deleteMultiUser",adminUserController.deleteMultiUser);
 
 // router.get("/role", auth());
 

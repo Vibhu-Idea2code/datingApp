@@ -6,6 +6,7 @@ const {    userService  } = require("../../services");
   const fs = require("fs");
 const { User } = require("../../models");
 const mongoose = require("mongoose");
+const deleteFiles = require("../../helpers/deleteFiles");
 
 /* -------------------------- UPDATE USER BY ADMIN -------------------------- */
   const UserUpdateDetailsByAdmin = async (req, res) => {
@@ -19,7 +20,7 @@ const mongoose = require("mongoose");
         sexual,
         school,
         interest,
-        sign,
+        sign,   
         pets,
         address,
         maxDistance,
@@ -225,7 +226,7 @@ const getAllUser = async (req, res) => {
   
       res.status(200).json({
         success: true,
-        message: "User list successfully!",
+        message: "User Status Update successfully!",
         data: result,
       
       });
@@ -233,6 +234,28 @@ const getAllUser = async (req, res) => {
       next(err);
     }
   };
+
+  // Delete a multiple banner  or sub banner  with there Id's
+const deleteMultiUser = async (req, res, next) => {
+  try {
+    const { Ids } = req.body;
+    Ids.map(async (item) => {
+      const id = new mongoose.Types.ObjectId(item);
+      const user = await User.findById(id);
+      deleteFiles(user.user_img);
+      await User.deleteOne({ _id: id });
+    });
+     
+    res.status(200).json({
+      success: true,
+      message: "All selected users deleted successfully.!",
+      // data: result,
+    
+    });
+  } catch (error) {
+    next(error);
+  }
+};
   
   module.exports = {
     UserUpdateDetailsByAdmin,
@@ -241,5 +264,6 @@ const getAllUser = async (req, res) => {
     deleteManyUsersByAdmin,
     getAllUser,
     updateUserStatus,
+    deleteMultiUser
   };
   

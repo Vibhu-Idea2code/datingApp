@@ -120,6 +120,21 @@ UPDATE SHOW ME (done)
 
 
 
+confusion:-
+1.
+-IN MY POINT OF VIEW WE DECLARE :-
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USERNAME=vibhasheladiya3936@gmail.com
+SMTP_PASSWORD=lvpp tpee vntw ziyq
+EMAIL_FROM='Vibhu Sheladiya <vibhasheladiya3936@gmail.com> 
+
+from .ENV but i wnat to static flied so solution?
+
+
+
+
+
 
 
 
@@ -133,3 +148,18 @@ reming(2-jan)
 work done
 -(list)frontend side
 -auth (token verify)
+
+
+=== 3 jan  ====
+
+-done updateStatus(admin side and backend side)
+-done multiple delete(admin side and backend side)
+
+
+remaning
+====expiry token=== 
+-update profile
+-change password
+
+
+

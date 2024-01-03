@@ -20,6 +20,7 @@ const {
 } = require("../../helpers/sendResponse");
 
 /* -------------------------- REGISTER/CREATE ADMIN ------------------------- */
+
 const register = async (req, res) => {
   const reqBody = req.body;
   if (req.file) {
@@ -38,10 +39,10 @@ const register = async (req, res) => {
   let option = {
     email: reqBody.email,
     role: reqBody.role,
-    exp: moment().add(5, "minutes").unix(),
+    exp: moment().add(5, "minute").unix(),
   };
-
   const token = await jwt.sign(option, jwtSecrectKey);
+
   /**   generate Refresh Token */
   const generateRefreshToken = (option) => {
     return jwt.sign(option, refreshSecret);
@@ -76,9 +77,6 @@ const login = async (req, res) => {
     console.log(findUser, "++++");
     if (!findUser) throw Error("User not found");
     const successPassword = await bcrypt.compare(password, findUser.password);
-    console.log(successPassword, "000000000");
-    console.log("Input Password:", password);
-    console.log("Hashed Password in Database:", findUser.password);
 
     if (!successPassword) {
       console.log("Password Comparison Failed");
@@ -87,7 +85,6 @@ const login = async (req, res) => {
     if (!successPassword) throw Error("Incorrect password");
     let option = {
       email,
-      role: findUser.role,
       exp: moment().add(1, "minutes").unix(),
     };
 
@@ -100,19 +97,53 @@ const login = async (req, res) => {
     };
     const refreshToken = generateRefreshToken(option);
 
- 
     const baseUrl =
-    req.protocol +
-    "://" +
-    req.get("host") +
-    process.env.BASE_URL_PROFILE_PATH;
+      req.protocol +
+      "://" +
+      req.get("host") +
+      process.env.BASE_URL_PROFILE_PATH;
     let data;
     if (token) {
       data = await adminService.findAdminAndUpdate(findUser._id, token);
     }
-    res.status(200).json({ data: data, token:token,refreshToken: refreshToken ,baseUrl:baseUrl});
+    res
+      .status(200)
+      .json({
+        data: data,
+        token: token,
+        refreshToken: refreshToken,
+        baseUrl: baseUrl,
+      });
   } catch (error) {
     res.status(404).json({ error: error.message });
+  }
+};
+
+//Get RefreshToken
+const RefreshToken = async (req, res, next) => {
+  const refreshToken = req.body.refreshToken;
+
+  if (!refreshToken) {
+    return next(
+      res.status(402).json({
+        status: 402,
+        message: "Access Denied. No refresh token provided",
+      })
+    );
+    // return res.status(402).send("Access Denied. No refresh token provided.");
+  }
+
+  try {
+    const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET_KEY);
+
+    const admin = await Admin.findOne({ email: decoded.email });
+    if (!admin)
+      return queryErrorRelatedResponse(req, res, 401, "Invalid Username!");
+
+    const token = admin.generateAuthToken({ email: decoded.email });
+    successResponse(res, token);
+  } catch (err) {
+    next(err);
   }
 };
 
@@ -169,7 +200,11 @@ const changePassword = async (req, res) => {
 
     return res
       .status(200)
-      .json({ success: true, message: "Password updated successfully" ,data:admin});
+      .json({
+        success: true,
+        message: "Password updated successfully",
+        data: admin,
+      });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -206,11 +241,7 @@ const forgetPassword = async (req, res) => {
           }
           // throw new Error("Something went wrong, please try again.");
         } else {
-          emailService.sendMail(
-            email,
-            data,
-            "Verify Email"
-          );
+          emailService.sendMail(email, data, "Verify Email");
         }
       }
     );
@@ -275,4 +306,5 @@ module.exports = {
   forgetPassword,
   resetPassword,
   changePassword,
+  RefreshToken,
 };
