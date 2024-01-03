@@ -135,3 +135,59 @@ function signOut(dispatch, navigate) {
   dispatch({ type: "SIGN_OUT_SUCCESS" });
   navigate("/");
 }
+
+function updateUser(dispatch, data, setIsLoading) {
+  setIsLoading(true)
+  let formData = new FormData() //formdata object
+  Object.keys(data).forEach(function (key) {
+    if (key === 'image') {
+      formData.append(key, data[key])
+    } else {
+      formData.append(key, data[key])
+    }
+  })
+
+  UpdateProfile(formData)
+    .then((response) => {
+      if (response.data.isSuccess && response.data.status === 200) {
+        setIsLoading(false)
+        toast.success('Updated successfully!')
+        const userObject = {
+          username: response.data.info.admin.name,
+          useremail: response.data.info.admin.email,
+          userimage: response.data.info.admin.image
+            ? response.data.info.baseUrl + response.data.info.admin.image
+            : null,
+        }
+        console.log(userObject)
+        dispatch({
+          type: 'PROFILE_UPDATE_SUCCESS',
+          payload: {
+            user: userObject,
+          },
+        })
+
+        localStorage.setItem('user', JSON.stringify(userObject))
+      } else {
+        if ((response.data.status === 202 || 400) && !response.data.isSuccess) {
+          toast.error(response.data.message)
+          setIsLoading(false)
+        }
+      }
+    })
+    .catch((err) => {
+      toast.error(err.response.data)
+      if (!err.response.data.isSuccess) {
+        if (err.response.data.status === 400) {
+          toast.error(err.response.data.message)
+          setIsLoading(false)
+        } else {
+          toast.error('Something is wrong in an input.')
+          setIsLoading(false)
+        }
+      } else {
+        toast.error('Something Went Wrong! aaa')
+        setIsLoading(false)
+      }
+    })
+}

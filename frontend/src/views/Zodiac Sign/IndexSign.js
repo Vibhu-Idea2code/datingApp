@@ -5,10 +5,15 @@ import { useEffect } from "react";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
-import { Grid, Switch } from "@mui/material";
+import { Grid, IconButton, Switch } from "@mui/material";
 import * as Icons from "@mui/icons-material";
 import swal from "sweetalert";
 import "../../scss/_custom.scss";
+import {  updateZodiacSignStatus,deleteMultiZodiacSign  } from '../../apiController';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 
 export default function Sign() {
   const navigate = useNavigate();
@@ -51,12 +56,13 @@ export default function Sign() {
               checked={status}
               onChange={() => {
                 const data = { id: _id, status: !status };
-                updateUserStatus(data, _id)
+                updateZodiacSignStatus(data, _id)
                   .then(() => {
                     toast.success("status changed successfully!", {
                       key: data._id,
                     });
-                    list();
+                    getData();
+
                   })
                   .catch(() => {
                     toast.error("something went wrong!", {
@@ -160,42 +166,44 @@ export default function Sign() {
   ];
 
   const deleteMultiple = async (index) => {
-    // const ids = index.data.map(
-    //   (index1) =>
-    //     datatableData.find(
-    //       (data, index2) => index2 === index1.dataIndex && data._id
-    //     )._id
-    // );
-    // const confirm = await swal({
-    //   title: "Are you sure?",
-    //   text: "Are you sure that you want to delete this users?",
-    //   icon: "warning",
-    //   buttons: ["No, cancel it!", "Yes, I am sure!"],
-    //   dangerMode: true,
-    // });
-    // if (confirm) {
-    //   deleteMultiUser(ids)
-    //     .then(() => {
-    //       list();
-    //       toast.success("Deleted successfully!", {
-    //         key: ids,
-    //       });
-    //     })
-    //     .catch(() => {
-    //       toast.error("Something went wrong!", {
-    //         key: ids,
-    //       });
-    //     });
-    // }
+    const id = index.data.map(
+      (index1) =>
+        datatableData.find(
+          (data, index2) => index2 === index1.dataIndex && data._id
+        )._id
+    );
+    const confirm = await swal({
+      title: "Are you sure?",
+      text: "Are you sure that you want to delete this users?",
+      icon: "warning",
+      buttons: ["No, cancel it!", "Yes, I am sure!"],
+      dangerMode: true,
+    });
+    if (confirm) {
+      deleteMultiZodiacSign(id)
+        .then(() => {
+          getData();
+   
+          toast.success("Deleted successfully!", {
+            key: id,
+          });
+        })
+        .catch(() => {
+          toast.error("Something went wrong!", {
+            key: id,
+          });
+        });
+    }
   };
 
   const SelectedRowsToolbar = ({ selectedRows, data }) => {
-    return console.log(data);
-    // <div>
-    //   <IconButton onClick={() => deleteMultiple(selectedRows, data)}>
-    //     <Icons.Delete />
-    //   </IconButton>
-    // </div>
+    return (
+      <div>
+        <IconButton onClick={() => deleteMultiple(selectedRows, data)}>
+          <Icons.Delete />
+        </IconButton>
+      </div>
+    );
   };
 
   const options = {
@@ -213,6 +221,8 @@ export default function Sign() {
       <div className="container-fluid">
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb m-0 mb-3 ms-2">
+          <ToastContainer />
+
             <li className="breadcrumb-item">
               <a className="" href="/">
                 Home

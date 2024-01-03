@@ -90,6 +90,7 @@ const InterestForm = () => {
 
         localStorage.setItem("redirectSuccess", "true");
         localStorage.setItem("redirectMessage", "Added successfully!");
+        toast.success("added successfully!")
         navigate("/interest");
       } else {
         await axios.post("http://localhost:9500/v1/interest/create", formData);

@@ -67,12 +67,20 @@ export const changePasswords = (data) =>
   );
 
 //Update Admin Profile
-export const UpdateProfile = (id) =>
-  axios.put(`${mainUrl}/v1/admin/update/${id}`, 
-  //  {
-  //   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-  // }
-  );
+// export const UpdateProfile = (id) =>
+//   axios.put(`${mainUrl}/v1/admin/update/${id}`, 
+//   //  {
+//   //   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+//   // }
+//   );
+
+  //Update Admin Profile
+export const updateUserStatus = (data,id) =>
+axios.put(`${mainUrl}/v1/admin/updateUserStatus/${id}`, data
+//  {
+//   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+// }
+);
 
 //Get All users
 export const allUsers = (data) =>
@@ -88,12 +96,19 @@ export const deleteUser = (id) =>
 
 // delete multiple Users
 export const deleteMultiUser = (data) => {
-  return axios.delete(`${mainUrl}/admin/user/deleteMultiUser`, {
+  return axios.delete(`${mainUrl}/v1/admin/deleteMultiUser`, {
     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     data: { Ids: data },
   });
 };
 
+
+// export const deleteMultiUser = (data) => {
+//   return axios.delete(`${mainUrl}/admin/user/deleteMultiUser`, {
+//     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+//     data: { Ids: data }
+//   });
+// };
 //Add User Profile
 export const addUser = (data) =>
   axios.post(
@@ -104,3 +119,85 @@ export const addUser = (data) =>
     // }
     // }
   );
+
+//Update Admin Profile
+export const UpdateProfile = (data) =>
+  axios.post(`${mainUrl}/v1/admin/update/`, data, {
+    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+  })
+
+/* ------------------------------- SEXUAL ORIENTATION PART ------------------------------ */
+    //Update sexual  Status
+export const updateSexualStatus = (data,id) =>
+axios.put(`${mainUrl}/v1/sexual/updateSexualOrientationStatus/${id}`, data
+//  {
+//   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+// }
+);
+
+// delete multiple Users
+export const deleteMultiSexualOrientation = (data) => {
+  return axios.delete(`${mainUrl}/v1/sexual/delete-many`, {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    data: { id: data },
+  });
+};
+
+
+/* ------------------------------- INTEREST PART ------------------------------ */
+    //Update sexual  Status
+    export const updateInterestStatus = (data,id) =>
+    axios.put(`${mainUrl}/v1/interest/updateInterestStatus/${id}`, data
+    //  {
+    //   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    // }
+    );
+
+    // delete multiple Users
+export const deleteMultiInterest = (data) => {
+  return axios.delete(`${mainUrl}/v1/interest/deleteMultiInterest`, {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    data: { Ids: data },
+  });
+};
+
+
+/* ------------------------------- Pet PART ------------------------------ */
+    //Update sexual  Status
+    export const updatePetStatus = (data,id) =>
+    axios.put(`${mainUrl}/v1/pet/updatePetStatus/${id}`, data
+    //  {
+    //   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    // }
+    );
+
+    // delete multiple Users
+export const deleteMultiPet = (data) => {
+  return axios.delete(`${mainUrl}/v1/pet/delete-many`, {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    data: { id: data },
+  });
+};
+
+
+
+/* ------------------------------- zodiac sign PART ------------------------------ */
+    //Update sexual  Status
+    export const updateZodiacSignStatus = (data,id) =>
+    axios.put(`${mainUrl}/v1/sign/updateSignStatus/${id}`, data
+    //  {
+    //   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    // }
+    );
+
+    // delete multiple Users
+export const deleteMultiZodiacSign = (data) => {
+  return axios.delete(`${mainUrl}/v1/sign/delete-many`, 
+  {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    data: { id: data },
+  }
+  );
+};
+
+    
