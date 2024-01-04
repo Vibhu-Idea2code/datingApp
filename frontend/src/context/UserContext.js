@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { adminLogin, adminRegister } from "../apiController";
+import { adminLogin, adminRegister,UpdateProfile } from "../apiController";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 var UserStateContext = React.createContext();
 var UserDispatchContext = React.createContext();
 
@@ -65,7 +67,7 @@ UserProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-export { UserProvider, useUserState, useUserDispatch, loginUser, signOut };
+export { UserProvider, useUserState, useUserDispatch, loginUser, signOut,updateUser };
 
 // ###########################################################
 
@@ -137,10 +139,11 @@ function signOut(dispatch, navigate) {
 }
 
 function updateUser(dispatch, data, setIsLoading) {
+  console.log("updateUser", data);
   setIsLoading(true)
   let formData = new FormData() //formdata object
   Object.keys(data).forEach(function (key) {
-    if (key === 'image') {
+    if (key === 'admin_image') {
       formData.append(key, data[key])
     } else {
       formData.append(key, data[key])
@@ -149,14 +152,15 @@ function updateUser(dispatch, data, setIsLoading) {
 
   UpdateProfile(formData)
     .then((response) => {
+      console.log(response.data);
       if (response.data.isSuccess && response.data.status === 200) {
         setIsLoading(false)
         toast.success('Updated successfully!')
         const userObject = {
-          username: response.data.info.admin.name,
-          useremail: response.data.info.admin.email,
-          userimage: response.data.info.admin.image
-            ? response.data.info.baseUrl + response.data.info.admin.image
+          username: response.data.admin.admin_name,
+          useremail: response.data.admin.admin.email,
+          userimage: response.data.admin.admin_image
+            ? response.data.baseUrl + response.data.admin.admin_image
             : null,
         }
         console.log(userObject)
@@ -166,8 +170,7 @@ function updateUser(dispatch, data, setIsLoading) {
             user: userObject,
           },
         })
-
-        localStorage.setItem('user', JSON.stringify(userObject))
+          localStorage.setItem('user', JSON.stringify(userObject))
       } else {
         if ((response.data.status === 202 || 400) && !response.data.isSuccess) {
           toast.error(response.data.message)

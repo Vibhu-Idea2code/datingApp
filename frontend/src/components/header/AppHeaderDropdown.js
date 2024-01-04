@@ -23,7 +23,7 @@ import {
 import CIcon from '@coreui/icons-react'
 import { useNavigate } from 'react-router-dom'
 import avatar8 from './../../assets/images/avatars/8.jpg'
-import { useUserDispatch, signOut, useUserState } from '../../context/UserContext'
+import { useUserDispatch, signOut, useUserState,updateUser } from '../../context/UserContext'
 
 const AppHeaderDropdown = () => {
   var userDispatch = useUserDispatch()
@@ -33,16 +33,16 @@ const AppHeaderDropdown = () => {
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
-      <CAvatar src={ user.userimage} size="md" />
+      <CAvatar src={ user.userimage} size="md"/>
         &nbsp; { user.username}
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
-        <CDropdownHeader className="bg-light fw-semibold py-2">Manage Account</CDropdownHeader>
-        <CDropdownItem href="profile">
+        <CDropdownHeader className="bg-light fw-semibold py-2" >Manage Account</CDropdownHeader>
+        <CDropdownItem href="profile" >
           <CIcon icon={cilUser} className="me-2" />
           Update Profile
         </CDropdownItem>
-        <CDropdownItem href="changePassword">
+        <CDropdownItem href="changePassword"  >
           <CIcon icon={cilSettings} className="me-2" />
           Change Password
         </CDropdownItem>

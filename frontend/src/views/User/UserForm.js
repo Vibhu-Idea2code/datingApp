@@ -202,6 +202,7 @@ const UserForm = () => {
 
                 <CFormFeedback invalid>Please Enter First Name</CFormFeedback>
               </CCol>
+              
               <CCol md={4}>
                 <CFormLabel htmlFor="last_name">Last Name</CFormLabel>
                 <CFormInput
@@ -218,6 +219,7 @@ const UserForm = () => {
                 />
                 <CFormFeedback invalid>Please Enter Last Name</CFormFeedback>
               </CCol>
+
               <CCol md={4}>
                 <CFormLabel htmlFor="email">Email</CFormLabel>
                 <CFormInput
@@ -279,6 +281,21 @@ const UserForm = () => {
                   <option value="other">other</option>
                 </CFormSelect>
               </CCol>
+
+
+              <CCol md={4}>
+                <CFormLabel htmlFor="show me">Show Me</CFormLabel>
+
+                <CFormSelect
+                  {...register("show me")}
+                  className="mb-3"
+                  defaultValue={getValues("show me")}>
+                  <option value="female">Female</option>
+                  <option value="male">Male</option>
+                  <option value="other">other</option>
+                </CFormSelect>
+              </CCol>
+
 
               <CCol md={4}>
                 <CFormLabel htmlFor="sexual">Sexual Oreintation</CFormLabel>
