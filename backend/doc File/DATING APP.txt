@@ -155,11 +155,18 @@ work done
 -done updateStatus(admin side and backend side)
 -done multiple delete(admin side and backend side)
 
-
 remaning
 ====expiry token=== 
 -update profile
 -change password
+
+==== 4 jan ====
+
+note:- 
+	refresh token ne save kravanu (local storgae ma)but every time update.
+	acces token ne store ny krvavanu in local storgae.
+	
+
 
 
 

@@ -3,7 +3,7 @@ const {
   emailService,
   verifyOtpService,
 } = require("../../services");
-const refreshSecret = "cdccsvavsvfssbtybnjnukiradhe";
+// const refreshSecret = "cdccsvavsvfssbtybnjnukiradhe";
 const ejs = require("ejs");
 const path = require("path");
 const bcrypt = require("bcrypt");
@@ -18,6 +18,8 @@ const {
   queryErrorRelatedResponse,
   successResponse,
 } = require("../../helpers/sendResponse");
+const refreshSecret = process.env.JWT_REFRESH_SECRET_KEY;
+const accessSecret = process.env.JWT_SECRET_KEY;
 
 /* -------------------------- REGISTER/CREATE ADMIN ------------------------- */
 
@@ -70,78 +72,126 @@ const register = async (req, res) => {
 // /* -------------------------- LOGIN/SIGNIN ADMIN -------------------------- */
 const login = async (req, res) => {
   try {
-    // validation;
     const { email, password } = req.body;
-    console.log(req.body);
-    const findUser = await adminService.findAdminByLogonEmail({ email });
-    console.log(findUser, "++++");
-    if (!findUser) throw Error("User not found");
-    const successPassword = await bcrypt.compare(password, findUser.password);
+    const admin = await Admin.findOne({ email: req.body.email });
+    if (!admin) throw Error("Admin not not found");
 
-    if (!successPassword) {
-      console.log("Password Comparison Failed");
-      throw Error("Incorrect password");
-    }
+    const successPassword = await bcrypt.compare(password, admin.password);
     if (!successPassword) throw Error("Incorrect password");
-    let option = {
-      email,
-      exp: moment().add(1, "minutes").unix(),
-    };
 
-    let token;
-    if (findUser && successPassword) {
-      token = await jwt.sign(option, jwtSecrectKey);
-    }
-    const generateRefreshToken = (option) => {
-      return jwt.sign(option, refreshSecret);
-    };
-    const refreshToken = generateRefreshToken(option);
+    const payload = {
+      _id: admin._id,
+      email: admin.email,
+      };
 
+    const token = await jwt.sign(payload, process.env.JWT_SECRET_KEY, {
+      expiresIn: "1m",
+    });
+
+    admin.token = token;
+    const refreshToken = await jwt.sign(
+      payload,
+      process.env.JWT_REFRESH_SECRET_KEY
+    );
+    const output = await admin.save();
     const baseUrl =
       req.protocol +
       "://" +
       req.get("host") +
       process.env.BASE_URL_PROFILE_PATH;
-    let data;
-    if (token) {
-      data = await adminService.findAdminAndUpdate(findUser._id, token);
-    }
-    res
-      .status(200)
-      .json({
-        data: data,
-        token: token,
-        refreshToken: refreshToken,
-        baseUrl: baseUrl,
-      });
+
+    res.status(200).json({
+      data: output,
+      token: token,
+      refreshToken: refreshToken,
+      baseUrl: baseUrl,
+    });
   } catch (error) {
     res.status(404).json({ error: error.message });
   }
 };
 
+// const login = async (req, res, next) => {
+//   try {
+//     const admin = await Admin.findOne({ email: req.body.email });
+//     if (!admin){
+//       throw Error("User not found");
+//     }
+//     // return queryErrorRelatedResponse(req, res, 401, { email: "Invalid Username!" });
+
+//     const validatePassword = await bcrypt.compare(req.body.password, admin.password);
+//     if (!validatePassword) throw Error("Incorrect password");
+//     // return queryErrorRelatedResponse(req, res, 401, { password: "Invalid Password!" });
+
+//     const token = admin.generateAuthToken({ email: req.body.email });
+//     admin.remember_token = token;
+
+//     const refresh_token = admin.generateRefreshToken({ email: req.body.email });
+
+//     const output = await admin.save();
+
+//     const baseUrl = req.protocol + "://" + req.get("host") + process.env.BASE_URL_USER_PATH;
+
+//     const tokens = {
+//       token: token,
+//       refresh_token: refresh_token,
+//       admin: admin,
+//       baseUrl: baseUrl,
+//     };
+//     successResponse(res, tokens);
+//   } catch (err) {
+//     next(err);
+//   }
+// };
+
 //Get RefreshToken
+
+// const RefreshToken = async (req, res, next) => {
+//   const refreshToken = req.body.refreshToken;
+
+//   if (!refreshToken) {
+//     return res.status(402).send("Access Denied. No refresh token provided.");
+//   }
+
+//   try {
+//     const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET_KEY);
+
+//     const admin = await Admin.findOne({ email: decoded.email });
+//     if (!admin)  throw Error("Invalid Username");
+
+//     const token = admin.generateAuthToken({ email: decoded.email });
+//     res.status(200).json({ message: "Password updated successfully!", token: token });
+//     // successResponse(res, token);
+//   } catch (err) {
+//     next(err);
+//   }
+// };
+
 const RefreshToken = async (req, res, next) => {
   const refreshToken = req.body.refreshToken;
 
   if (!refreshToken) {
-    return next(
-      res.status(402).json({
-        status: 402,
-        message: "Access Denied. No refresh token provided",
-      })
-    );
-    // return res.status(402).send("Access Denied. No refresh token provided.");
+    return res.status(402).send("Access Denied. No refresh token provided.");
   }
 
   try {
-    const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET_KEY);
+    const decoded = jwt.verify(
+      refreshToken,
+      refreshSecret // refresh token key from env
+    );
 
     const admin = await Admin.findOne({ email: decoded.email });
-    if (!admin)
-      return queryErrorRelatedResponse(req, res, 401, "Invalid Username!");
 
-    const token = admin.generateAuthToken({ email: decoded.email });
-    successResponse(res, token);
+    if (!admin) return res.status(401).send("Invalid Username!");
+
+    const token = jwt.sign(
+      { email: decoded.email },
+      accessSecret, //access secret key from env
+      {
+        expiresIn: "2m",
+      }
+    );
+    res.status(200).json({ success: true, refreshToken: token });
   } catch (err) {
     next(err);
   }
@@ -198,13 +248,11 @@ const changePassword = async (req, res) => {
     admin.password = hashedPassword;
     await admin.save();
 
-    return res
-      .status(200)
-      .json({
-        success: true,
-        message: "Password updated successfully",
-        data: admin,
-      });
+    return res.status(200).json({
+      success: true,
+      message: "Password updated successfully",
+      data: admin,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

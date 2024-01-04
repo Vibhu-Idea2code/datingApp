@@ -32,6 +32,7 @@ const accessToken = () => async (req, res, next) => {
       return next(new Error("Please authenticate!"));
     }
     req.user = user;
+    req.token=token;
 
     next();
   } catch (error) { 

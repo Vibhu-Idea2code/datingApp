@@ -48,16 +48,22 @@ router.get(
   adminController.getAdminList
 );
 
+router.post("/refreshToken", authAdminController.RefreshToken);
+
 
 router.put(
-  "/update/:adminId",
+  "/update",
+  accessToken(),
   upload.single("admin_image"),
   adminController.updateAdmin
 );
 router.delete("/delete-admin/:adminId", adminController.deleteAdmin);
 
 /* -------------------------- CREATE USER BY ADMIN -------------------------- */
-router.get("/user-list", adminUserController.getAllUser);
+router.get("/user-list", 
+accessToken(),
+adminUserController.getAllUser
+);
 router.post(
   "/create-user",
   upload.array("user_img"),
@@ -69,6 +75,7 @@ router.put(
   adminUserController.UserUpdateDetailsByAdmin
 );
 router.delete("/delete-user/:userId", adminUserController.deleteUserByAdmin);
+
 router.delete("/delete-many", adminUserController.deleteManyUsersByAdmin);
 
 router.put("/updateUserStatus/:id",adminUserController.updateUserStatus);

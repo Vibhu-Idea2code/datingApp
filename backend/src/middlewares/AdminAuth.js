@@ -30,6 +30,7 @@ const accessToken = () => async (req, res, next) => {
       return next(new Error("Please authenticate!"));
     }
     req.admin = admin;
+    req.token = token;
 
     next();
   } catch (error) {
@@ -77,3 +78,5 @@ const refreshToken = async (req, res, next) => {
 };
 
 module.exports = { accessToken, refreshToken };
+
+

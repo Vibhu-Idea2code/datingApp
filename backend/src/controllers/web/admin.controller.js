@@ -2,6 +2,8 @@ const { adminService } = require("../../services");
 
 const path = require("path");
 const fs = require("fs");
+const { Admin } = require("../../models");
+const deleteFiles = require("../../helpers/deleteFiles");
 
 /* ----------------------------- Get admin list ----------------------------- */
 const getAdminList = async (req, res) => {
@@ -24,31 +26,75 @@ const getAdminList = async (req, res) => {
 };
 
 /* ------------------------------ Update admin ------------------------------ */
-const updateAdmin = async (req, res) => {
+// const updateAdmin = async (req, res) => {
+//   try {
+//     const adminId = req.params.adminId;
+//     const reqBody = req.body;
+//     const adminExist = await adminService.getAdminById(adminId);
+//     // if (adminExist) {
+//     //   throw new Error("Admin not found!");
+//     // }
+//     if (req.file) {
+//       adminExist.admin_image = req.file.filename; // Store the path to the uploaded profile image
+//     }
+//     const adminUpdate = await adminService.updateAdmin(adminId, reqBody);
+//     if (!adminUpdate) {
+//       throw new Error("Something went wrong, please try again or later...!");
+//     }
+//     res.status(200).json({
+//       succcess: true,
+//       message: "Admin updated successfully ...! ",
+//       data: adminUpdate,
+//     });
+//   } catch (error) {
+//     res.status(400).json({
+//       succcess: false,
+//       message: error.message,
+//     });
+//   }
+// };
+
+//Update Admin Profile
+const updateAdmin = async (req, res, next) => {
   try {
-    const adminId = req.params.adminId;
-    const reqBody = req.body;
-    const adminExist = await adminService.getAdminById(adminId);
-    // if (adminExist) {
-    //   throw new Error("Admin not found!");
-    // }
+    const { admin_name, email } = req.body;
+    const admin = await Admin.findById(req.admin._id);
+    if (!admin) {
+      throw new Error("Admin not found!"); 
+    }
+    // return queryErrorRelatedResponse(res, 202, "admin not found.");
     if (req.file) {
-      adminExist.admin_image = req.file.filename; // Store the path to the uploaded profile image
-    }
-    const adminUpdate = await adminService.updateAdmin(adminId, reqBody);
-    if (!adminUpdate) {
-      throw new Error("Something went wrong, please try again or later...!");
-    }
+            admin.admin_image = req.file.filename; // Store the path to the uploaded profile image
+          }
+    // if (req.file) {
+    //   deleteFiles(admin.admin_image);
+    //   admin.admin_image = req.file.filename;
+    // }
+
+    admin.admin_name = admin_name;
+    admin.email = email;
+    const result = await admin.save();
+
+    const baseUrl =
+    req.protocol +
+    "://" +
+    req.get("host") +
+    process.env.BASE_URL_PROFILE_PATH;
+
+    const latestRes = {
+      admin: result,
+      baseUrl: baseUrl,
+    };
     res.status(200).json({
-      succcess: true,
-      message: "Admin updated successfully ...! ",
-      data: adminUpdate,
-    });
-  } catch (error) {
-    res.status(400).json({
-      succcess: false,
-      message: error.message,
-    });
+            succcess: true,
+            message: "Admin updated successfully ...! ",
+            data: latestRes,
+
+          });
+    // successResponse(res, latestRes);
+
+  } catch (err) {
+    next(err);
   }
 };
  /* ------------------------------ Delete admin ------------------------------ */
