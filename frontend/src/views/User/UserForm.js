@@ -65,9 +65,9 @@ const UserForm = () => {
       setValue("sign", editdata.sign);
       setValue("pets", editdata.pets);
       setValue("sexual", editdata.sexual);
-      setValue("phoneNumber", editdata.phoneNumber);
-      setValue("phoneNumber", editdata.phoneNumber);
-      setValue("phoneNumber", editdata.phoneNumber);
+      setValue("school", editdata.school);
+      setValue("address", editdata.address);
+      setValue("jobTitle", editdata.jobTitle);
       setValue("phoneNumber", editdata.phoneNumber);
       setValue("phoneNumber", editdata.phoneNumber);
       setValue("phoneNumber", editdata.phoneNumber);
