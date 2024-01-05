@@ -167,6 +167,22 @@ note:-
 	acces token ne store ny krvavanu in local storgae.
 	
 
+done:-
+refresh token with update
+add user field 
+
+remaning
+
+change password
+update profile
+
+==== 5 jan ====
+
+set validation and all user field add
+
+
+
+
 
 
 
