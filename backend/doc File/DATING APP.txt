@@ -176,9 +176,16 @@ remaning
 change password
 update profile
 
-==== 5 jan ====
 
+
+==== 5 jan ====
+done
 set validation and all user field add
+
+remaning
+update profile 
+change password
+
 
 
 
