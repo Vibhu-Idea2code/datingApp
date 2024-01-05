@@ -66,6 +66,11 @@ const UserForm = () => {
       setValue("pets", editdata.pets);
       setValue("sexual", editdata.sexual);
       setValue("phoneNumber", editdata.phoneNumber);
+      setValue("phoneNumber", editdata.phoneNumber);
+      setValue("phoneNumber", editdata.phoneNumber);
+      setValue("phoneNumber", editdata.phoneNumber);
+      setValue("phoneNumber", editdata.phoneNumber);
+      setValue("phoneNumber", editdata.phoneNumber);
 
       const birthDate = new Date(editdata.birthDate);
       const formattedBirthDate = birthDate.toISOString().split("T")[0];
@@ -122,7 +127,7 @@ const UserForm = () => {
         // await updateUserProfile(formData, isupdate);
         localStorage.setItem("redirectSuccess", "true");
         localStorage.setItem("redirectMessage", "Updated user successfully!");
-        
+
         navigate("/user");
       }
     } catch (err) {
@@ -187,6 +192,7 @@ const UserForm = () => {
             <CForm
               className="row g-3 needs-validation"
               onSubmit={handleSubmit(onSubmit)}>
+              {/*====================== first name ===================== */}
               <CCol md={4}>
                 <CFormLabel htmlFor="first_name">First Name</CFormLabel>
                 <CFormInput
@@ -199,10 +205,9 @@ const UserForm = () => {
                   onChange={(e) => setValue("first_name", e.target.value)}
                   invalid={!!errors.first_name}
                 />
-
                 <CFormFeedback invalid>Please Enter First Name</CFormFeedback>
               </CCol>
-              
+              {/*====================== first name ===================== */}
               <CCol md={4}>
                 <CFormLabel htmlFor="last_name">Last Name</CFormLabel>
                 <CFormInput
@@ -219,7 +224,7 @@ const UserForm = () => {
                 />
                 <CFormFeedback invalid>Please Enter Last Name</CFormFeedback>
               </CCol>
-
+              {/*====================== first name ===================== */}
               <CCol md={4}>
                 <CFormLabel htmlFor="email">Email</CFormLabel>
                 <CFormInput
@@ -235,24 +240,122 @@ const UserForm = () => {
                 <CFormFeedback invalid>Please Enter Last Name</CFormFeedback>
               </CCol>
 
+              {/*====================== first name ===================== */}
               <CCol md={4}>
-                <CFormLabel htmlFor="phoneNumber">phoneNumber</CFormLabel>
+                <CFormLabel htmlFor="school">phoneNumber</CFormLabel>
                 <CInputGroup>
                   <CFormInput
                     type="text"
-                    id="phoneNumber"
-                    {...register("phoneNumber", {
+                    id="school"
+                    {...register("school", {
                       required: "This field is required",
                     })}
-                    defaultValue={getValues("phoneNumber")}
-                    onChange={(e) => setValue("phoneNumber", e.target.value)}
-                    invalid={!!errors.phoneNumber}
+                    defaultValue={getValues("school")}
+                    onChange={(e) => setValue("school", e.target.value)}
+                    invalid={!!errors.school}
+                  />
+                  <CFormFeedback invalid>
+                    Please enter a school name
+                  </CFormFeedback>
+                </CInputGroup>
+              </CCol>
+              {/*====================== first name ===================== */}
+              <CCol md={4}>
+                <CFormLabel htmlFor="minAge">Min Age</CFormLabel>
+                <CInputGroup>
+                  <CFormInput
+                    type="text"
+                    id="minAge"
+                    {...register("minAge", {
+                      required: "This field is required",
+                    })}
+                    defaultValue={getValues("minAge")}
+                    onChange={(e) => setValue("minAge", e.target.value)}
+                    invalid={!!errors.minAge}
                   />
                   <CFormFeedback invalid>
                     Please enter a phone number
                   </CFormFeedback>
                 </CInputGroup>
               </CCol>
+              {/*====================== first name ===================== */}
+              <CCol md={4}>
+                <CFormLabel htmlFor="maxAge">Max Age</CFormLabel>
+                <CInputGroup>
+                  <CFormInput
+                    type="text"
+                    id="maxAge"
+                    {...register("maxAge", {
+                      required: "This field is required",
+                    })}
+                    defaultValue={getValues("maxAge")}
+                    onChange={(e) => setValue("maxAge", e.target.value)}
+                    invalid={!!errors.maxAge}
+                  />
+                  <CFormFeedback invalid>
+                    Please enter a phone number
+                  </CFormFeedback>
+                </CInputGroup>
+              </CCol>
+              {/*====================== first name ===================== */}
+              <CCol md={4}>
+                <CFormLabel htmlFor="minAge">Min Age</CFormLabel>
+                <CInputGroup>
+                  <CFormInput
+                    type="text"
+                    id="minAge"
+                    {...register("minAge", {
+                      required: "This field is required",
+                    })}
+                    defaultValue={getValues("minAge")}
+                    onChange={(e) => setValue("minAge", e.target.value)}
+                    invalid={!!errors.minAge}
+                  />
+                  <CFormFeedback invalid>
+                    Please enter a phone number
+                  </CFormFeedback>
+                </CInputGroup>
+              </CCol>
+              {/*====================== first name ===================== */}
+              <CCol md={4}>
+                <CFormLabel htmlFor="lat">latitude</CFormLabel>
+                <CInputGroup>
+                  <CFormInput
+                    type="text"
+                    id="lat"
+                    {...register("lat", {
+                      required: "This field is required",
+                    })}
+                    defaultValue={getValues("lat")}
+                    onChange={(e) => setValue("lat", e.target.value)}
+                    invalid={!!errors.lat}
+                  />
+                  <CFormFeedback invalid>
+                    Please enter a phone number
+                  </CFormFeedback>
+                </CInputGroup>
+              </CCol>
+              {/*====================== first name ===================== */}
+              <CCol md={4}>
+                <CFormLabel htmlFor="long">longitude</CFormLabel>
+                <CInputGroup>
+                  <CFormInput
+                    type="text"
+                    id="long"
+                    {...register("long", {
+                      required: "This field is required",
+                    })}
+                    defaultValue={getValues("long")}
+                    onChange={(e) => setValue("long", e.target.value)}
+                    invalid={!!errors.long}
+                  />
+                  <CFormFeedback invalid>
+                    Please enter a phone number
+                  </CFormFeedback>
+                </CInputGroup>
+              </CCol>
+
+              {/*====================== first name ===================== */}
 
               <CCol md={4}>
                 <CFormLabel htmlFor="birthDate">Birth Date</CFormLabel>
@@ -264,38 +367,16 @@ const UserForm = () => {
                   })}
                   defaultValue={getValues("birthDate")}
                   onChange={(e) => setValue("birthDate", e.target.value)}
-                  invalid={!!errors.birthdate}
+                  invalid={!!errors.birthDate}
                 />
-                <CFormFeedback invalid>Please enter a BirthDate</CFormFeedback>
+                {errors.birthDate && (
+                  <CFormFeedback invalid>
+                    {errors.birthDate.message}
+                  </CFormFeedback>
+                )}
               </CCol>
 
-              <CCol md={4}>
-                <CFormLabel htmlFor="gender">Gender</CFormLabel>
-
-                <CFormSelect
-                  {...register("gender")}
-                  className="mb-3"
-                  defaultValue={getValues("gender")}>
-                  <option value="female">Female</option>
-                  <option value="male">Male</option>
-                  <option value="other">other</option>
-                </CFormSelect>
-              </CCol>
-
-
-              <CCol md={4}>
-                <CFormLabel htmlFor="show me">Show Me</CFormLabel>
-
-                <CFormSelect
-                  {...register("show me")}
-                  className="mb-3"
-                  defaultValue={getValues("show me")}>
-                  <option value="female">Female</option>
-                  <option value="male">Male</option>
-                  <option value="other">other</option>
-                </CFormSelect>
-              </CCol>
-
+              {/*====================== first name ===================== */}
 
               <CCol md={4}>
                 <CFormLabel htmlFor="sexual">Sexual Oreintation</CFormLabel>
@@ -305,14 +386,18 @@ const UserForm = () => {
                   control={control}
                   defaultValue={isupdate === "" ? [] : getValues("sexual")}
                   error={!!errors.sexual}
-                  rules={{ required: "Medical Conditions is required" }}
+                  rules={{ required: "Sexual Orientation is required" }}
                   render={({ field }) => (
                     <>
                       <Select
                         {...field}
                         labelId="sexual"
                         id="sexual"
-                        style={{ width: "400px", height: "40px", marginBottom: "16px" }}
+                        style={{
+                          width: "400px",
+                          height: "40px",
+                          marginBottom: "16px",
+                        }}
                         multiple>
                         {sexualOrientationOptions.map((cat) => (
                           <MenuItem key={cat._id} value={cat._id}>
@@ -323,38 +408,53 @@ const UserForm = () => {
                     </>
                   )}
                 />
+                {errors.sexual && (
+                  <span style={{ color: "#e55353" }}>
+                    {errors.sexual.message}
+                  </span>
+                )}
               </CCol>
 
+              {/*====================== first name ===================== */}
               <CCol md={4}>
                 <CFormLabel htmlFor="pets">Pets</CFormLabel>
                 <div>
-                <Controller
-                  name="pets"
-                  // style={{ marginTop: "16px", marginBottom: "16px" }}
-                  control={control}
-                  defaultValue={isupdate === "" ? [] : getValues("pets")}
-                  error={!!errors.pets}
-                  rules={{ required: "pets is required" }}
-                  render={({ field }) => (
-                    <>
-                      <Select
-                        {...field}
-                        labelId="pets"
-                        id="pets"
-                        style={{ width: "400px", height: "40px", marginBottom: "16px" }}
-                        multiple>
-                        {pet.map((cat) => (
-                          <MenuItem key={cat._id} value={cat._id}>
-                            {cat.name}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </>
+                  <Controller
+                    name="pets"
+                    // style={{ marginTop: "16px", marginBottom: "16px" }}
+                    control={control}
+                    defaultValue={isupdate === "" ? [] : getValues("pets")}
+                    error={!!errors.pets}
+                    rules={{ required: "pets is required" }}
+                    render={({ field }) => (
+                      <>
+                        <Select
+                          {...field}
+                          labelId="pets"
+                          id="pets"
+                          style={{
+                            width: "400px",
+                            height: "40px",
+                            marginBottom: "16px",
+                          }}
+                          multiple>
+                          {pet.map((cat) => (
+                            <MenuItem key={cat._id} value={cat._id}>
+                              {cat.name}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </>
+                    )}
+                  />
+                  {errors.pets && (
+                    <span style={{ color: "#e55353" }}>
+                      {errors.pets.message}
+                    </span>
                   )}
-                />
-                </div>  
+                </div>
               </CCol>
-
+              {/*====================== first name ===================== */}
               <CCol md={4}>
                 <CFormLabel htmlFor="interest">Interest</CFormLabel>
                 <Controller
@@ -370,7 +470,11 @@ const UserForm = () => {
                         {...field}
                         labelId="interest"
                         id="interest"
-                        style={{ width: "400px", height: "40px", marginBottom: "16px" }}
+                        style={{
+                          width: "400px",
+                          height: "40px",
+                          marginBottom: "16px",
+                        }}
                         multiple>
                         {interest.map((cat) => (
                           <MenuItem key={cat._id} value={cat._id}>
@@ -381,27 +485,35 @@ const UserForm = () => {
                     </>
                   )}
                 />
+                {errors.interest && (
+                  <span style={{ color: "#e55353" }}>
+                    {errors.interest.message}
+                  </span>
+                )}
               </CCol>
-
+              {/*====================== first name ===================== */}
               <CCol md={4}>
-                <CFormLabel htmlFor="interest">Zodiac Sign</CFormLabel>
+                <CFormLabel htmlFor="sign">Zodiac Sign</CFormLabel>
                 <Controller
                   name="sign"
                   // style={{ marginTop: "16px", marginBottom: "16px" }}
                   control={control}
                   defaultValue={isupdate === "" ? [] : getValues("sign")}
                   onChange={(e) => setValue("sign", e.target.value)}
-                 
                   error={!!errors.sign}
-                  rules={{ required: "Interest is required" }}
+                  rules={{ required: "zodiac Sign is required" }}
                   render={({ field }) => (
                     <>
                       <Select
                         {...field}
                         labelId="sign"
                         id="sign"
-                        style={{ width: "400px", height: "40px", marginBottom: "16px" }}
-                       multiple>
+                        style={{
+                          width: "400px",
+                          height: "40px",
+                          marginBottom: "16px",
+                        }}
+                        multiple>
                         {sign.map((cat) => (
                           <MenuItem key={cat._id} value={cat._id}>
                             {cat.name}
@@ -411,9 +523,94 @@ const UserForm = () => {
                     </>
                   )}
                 />
+                {errors.sign && (
+                  <span style={{ color: "#e55353" }}>
+                    {errors.sign.message}
+                  </span>
+                )}
+              </CCol>
+              {/*====================== first name ===================== */}
+              <CCol md={4}>
+                <CFormLabel htmlFor="school">School</CFormLabel>
+                <CFormInput
+                  type="text"
+                  id="school"
+                  {...register("school", {
+                    required: "This field is required",
+                  })}
+                  defaultValue={getValues("school")}
+                  onChange={(e) => setValue("school", e.target.value)}
+                  invalid={!!errors.school}
+                />
+                <CFormFeedback invalid>
+                  Please Enter Your School Name
+                </CFormFeedback>
+              </CCol>
+              {/*====================== first name ===================== */}
+              <CCol md={4}>
+                <CFormLabel htmlFor="address">Address</CFormLabel>
+                <CFormInput
+                  type="text"
+                  id="address"
+                  {...register("address", {
+                    required: "This field is required",
+                  })}
+                  defaultValue={getValues("address")}
+                  onChange={(e) => setValue("address", e.target.value)}
+                  invalid={!!errors.address}
+                />
+                <CFormFeedback invalid>Please Enter Your Address</CFormFeedback>
+              </CCol>
+              {/*====================== first name ===================== */}
+              <CCol md={4}>
+                <CFormLabel htmlFor="jobTitle">Job Title</CFormLabel>
+                <CFormInput
+                  type="text"
+                  id="jobTitle"
+                  {...register("jobTitle", {
+                    required: "This field is required",
+                  })}
+                  defaultValue={getValues("jobTitle")}
+                  onChange={(e) => setValue("jobTitle", e.target.value)}
+                  invalid={!!errors.jobTitle}
+                />
+                <CFormFeedback invalid>
+                  Please Enter Your Job Title
+                </CFormFeedback>
+              </CCol>
+              {/*====================== first name ===================== */}
+              <CCol md={4}>
+                <CFormLabel htmlFor="gender">Gender</CFormLabel>
+
+                <CFormSelect
+                  {...register("gender", {
+                    required: "Please select a gender",
+                  })}
+                  className="mb-3"
+                  defaultValue={getValues("gender")}>
+                  <option value="female">Female</option>
+                  <option value="male">Male</option>
+                  <option value="other">other</option>
+                </CFormSelect>
+                {errors.gender && (
+                  <CFormFeedback invalid>{errors.gender.message}</CFormFeedback>
+                )}
+              </CCol>
+              {/*====================== first name ===================== */}
+              <CCol md={4}>
+                <CFormLabel htmlFor="show me">Show Me</CFormLabel>
+
+                <CFormSelect
+                  {...register("show me")}
+                  className="mb-3"
+                  defaultValue={getValues("show me")}>
+                  <option value="female">Female</option>
+                  <option value="male">Male</option>
+                  <option value="other">other</option>
+                </CFormSelect>
               </CCol>
 
-              <CCol md={4}>
+              {/* <CCol md={4}>
                 <CFormLabel htmlFor="user_img">Image</CFormLabel>
                 <Controller
                   name="user_img"
@@ -438,6 +635,46 @@ const UserForm = () => {
                     </>
                   )}
                 />
+              </CCol> */}
+              {/*====================== first name ===================== */}
+              <CCol md={4}>
+                <CFormLabel htmlFor="user_img">Image</CFormLabel>
+                <Controller
+                  name="user_img"
+                  control={control}
+                  rules={{
+                    validate: (files) =>
+                      files?.length >= 2 || "At least two images are required",
+                  }}
+                  render={({ field }) => (
+                    <>
+                      <CFormInput
+                        type="file"
+                        id="user_img"
+                        onChange={(e) => {
+                          field.onChange(e);
+                          handleImageChange(e); // Assuming handleImageChange is a function you've defined
+                        }}
+                        multiple
+                      />
+                      {imgPreviews &&
+                        imgPreviews.map((preview, index) => (
+                          <img
+                            key={index}
+                            src={preview}
+                            alt={`preview${index + 1}`}
+                            width="60"
+                            height="60"
+                          />
+                        ))}
+                    </>
+                  )}
+                />
+                {errors.user_img && (
+                  <span style={{ color: "#e55353" }}>
+                    {errors.user_img.message}
+                  </span>
+                )}
               </CCol>
 
               <CCol xs={12}>
