@@ -68,9 +68,13 @@ const UserForm = () => {
       setValue("school", editdata.school);
       setValue("address", editdata.address);
       setValue("jobTitle", editdata.jobTitle);
+      setValue("minAge", editdata.minAge);
+      setValue("maxAge", editdata.maxAge);
       setValue("phoneNumber", editdata.phoneNumber);
-      setValue("phoneNumber", editdata.phoneNumber);
-      setValue("phoneNumber", editdata.phoneNumber);
+      setValue("lat", editdata.lat);
+      setValue("long", editdata.long);
+      // setValue("gender", editdata.gender);
+      // setValue("showMe", editdata.showMe);
 
       const birthDate = new Date(editdata.birthDate);
       const formattedBirthDate = birthDate.toISOString().split("T")[0];
@@ -207,7 +211,7 @@ const UserForm = () => {
                 />
                 <CFormFeedback invalid>Please Enter First Name</CFormFeedback>
               </CCol>
-              {/*====================== first name ===================== */}
+              {/*====================== last name ===================== */}
               <CCol md={4}>
                 <CFormLabel htmlFor="last_name">Last Name</CFormLabel>
                 <CFormInput
@@ -224,7 +228,7 @@ const UserForm = () => {
                 />
                 <CFormFeedback invalid>Please Enter Last Name</CFormFeedback>
               </CCol>
-              {/*====================== first name ===================== */}
+              {/*====================== email ===================== */}
               <CCol md={4}>
                 <CFormLabel htmlFor="email">Email</CFormLabel>
                 <CFormInput
@@ -240,26 +244,25 @@ const UserForm = () => {
                 <CFormFeedback invalid>Please Enter Last Name</CFormFeedback>
               </CCol>
 
-              {/*====================== first name ===================== */}
+              {/*====================== phone number ===================== */}
               <CCol md={4}>
                 <CFormLabel htmlFor="school">phoneNumber</CFormLabel>
                 <CInputGroup>
                   <CFormInput
                     type="text"
-                    id="school"
-                    {...register("school", {
+                    id="phoneNumber"
+                    {...register("phoneNumber", {
                       required: "This field is required",
                     })}
-                    defaultValue={getValues("school")}
-                    onChange={(e) => setValue("school", e.target.value)}
-                    invalid={!!errors.school}
+                    defaultValue={getValues("phoneNumber")}
+                    onChange={(e) => setValue("phoneNumber", e.target.value)}
+                    invalid={!!errors.phoneNumber}
                   />
                   <CFormFeedback invalid>
-                    Please enter a school name
-                  </CFormFeedback>
+                    Please enter a phoneNumber                  </CFormFeedback>
                 </CInputGroup>
               </CCol>
-              {/*====================== first name ===================== */}
+              {/*====================== min age===================== */}
               <CCol md={4}>
                 <CFormLabel htmlFor="minAge">Min Age</CFormLabel>
                 <CInputGroup>
@@ -278,7 +281,7 @@ const UserForm = () => {
                   </CFormFeedback>
                 </CInputGroup>
               </CCol>
-              {/*====================== first name ===================== */}
+              {/*====================== max age ===================== */}
               <CCol md={4}>
                 <CFormLabel htmlFor="maxAge">Max Age</CFormLabel>
                 <CInputGroup>
@@ -297,26 +300,8 @@ const UserForm = () => {
                   </CFormFeedback>
                 </CInputGroup>
               </CCol>
-              {/*====================== first name ===================== */}
-              <CCol md={4}>
-                <CFormLabel htmlFor="minAge">Min Age</CFormLabel>
-                <CInputGroup>
-                  <CFormInput
-                    type="text"
-                    id="minAge"
-                    {...register("minAge", {
-                      required: "This field is required",
-                    })}
-                    defaultValue={getValues("minAge")}
-                    onChange={(e) => setValue("minAge", e.target.value)}
-                    invalid={!!errors.minAge}
-                  />
-                  <CFormFeedback invalid>
-                    Please enter a phone number
-                  </CFormFeedback>
-                </CInputGroup>
-              </CCol>
-              {/*====================== first name ===================== */}
+          
+              {/*====================== latitude ===================== */}
               <CCol md={4}>
                 <CFormLabel htmlFor="lat">latitude</CFormLabel>
                 <CInputGroup>
@@ -335,7 +320,7 @@ const UserForm = () => {
                   </CFormFeedback>
                 </CInputGroup>
               </CCol>
-              {/*====================== first name ===================== */}
+              {/*====================== longitude ===================== */}
               <CCol md={4}>
                 <CFormLabel htmlFor="long">longitude</CFormLabel>
                 <CInputGroup>
@@ -355,7 +340,7 @@ const UserForm = () => {
                 </CInputGroup>
               </CCol>
 
-              {/*====================== first name ===================== */}
+              {/*====================== birth date ===================== */}
 
               <CCol md={4}>
                 <CFormLabel htmlFor="birthDate">Birth Date</CFormLabel>
@@ -376,7 +361,7 @@ const UserForm = () => {
                 )}
               </CCol>
 
-              {/*====================== first name ===================== */}
+              {/*====================== sexual orientation ===================== */}
 
               <CCol md={4}>
                 <CFormLabel htmlFor="sexual">Sexual Oreintation</CFormLabel>
@@ -389,6 +374,7 @@ const UserForm = () => {
                   rules={{ required: "Sexual Orientation is required" }}
                   render={({ field }) => (
                     <>
+                    
                       <Select
                         {...field}
                         labelId="sexual"
@@ -399,6 +385,7 @@ const UserForm = () => {
                           marginBottom: "16px",
                         }}
                         multiple>
+
                         {sexualOrientationOptions.map((cat) => (
                           <MenuItem key={cat._id} value={cat._id}>
                             {cat.name}
@@ -415,7 +402,7 @@ const UserForm = () => {
                 )}
               </CCol>
 
-              {/*====================== first name ===================== */}
+              {/*====================== pets ===================== */}
               <CCol md={4}>
                 <CFormLabel htmlFor="pets">Pets</CFormLabel>
                 <div>
@@ -454,7 +441,7 @@ const UserForm = () => {
                   )}
                 </div>
               </CCol>
-              {/*====================== first name ===================== */}
+              {/*====================== interest===================== */}
               <CCol md={4}>
                 <CFormLabel htmlFor="interest">Interest</CFormLabel>
                 <Controller
@@ -491,7 +478,7 @@ const UserForm = () => {
                   </span>
                 )}
               </CCol>
-              {/*====================== first name ===================== */}
+              {/*====================== zodiac sign ===================== */}
               <CCol md={4}>
                 <CFormLabel htmlFor="sign">Zodiac Sign</CFormLabel>
                 <Controller
@@ -529,7 +516,7 @@ const UserForm = () => {
                   </span>
                 )}
               </CCol>
-              {/*====================== first name ===================== */}
+              {/*====================== school===================== */}
               <CCol md={4}>
                 <CFormLabel htmlFor="school">School</CFormLabel>
                 <CFormInput
@@ -546,7 +533,7 @@ const UserForm = () => {
                   Please Enter Your School Name
                 </CFormFeedback>
               </CCol>
-              {/*====================== first name ===================== */}
+              {/*====================== address ===================== */}
               <CCol md={4}>
                 <CFormLabel htmlFor="address">Address</CFormLabel>
                 <CFormInput
@@ -561,7 +548,7 @@ const UserForm = () => {
                 />
                 <CFormFeedback invalid>Please Enter Your Address</CFormFeedback>
               </CCol>
-              {/*====================== first name ===================== */}
+              {/*====================== job title ===================== */}
               <CCol md={4}>
                 <CFormLabel htmlFor="jobTitle">Job Title</CFormLabel>
                 <CFormInput
@@ -578,7 +565,7 @@ const UserForm = () => {
                   Please Enter Your Job Title
                 </CFormFeedback>
               </CCol>
-              {/*====================== first name ===================== */}
+              {/*====================== gender ===================== */}
               <CCol md={4}>
                 <CFormLabel htmlFor="gender">Gender</CFormLabel>
 
@@ -596,7 +583,7 @@ const UserForm = () => {
                   <CFormFeedback invalid>{errors.gender.message}</CFormFeedback>
                 )}
               </CCol>
-              {/*====================== first name ===================== */}
+              {/*====================== show me ===================== */}
               <CCol md={4}>
                 <CFormLabel htmlFor="show me">Show Me</CFormLabel>
 
@@ -636,7 +623,7 @@ const UserForm = () => {
                   )}
                 />
               </CCol> */}
-              {/*====================== first name ===================== */}
+              {/*====================== image ===================== */}
               <CCol md={4}>
                 <CFormLabel htmlFor="user_img">Image</CFormLabel>
                 <Controller
