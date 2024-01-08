@@ -29,7 +29,7 @@ router.post("/verifyotp", authAdminController.verifyOtp);
 
 router.post(
   "/change-password",
-  // accessToken(),
+  accessToken(),
   authAdminController.changePassword
 );
 

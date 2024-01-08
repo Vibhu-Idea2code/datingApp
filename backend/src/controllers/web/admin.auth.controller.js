@@ -226,7 +226,8 @@ const changePassword = async (req, res) => {
   try {
     const { oldpass, newpass, confirmpass } = req.body;
     console.log(req.body, "++++++++++++++");
-    const admin = await Admin.findById(req.body.id);
+    const admin = await Admin.findById(req.admin._id);
+    
     if (!admin) {
       return res.status(404).json({ error: "User not found" });
     }
@@ -238,7 +239,7 @@ const changePassword = async (req, res) => {
       return res.status(401).json({ error: "Incorrect old password" });
     }
     // Check if the new password and confirm password match
-    if (newpass !== confirmpass) {
+    if (newpass != confirmpass) {
       return res
         .status(400)
         .json({ error: "New password and confirm password do not match" });

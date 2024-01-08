@@ -124,6 +124,29 @@ const deleteAdmin = async (req, res) => {
 
 
 
+const ChangePassword = async (req, res, next) => {
+  try {
+    const { old_password, new_password, confirm_password } = req.body;
+
+    const admin = await Admin.findById(req.admin._id);
+    if (!admin) return queryErrorRelatedResponse(req, res, 404, "Admin not found.");
+
+    const valid_pass = await bcrypt.compare(old_password, admin.password);
+    if (!valid_pass) return queryErrorRelatedResponse(req, res, 401, "Invalid Old Password");
+
+    if (new_password != confirm_password) {
+      return queryErrorRelatedResponse(req, res, 404, "Confirm password does not match.");
+    }
+
+    admin.password = new_password;
+    await admin.save();
+    successResponse(res, "Password changed successfully!");
+  } catch (err) {
+    next(err);
+  }
+};
+
+
 module.exports = {
   getAdminList,
   updateAdmin,
