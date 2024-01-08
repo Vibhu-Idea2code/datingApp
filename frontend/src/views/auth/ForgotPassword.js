@@ -138,10 +138,12 @@ const AdminLogin = () => {
                         </CButton>
                       </CCol>
                       <CCol xs={6} className="text-right">
-                        {' '}
-                        <CButton color="link" className="px-0 forgot-link">
+                        {" "}
+                        <Link to="/">
+                          <CButton color="link" className="px-0 forgot-link">
                             Back to Login?
                           </CButton>
+                        </Link>
                       </CCol>
                     </CRow>
                   </CForm>

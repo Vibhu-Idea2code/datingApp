@@ -7,10 +7,6 @@ var UserStateContext = React.createContext();
 var UserDispatchContext = React.createContext();
 
 function userReducer(state, action) {
-  // console.log(action," login___________________")
-  // console.log(state," login___________________")
-
-  // console.log()
   switch (action.type) {
     case "LOGIN_SUCCESS":
       return {
@@ -29,8 +25,7 @@ function userReducer(state, action) {
 function UserProvider({ children }) {
   var [state, dispatch] = React.useReducer(userReducer, {
     isAuthenticated: !!localStorage.getItem("token"),
-    // console.log(state)
-   
+ 
     user: localStorage.getItem("user")
       ? JSON.parse(localStorage.getItem("user"))
       : null, // Set the default userRole here
@@ -47,7 +42,6 @@ function UserProvider({ children }) {
 
 function useUserState() {
   var context = React.useContext(UserStateContext);
-  // console.log(context);
   if (context === undefined) {
     throw new Error("useUserState must be used within a UserProvider");
   }
@@ -95,7 +89,6 @@ function loginUser(dispatch, data, navigate, setIsLoading, setError) {
           };
           // console.log(userObject.username,"dfhfghfhg")
           localStorage.setItem("user", JSON.stringify(userObject));
-
           setIsLoading(false);
           dispatch(
             {
@@ -119,7 +112,6 @@ function loginUser(dispatch, data, navigate, setIsLoading, setError) {
             message: err.response.data.message[key],
           });
         });
-
         setIsLoading(false);
       } else {
         // setError('Something is wrong!')
@@ -128,15 +120,6 @@ function loginUser(dispatch, data, navigate, setIsLoading, setError) {
     });
 }
 
-function signOut(dispatch, navigate) {
-  localStorage.removeItem("token");
-  // localStorage.removeItem("role");
-  localStorage.removeItem("refreshToken");
-  localStorage.removeItem("redirectMessage");
-  localStorage.removeItem("user");
-  dispatch({ type: "SIGN_OUT_SUCCESS" });
-  navigate("/");
-}
 
 function updateUser(dispatch, data, setIsLoading) {
   console.log("updateUser", data);
@@ -151,17 +134,17 @@ function updateUser(dispatch, data, setIsLoading) {
   })
 
   UpdateProfile(formData)
-    .then((response) => {
-      console.log(response.data);
-      if (response.data.isSuccess && response.data.status === 200) {
-        setIsLoading(false)
-        toast.success('Updated successfully!')
+  .then((response) => {
+    console.log(response.data);
+    if (response.data.admin && response.data.status === 200) {
+      setIsLoading(false)
+      toast.success('Updated successfully!')
         const userObject = {
           username: response.data.admin.admin_name,
           useremail: response.data.admin.admin.email,
           userimage: response.data.admin.admin_image
-            ? response.data.baseUrl + response.data.admin.admin_image
-            : null,
+          ? response.data.baseUrl + response.data.admin.admin_image
+          : null,
         }
         console.log(userObject)
         dispatch({
@@ -170,7 +153,7 @@ function updateUser(dispatch, data, setIsLoading) {
             user: userObject,
           },
         })
-          localStorage.setItem('user', JSON.stringify(userObject))
+        localStorage.setItem('user', JSON.stringify(userObject))
       } else {
         if ((response.data.status === 202 || 400) && !response.data.isSuccess) {
           toast.error(response.data.message)
@@ -194,3 +177,13 @@ function updateUser(dispatch, data, setIsLoading) {
       }
     })
 }
+        
+function signOut(dispatch, navigate) {
+          localStorage.removeItem("token");
+          // localStorage.removeItem("role");
+          localStorage.removeItem("refreshToken");
+          localStorage.removeItem("redirectMessage");
+          localStorage.removeItem("user");
+          dispatch({ type: "SIGN_OUT_SUCCESS" });
+          navigate("/");
+        }

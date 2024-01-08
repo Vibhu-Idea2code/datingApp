@@ -30,6 +30,7 @@ const Profile = () => {
   // console.log(user)
   const [previewImage, setPreviewImage] = useState(noImg)
   var dispatch = useUserDispatch()
+
   useEffect(() => {
     if (user) {
       setValue('admin_name', user.username)
@@ -40,7 +41,7 @@ const Profile = () => {
   }, [])
 
   const onSubmit = async (data) => {
-    updateUser(dispatch, data, setIsLoading)
+    updateUser(dispatch, data, setIsLoading) 
   }
 
   return (

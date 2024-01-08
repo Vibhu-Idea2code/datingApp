@@ -43,7 +43,7 @@ const changePassword = () => {
     // console.log(data);
 
     changePasswords(data).then((response) => {
-      toast.success("Password Changed successfully!", {
+      toast.success("Password Changed Successfully!", {
         // key: response.data.message,
       });
       // console.log(response.data.message);
