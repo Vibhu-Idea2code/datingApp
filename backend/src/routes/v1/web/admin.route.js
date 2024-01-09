@@ -66,6 +66,7 @@ adminUserController.getAllUser
 );
 router.post(
   "/create-user",
+  // upload.single("image"),
   upload.array("user_img"),
   adminUserController.UserRegisterByAdmin
 );

@@ -89,17 +89,24 @@ const deleteFiles = require("../../helpers/deleteFiles");
       if (existingUser) {
         throw new Error("User with this email already exists.");
       }
+      
+          // if (req.file) {
+          //   reqBody.image = req.file.filename;
+          // } else {
+          //   throw new Error("user image is required!");
+          // }
   
       if (!req.files || req.files.length <= 1 || req.files.length >= 7) {
         throw new Error(`Between 2 and 6 images are required.`);
       }
+
       user_img = [];
       if (req.files) {
         for (let ele of req.files) {
           user_img.push(ele.filename);
         }
       } else {
-        throw new Error("user image is required!");
+        throw new Error("user image gallery is required!");
       }
       reqBody.user_img = user_img;
   
@@ -135,6 +142,11 @@ const deleteFiles = require("../../helpers/deleteFiles");
         last_name: reqBody.last_name,
         phoneNumber: reqBody.phoneNumber,
         jobTitle: reqBody.jobTitle,
+        location:reqBody.location,
+        ageControl:reqBody.ageControl,
+        distanceControl:reqBody.distanceControl,
+        image:reqBody.image,
+
         // user_img: reqBody.user_img,
         // age:reqBody.age,
         age,

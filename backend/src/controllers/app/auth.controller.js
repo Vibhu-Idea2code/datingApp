@@ -205,7 +205,7 @@ const verifyOtp = async (req, res) => {
     const findEmail = await verifyOtpService.findOtpByEmail({ phoneNumber });
     console.log("findEmail", findEmail);
     if (!findEmail) {
-      throw new Error("0");
+      throw new Error("user not found");
     }
     findEmail.otp = otp;
     await findEmail.save();
@@ -213,25 +213,43 @@ const verifyOtp = async (req, res) => {
       throw new Error("Invalid OTP entered!");
     }
 
-    let option = {
-      phoneNumber,
-      exp: moment().add(1, "days").unix(),
-    };
+    // let option = {
+    //   phoneNumber,
+    //   exp: moment().add(1, "days").unix(),
+    // };
+    const payload = {
+      phoneNumber: findEmail.phoneNumber,
+     
+      };
+ 
+      const token = await jwt.sign(payload, process.env.JWT_SECRET_KEY, {
+        expiresIn: "1m",
+      });
 
-    let token;
-    if (findEmail) {
-      token = await jwt.sign(option, jwtSecrectKey);
-    }
+      findEmail.token = token;
+      const refreshToken = await jwt.sign(
+        payload,
+        process.env.JWT_REFRESH_SECRET_KEY
+      );
+      const output = await findEmail.save();
+      const baseUrl =
+      req.protocol +
+      "://" +
+      req.get("host") +
+      process.env.BASE_URL_PROFILE_PATH;
 
-    let data;
-    if (token) {
-      data = await userService.findUserAndUpdate(findEmail._id, token);
-    }
+    // let data;
+    // if (token) {
+    //   data = await userService.findUserAndUpdate(findEmail._id, token);
+    // }
 
     return res.status(200).json({
       success: true,
       message: "your otp is right thank",
-      data: findEmail,
+      data: output,
+      token: token,
+      refreshToken: refreshToken,
+      baseUrl: baseUrl,
     });
   } catch (error) {
     res.status(500).json({ error: error.message });

@@ -75,7 +75,26 @@ const userSchema = new mongoose.Schema(
     //     ref: 'like',
     //   },
     // ],
-
+    location: {
+      type: String,
+    },
+    ageControl: {
+      type: String,
+    },
+    distanceControl: {
+      type: Number,
+    },
+    image: {
+      type: String,
+    },
+    boostStatus: {
+      type: Boolean,
+      default: false,
+    },
+    boostExpiryTime: {
+      type: Date,
+      // default:'22/01/2010'
+    },
     address: {
       type: String,
     },
@@ -122,6 +141,7 @@ const userSchema = new mongoose.Schema(
     },
 
     user_img: {
+      // GALLERY IMAGES(MULTIPLE)
       type: [String],
     },
     role: {
@@ -129,11 +149,12 @@ const userSchema = new mongoose.Schema(
       default: "user",
       enum: ["admin", "user", "subadmin"], // 1-admin  2 -user   3-superadmin
     },
-  }
+  },
 
-  // {
-  //   timestamps: true,
-  //   versionKey: false,
+  {
+    timestamps: true,
+    versionKey: false,
+  }
   //   toJSON: {
   //     transform: function (doc, data) {
   //       if (Array.isArray(data.user_img)) {
@@ -143,7 +164,7 @@ const userSchema = new mongoose.Schema(
   //       }
   //     },
   //   },
-  // }
+
 );
 
 const User = mongoose.model("user", userSchema);

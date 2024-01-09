@@ -5,34 +5,35 @@ ADMIN::
 1. LOGIN (done)
 2. FORGOT PASSWORD (done)
 3. CHANGE PASSWORD (done)
-4. CHANGE PROFILE (not understand) ===========================================
+4. CHANGE PROFILE (done)
    field: name,image
-5. LOGOUT  (not understand)=========================================
+
+5. LOGOUT  (done)
 
 6. SEXUAL ORIENTATIONS (done)
 - LIST,ADD,UPDATE,DELETE,STATUS AND MULTIPLE DELETE
 ======= FIELDS========
 NAME
 
-7. INTEREST (done)  *************************************************************
+7. INTEREST (done) 
 	- LIST,ADD,UPDATE,DELETE,STATUS AND MULTIPLE DELETE
 ======= FIELDS========
 NAME
 	LOGO
 
-8. SIGNS (done)    ****************************************************************
+8. SIGNS (done)  
 	- LIST,ADD,UPDATE,DELETE,STATUS AND MULTIPLE DELETE
 ======= FIELDS========
 NAME
 
-8. PETS (done)     *****************************************************************
+8. PETS (done)  
 	- LIST,ADD,UPDATE,DELETE,STATUS AND MULTIPLE DELETE
 ======= FIELDS========
 NAME
 
-10. USERS
+10. USERS (done)
 - LIST,ADD,UPDATE,DELETE,STATUS AND MULTIPLE DELETE
-======= FIELDS========
+======= FIELDS======== (done)
 FIRST NAME
 LAST NAME
 	EMAIL
@@ -44,7 +45,7 @@ INTEREST(MULTIPLE)
 SCHOOL OR COLLAGE NAME
 SEXUAL ORIENTATIONS(MULTIPLE)
 GALLERY IMAGES(MULTIPLE)
-LOCATION
+LOCATION  (string)
 LATITUDE
 LONGITUDE
 	ABOUT ME
@@ -53,52 +54,60 @@ PETS
 COMPANY 
 JOB TITLE
 CITY
-AGE CONTROL
-DISTANCE CONTROL
-PROFIL IMAGE(SINGLE)
-MAX_DISTANCE
-AGE RANGE (MAX & MIN)
-BOOST STATUS
-BOOST EXPIRY TIME
+AGE CONTROL (string)
+DISTANCE CONTROL (number)
+PROFILE IMAGE(SINGLE) 
+MAX_DISTANCE 
+AGE RANGE (MAX & MIN) 
+BOOST STATUS  
+BOOST EXPIRY TIME 
 
-11. NOTIFICATION
+11. NOTIFICATION  ////////////////////////////////////////
 - LIST,ADD,UPDATE,DELETE,STATUS AND MULTIPLE DELETE
 ======= FIELDS========
 	TITLE
 DESCRIPTION
+
 12. PLAN (AS PER BITLOVE)
 
 
-APP::
-1.LOGIN
-2.SIGN UP
+APP:
+
+1.LOGIN (done)
+
+2.SIGN UP (done)
 ======= FIELDS========
 FIRST NAME
 LAST NAME
-	EMAIL
-	MO_NO
-	BOD
-GENDER
-INTEREST(MULTIPLE)
-	SHOW ME(GENDER)
-SCHOOL OR COLLAGE NAME
-SEXUAL ORIENTATIONS(MULTIPLE)
+	EMAIL '
+	MO_NO '
+	BOD '
+GENDER '
+INTEREST(MULTIPLE) '
+	SHOW ME(GENDER) '
+SCHOOL OR COLLAGE NAME '
+SEXUAL ORIENTATIONS(MULTIPLE) '
 GALLERY IMAGES(MULTIPLE)
 LOCATION
-3.HOME SCREEN
-LISTING OF USERS BAESD ON LOCATION, INTEREST
+
+
+3.HOME SCREEN 
+LISTING OF USERS BASED ON LOCATION, INTEREST
 LIKE USER 
 NOPE USER
+
 4.LIKE SCREEN
 LIKES (wHO LIKES MY PICS)
 TOP PICKS (TOP LIKED USER LIST)
-5. CHAT SCREEN
-6. PROFILE SCREEN
-UPDATE PROFILE PHOTO
+
+5. CHAT SCREEN  (which side backend or app)
+
+6. PROFILE SCREEN  (done)
+UPDATE PROFILE PHOTO(done)
 	=== EDIT INFO =====
-UPDATE IMAGES
-UPDATE ABOUT ME (done)
-UPDATE INTEREST
+UPDATE IMAGES  (done)
+UPDATE ABOUT ME (done) 
+UPDATE INTEREST (done)
 UPDATE SIGNS  (done)
 UPDATE PETS (done)
 UPDATE COMPANY (done)
@@ -106,17 +115,27 @@ UPDATE JOB TITLE (done)
 UPDATE CITY (done)
 UPDATE GENDER (done)
 UPDATE SEXUAL ORIENTATIONS (done)
-UPDATE AGE CONTROL (confusion) =================================================
-UPDATE DISTANCE CONTROL (confusion) =================================================
+UPDATE AGE CONTROL (done)    
+UPDATE DISTANCE CONTROL (done)
 
 	======== SETTINGS ======
 UPDATE MAX_DISTANCE (done)
-UPDATE AGE RANGE (MAX AND MIN)  (done)
-UPDATE LOCATION
-UPDATE PHONE NUMBER (done)
+UPDATE AGE RANGE (MAX AND MIN)  (done) (mix) 
+UPDATE LOCATION (lat long) (done)
+UPDATE PHONE NUMBER (done) 
 UPDATE SHOW ME (done)
-7.LOGOUT
 
+self
+UPDATE MAX AGE(done)
+UPDATE MIN AGE(done)
+
+7.LOGOUT (done)
+
+
+
+
+
+note:- userimage (multiple) as per as real tinder APP
 
 
 
@@ -187,6 +206,22 @@ update profile
 change password
 
 =====8 jan ====
+usercontext understand
+
+
+====9 jan ======
+update api done 
+user image done
+access token,refresh token done 
+extra field put in user model done
+change password done
+ update all api done user side
+
+ 
+ remaning
+ notification 
+ update profile in admin side in react
+ in change password set error message in react admin side
 
 
 

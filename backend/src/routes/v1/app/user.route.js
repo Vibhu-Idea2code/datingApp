@@ -32,7 +32,7 @@ router.get("/like/:userId", userController.getLikesByUserId);
 
 router.get("/role", accessToken(), userController.getAllUser); // admin side (all user list)
 router.get("/role-list", accessToken(), userController.getUserListRole); // ROLE WISE
-router.get("/list", userController.userList); // HOME PAGE (DISTANCE,USERID,FIRSTNAME)
+router.get("/list",accessToken(), userController.userList); // HOME PAGE (DISTANCE,USERID,FIRSTNAME)
 
 /* ----------------------------- get user by id ----------------------------- */
 router.get("/getid-user/:userId", userController.getUserDetails); // HOME PAGE (DISTANCE,USERID,FIRSTNAME) USING USER ID
@@ -56,8 +56,13 @@ router.put("/update-phone/:userId", UpdateController.updatePhone);
 /* ----------------------------- update maxminAge using id----------------------------- */
 router.put("/update-age/:userId", UpdateController.updateMaxMinAge);
 
+router.put("/update-min-age/:userId", UpdateController.updateMinAge);
+
+router.put("/update-max-age/:userId", UpdateController.updateMaxAge);
+
 /* ----------------------------- update maxdistance using id----------------------------- */
 router.put("/update-distance/:userId", UpdateController.updateMaxDistance);
+router.put("/update-location-lat-long/:userId", UpdateController.updateLocationByLatLong);
 
 /* ----------------------------- update show me (gender) using id----------------------------- */
 router.put("/update-showme/:userId", UpdateController.updateShowMe);
@@ -94,5 +99,9 @@ router.put("/update-sign/:userId", UpdateController.updateSign);
 router.put("/update-pets/:userId", UpdateController.updatePets);
 
 router.put("/update-sexual-orientation/:userId", UpdateController.updateSexual);
+
+// router.put(
+//   "/update-profile/:userId",  upload.single("image"),UpdateController.updateProfileImage
+// );
 
 module.exports = router;

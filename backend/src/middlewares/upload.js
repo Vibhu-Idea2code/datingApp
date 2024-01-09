@@ -6,9 +6,9 @@ const path = require("path");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     if (
-      file.fieldname == "profile" ||
+      file.fieldname == "profile" ||  
       file.fieldname == "logo" ||
-      file.fieldname == "admin_image" ||
+      file.fieldname == "admin_image" ||  file.fieldname == "image" || 
       file.fieldname == "user_img"
     ) {
       fs.mkdirSync(path.join(__dirname, "../public/profile_images"), {

@@ -16,14 +16,14 @@ router.use("/interest", interestRoute);
 router.use("/plan", planRoute);
 router.use("/admin", adminRoute);
 /* -------------------------------{APP} USER ROUTES ------------------------------ */
-// const userRoute = require("./app/user.route");
-// const listingRoute = require("./app/listing.route");
-// const likeRoute = require("./app/like.route");
+const userRoute = require("./app/user.route");
+const listingRoute = require("./app/listing.route");
+const likeRoute = require("./app/like.route");
 
 
-// router.use("/user", userRoute);
-// router.use("/list", listingRoute);
-// router.use("/like", likeRoute);
+router.use("/user", userRoute);
+router.use("/list", listingRoute);
+router.use("/like", likeRoute);
 
 
 /* ------------------------------- Demo ROUTE ------------------------------- */

@@ -15,6 +15,7 @@ module.exports.petController = require("./web/pets.controller");
 module.exports.planController = require("./web/plan.controller");
 module.exports.sexualController = require("./web/sexual.controller");
 module.exports.zodiacSignController = require("./web/sign.controller");
+module.exports.NotificationController = require("./web/notification.controller");
 
 /* ----------------------------- DEMO CONTROLLER ---------------------------- */
 // module.exports.tokenController = require("./demo/token.controller");

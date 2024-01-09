@@ -2,6 +2,7 @@ const { userService } = require("../../services");
 // const { User } = require("../models"); // use in delete many
 // const distance = require("../helpers/distanceCalculate");
 const userHelper = require("../../helpers/userHelper");
+const { User } = require("../../models");
 
 /* -------------------- UPDATE PHONE NUMBER USING USER ID ------------------- */
 const updatePhone = async (req, res) => {
@@ -53,6 +54,72 @@ const updateMaxMinAge = async (req, res) => {
     res.status(400).json({ success: false, message: error.message });
   }
 };
+
+const updateMinAge = async (req, res) => {
+  try {
+    const userId = req.params.userId; // Assuming userId is passed as a parameter in the request
+
+    // Validate if userId is provided
+    if (!userId) {
+      return res.status(400).json({ success: false, message: 'User ID is required' });
+    }
+
+    const { minAge } = req.body; // Assuming minAge is sent in the request body
+
+    // Validate if minAge is provided
+    if (!minAge) {
+      return res.status(400).json({ success: false, message: 'Minimum age is required' });
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { minAge },
+      { new: true } // Return the updated user after the update operation
+    );
+    if (!updatedUser) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+    // const result = await userService.updateUser(userId); // Save the updated user
+    res.status(200).json({ success: true, message: 'Minimum age updated successfully', data: updatedUser });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+
+const updateMaxAge = async (req, res) => {
+  try {
+    const userId = req.params.userId; // Assuming userId is passed as a parameter in the request
+
+    // Validate if userId is provided
+    if (!userId) {
+      return res.status(400).json({ success: false, message: 'User ID is required' });
+    }
+
+    const { maxAge } = req.body; // Assuming minAge is sent in the request body
+
+    // Validate if minAge is provided
+    if (!maxAge) {
+      return res.status(400).json({ success: false, message: 'Minimum age is required' });
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { maxAge },
+      { new: true } // Return the updated user after the update operation
+    );
+    if (!updatedUser) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+    // const result = await userService.updateUser(userId); // Save the updated user
+    res.status(200).json({ success: true, message: 'Maximum age updated successfully', data: updatedUser });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+
+
 /* ---------------------- UPDATE MAX-DISTANCE USING ID ---------------------- */
 const updateMaxDistance = async (req, res) => {
   try {
@@ -389,12 +456,73 @@ const updateSexual = async (req, res) => {
   }
 };
 
+const updateLocationByLatLong = async (req, res) => {
+  try {
+    
+      const userId = req.params.userId; // Assuming userId is passed as a parameter in the request
+  
+      // Validate if userId is provided
+      if (!userId) {
+        return res.status(400).json({ success: false, message: 'User ID is required' });
+      }
+  
+      const { lat, long } = req.body; // Assuming latitude and longitude are sent in the request body
+  
+      // Validate if both latitude and longitude are provided
+      if (!lat || !long) {
+        return res.status(400).json({ success: false, message: 'Both latitude and longitude are required' });
+      }
+  
+      // Update the user's location in the database
+      const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        { lat, long },
+        { new: true } // Return the updated user after the update operation
+      );
+  
+      if (!updatedUser) {
+        return res.status(404).json({ success: false, message: 'User not found' });
+      }
+  
+      res.status(200).json({ success: true, message: 'Location updated successfully', data: updatedUser });
+    } catch (error) {
+      res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+const updateProfileImage = async (req, res) => {
+  try {
+    // const reqBody=req.body;
+    const userId = req.params.userId;
+
+    const userExists = await userService.getUserById(userId);
+    if (!userExists) throw new Error("User not found!");
+    
+    if (req.file) {
+      userExists.image = req.file.filename; // Store the path to the uploaded profile image
+    }
+
+    await userService.updateUser(userId, userExists); // Save the updated user
+
+    res.status(200).json({
+      success: true,
+      message: "User Profile updated successfully!",
+      data: userExists,
+    });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
+
+
 module.exports = {
   updatePhone,
   updateMaxDistance,
   updateMaxMinAge,
   updateGender,
   updateShowMe,
+  updateLocationByLatLong,
   updateAboutMe,
   updateJobTitle,
   updateCompany,
@@ -406,4 +534,7 @@ module.exports = {
   updateSign,
   updatePets,
   updateSexual,
+  updateMaxAge,
+  updateMinAge,
+  updateProfileImage,
 };

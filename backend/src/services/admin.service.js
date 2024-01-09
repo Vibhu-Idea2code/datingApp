@@ -45,8 +45,8 @@ const deleteAdmin = async (adminId) => {
   return Admin.findByIdAndDelete(adminId);
 };
 /**email by Admin */
-const findAdminByEmail = async ({email}) => {
-  return await Admin.findOne(email);
+const findAdminByEmail = async ({otp}) => {
+  return await Admin.findOne(otp);
 };
 const findAdminByEmailForgot = async (email) => {
   return await Admin.findOne({email});
