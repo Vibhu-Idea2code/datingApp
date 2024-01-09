@@ -40,46 +40,32 @@ const changePassword = () => {
 
   const onSubmit = (data) => {
     setIsLoading(false);
-    // console.log(data);
+    
+    changePasswords(data)
+    .then((response) => {
+      console.log(response.success);
+      if (response.status == 200 && response.data.success == true) {
+        console.log(response.data.message)
+        toast.success(response.data.message);
+        setIsLoading(false);
+        console.log(response);
+      } else {
+        if ((response.status == 400) && !response.data.success) {
+          console.log(response.status)
+          toast.error(response.data.message);
+          setIsLoading(false);
+        }
+      }
+    })
+    .catch((err) => {
+      // console.log(err,"sdfdsgdsg");
+      // console.log(err.response.data.error,"DATATAATATTAT");
 
-    changePasswords(data).then((response) => {
-      toast.success("Password Changed successfully!", {
-        // key: response.data.message,
-      });
-      // console.log(response.data.message);
-      //   if (response.data.status === 200 && response.data.success=== true) {
-      //     // reset()
-      //     toast.success("");
-      //     setIsLoading(false);
-      //   } else {
-      //     setError(response.data.messages);
-      //     setIsLoading(false);
-      //   }
-      // }) .catch((err) => {
-      //   if ((err.response.data.status === 401 || 400) && !err.response.data.isSuccess) toast.error(err.response.data.message);
-      //   setIsLoading(false);
+      toast.error(err.response.data.error);
+      // if ((err.response.data.status ===  400) && !err.response.data.success) toast.error(err.response.data.message);
+      // setIsLoading(false);
     });
-    // .catch((err) => {
-    // if (err.response) {
-    //   const responseData = err.response.data;
-    //   if (responseData && (responseData.status === 401 || responseData.status === 400) && !responseData.isSuccess) {
-    //     // toast.error(responseData.message);
-
-    //     // Iterate through the error object to extract keys and values
-    //     Object.keys(responseData).forEach((key) => {
-    //       // Set the error message for each field
-    //       setError(key, {
-    //         type: 'manual',
-    //         message: responseData.message[key],
-    //       });
-    //     });
-    //   }
-    // } else {
-    //   // Handle non-response errors here
-    //   // toast.error('Something went wrong!');
-    // }
-    // })
-    //       setIsLoading(false);
+ 
   };
 
   return (
@@ -95,7 +81,7 @@ const changePassword = () => {
               <CCol md={12} className="mb-3">
                 <CustomInput
                   name="oldpass"
-                  type="text"
+                  type="password"
                   label="Old Password"
                   {...register("oldpass", {
                     required: "Old Password is required",
@@ -114,7 +100,7 @@ const changePassword = () => {
               <CCol md={12} className="mb-3">
                 <CustomInput
                   name="newpass"
-                  type="text"
+                  type="password"
                   label="New Password"
                   {...register("newpass", {
                     required: "New Password is required",
@@ -143,7 +129,7 @@ const changePassword = () => {
                 <CustomInput
                   name="confirmpass"
                   id="confirmpass"
-                  type="text"
+                  type="password"
                   label="Confirm Password"
                   {...register("confirmpass", {
                     required: "Confirm Password is required",
