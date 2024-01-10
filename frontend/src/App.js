@@ -30,7 +30,7 @@ const App = () => {
     return isAuthenticated || Boolean(localStorage.getItem("token")) ? (
       <Navigate to="/dashboard" />
     ) : (
-      <LoginLayout />  
+      <LoginLayout />
     );
   };
 
