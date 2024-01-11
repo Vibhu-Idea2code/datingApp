@@ -1,28 +1,38 @@
 import * as React from "react";
+import Box from "@mui/material/Box";
+import { DataGrid } from "@mui/x-data-grid";
 import { useState } from "react";
 import axios from "axios";
 import { useEffect } from "react";
+// import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
-import { Grid, IconButton, Switch } from "@mui/material";
+import { Grid, Switch } from "@mui/material";
+import { ToastContainer, toast } from "react-toastify";
 import * as Icons from "@mui/icons-material";
+import "react-toastify/dist/ReactToastify.css";
+import {
+  allUsers,
+  deleteMultiUser,
+  updateUserStatus,
+  deleteUser,
+} from "../../apiController";
+// import no_profile from "../../../assets/images/users/no_profile.jpg";
 import swal from "sweetalert";
-import "../../scss/_custom.scss";
-import {  updateZodiacSignStatus,deleteMultiZodiacSign  } from '../../apiController';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
-
-
-export default function Sign() {
+export default function IndexUser() {
   const navigate = useNavigate();
   // const [rows, setRows] = useState([]);
   const [datatableData, setdatatableData] = useState([]);
-
+  const [baseurl, setbaseurl] = useState([]);
   const getData = async () => {
-    await axios.get("http://localhost:9500/v1/sign/list").then((res) => {
+    await axios.get("http://localhost:9500/v1/admin/user-list").then((res) => {
       setdatatableData(res.data.data);
+      setbaseurl(res.data.baseUrl);
     });
   };
 
@@ -31,16 +41,47 @@ export default function Sign() {
   }, []);
 
   const columns = [
-    /* ---------------------------- COLUMNS FOR NAME ---------------------------- */
     {
-      name: "name",
+      name: "first_name",
       label: "Name",
       options: {
         filter: true,
         sort: true,
       },
     },
-    /* --------------------------- COLUMNS FOR STATUS --------------------------- */
+    {
+      name: "email",
+      label: "Email",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "phoneNumber",
+      label: "Mobile No",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "age",
+      label: "Age",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    // {
+    //   name: "gender",
+    //   label: "Gender",
+    //   options: {
+    //     filter: true,
+    //     sort: true,
+    //   },
+    // },
+
     {
       name: "status",
       label: "Status",
@@ -56,16 +97,16 @@ export default function Sign() {
               checked={status}
               onChange={() => {
                 const data = { id: _id, status: !status };
-                updateZodiacSignStatus(data, _id)
+                updateUserStatus(data, _id)
                   .then(() => {
                     toast.success("status changed successfully!", {
-                      key: data._id,
+                      key: data.data,
+                      _id,
                     });
                     getData();
-
                   })
                   .catch(() => {
-                    toast.error("something went wrong!", {
+                    console.error("something went wrong!", {
                       key: data._id,
                     });
                   });
@@ -75,7 +116,6 @@ export default function Sign() {
         },
       },
     },
-    /* --------------------------- COLUMNS FOR ACTIONS -------------------------- */
     {
       name: "_id",
       label: "Action",
@@ -85,53 +125,30 @@ export default function Sign() {
           // console.log(editdata);
           return (
             <div>
-              {/* <Icons.BarChart
-                className="insightsIcon"
-                onClick={() => {
-                  const userdata = datatableData.find(
-                    (data) => data._id === value
-                  );
-
-                  const currentDate = new Date();
-                  const options = {
-                    year: "numeric",
-                    month: "2-digit",
-                    day: "2-digit",
-                  };
-                  const formattedDate = new Intl.DateTimeFormat(
-                    "en-US",
-                    options
-                  ).format(currentDate);
-                  const insightdata = { userid: value, date: formattedDate };
-
-                  navigate("/popup", {
-                    state: {
-                      userdata: userdata,
-                      insightdata: insightdata,
-                    },
-                  });
-                }}
-              /> */}
               <Icons.Edit
                 className="editIcon"
                 style={{
-                  width: "1em",
-                  height: "1em",
+                  marginRight: "10px",
+                  marginBottom: "5px",
+                  color: "green",
                 }}
                 onClick={() => {
                   const editdata = datatableData.find(
                     (data) => data._id === value
                   );
-                  navigate("/AddSign", {
-                    state: { editdata: editdata },
+                  navigate("/indexForm", {
+                    state: { editdata: editdata, baseurl: baseurl },
                   });
+                  // console.log(editdata,"editdata-user list : line number :- 159");
+                  // console.log(imageurl);
                 }}
               />
               <Icons.Delete
                 className="deleteIcon"
                 style={{
-                  width: "1em",
-                  height: "1em",
+                  marginRight: "10px",
+                  marginBottom: "5px",
+                  color: "6E260E",
                 }}
                 onClick={async () => {
                   const confirm = await swal({
@@ -145,7 +162,7 @@ export default function Sign() {
                     // console.log(confirm);
                     await axios
                       .delete(
-                        `http://localhost:9500/v1/sign/delete/${value}`,
+                        `http://localhost:9500/v1/admin/delete-user/${value}`,
                         value
                       )
                       .then((res) => {
@@ -166,7 +183,7 @@ export default function Sign() {
   ];
 
   const deleteMultiple = async (index) => {
-    const id = index.data.map(
+    const ids = index.data.map(
       (index1) =>
         datatableData.find(
           (data, index2) => index2 === index1.dataIndex && data._id
@@ -180,17 +197,17 @@ export default function Sign() {
       dangerMode: true,
     });
     if (confirm) {
-      deleteMultiZodiacSign(id)
+      deleteMultiUser(ids)
         .then(() => {
           getData();
-   
+
           toast.success("Deleted successfully!", {
-            key: id,
+            key: ids,
           });
         })
         .catch(() => {
           toast.error("Something went wrong!", {
-            key: id,
+            key: ids,
           });
         });
     }
@@ -205,6 +222,12 @@ export default function Sign() {
       </div>
     );
   };
+
+  // const options = {
+  //   customToolbarSelect: (selectedRows, data) => (
+  //     <SelectedRowsToolbar selectedRows={selectedRows} data={data} columns={columns} datatableTitle="test" />
+  //   )
+  // };
 
   const options = {
     customToolbarSelect: (selectedRows, data) => (
@@ -221,39 +244,40 @@ export default function Sign() {
       <div className="container-fluid">
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb m-0 mb-3 ms-2">
-          <ToastContainer />
-
+            <ToastContainer />
             <li className="breadcrumb-item">
               <a className="" href="/">
                 Home
               </a>
             </li>
             <li className="breadcrumb-item active" aria-current="page">
-              Zodiac Sign
+              Users
             </li>
           </ol>
         </nav>
       </div>
 
       <Button
-        style={{
-          position: "absolute",
-          top: 90,
-          right: 30,
-          borderRadius: 1,
-          fontWeight: "bold",
-          marginBottom: "10px",
-          backgroundColor: "#ff4d67",
-        }}
+        className="generalBtn"
+        // style={{
+        //   position: "absolute",
+        //   top: 90,
+        //   right: 50,
+        //   borderRadius: 1,
+        //   fontWeight: "bold",
+        //   marginBottom: "10px",
+        //   backgroundColor: "#ff4d67",
+        // }}
         variant="contained"
+        // color="primary"
         onClick={() => {
-          navigate("/AddSign");
+          navigate("/indexForm");
         }}>
-        Add Zodiac Sign
+        Add User
       </Button>
 
       <MUIDataTable
-        title={"Zodiac Sign"}
+        title={"Users"}
         data={datatableData}
         columns={columns}
         options={options}

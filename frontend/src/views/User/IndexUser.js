@@ -257,17 +257,18 @@ export default function IndexUser() {
       </div>
 
       <Button
-        style={{
-          position: "absolute",
-          top: 129,
-          right: 50,
-          borderRadius: 1,
-          fontWeight: "bold",
-          marginBottom: "10px",
-          backgroundColor: "#ff4d67",
-        }}
+      className="generalBtn"
+        // style={{
+        //   position: "absolute",
+        //   top: 90,
+        //   right: 50,
+        //   borderRadius: 1,
+        //   fontWeight: "bold",
+        //   marginBottom: "10px",
+        //   backgroundColor: "#ff4d67",
+        // }}
         variant="contained"
-        color="primary"
+        // color="primary"
         onClick={() => {
           navigate("/indexForm");
         }}>

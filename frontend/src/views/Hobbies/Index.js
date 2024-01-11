@@ -274,7 +274,7 @@ export default function Interest() {
               </a>
             </li>
             <li className="breadcrumb-item active" aria-current="page">
-              Users
+              Interest
             </li>
           </ol>
         </nav>
@@ -283,8 +283,8 @@ export default function Interest() {
       <Button
         style={{
           position: "absolute",
-          top: 129,
-          right: 50,
+          top: 90,
+          right: 30,
           borderRadius: 1,
           fontWeight: "bold",
           marginBottom: "10px",
@@ -293,7 +293,7 @@ export default function Interest() {
           fontStyle: "Source Sans Pro",
         }}
         variant="contained"
-        color="primary"
+        // color="primary"
         onClick={() => {
           navigate("/InterestForm");
         }}>

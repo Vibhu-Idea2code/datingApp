@@ -51,10 +51,10 @@ const AppHeader = () => {
           <AppHeaderDropdown />
         </CHeaderNav>
       </CContainer>
-      <CHeaderDivider />
+       <AppBreadcrumb />
+      {/* <CHeaderDivider />
       <CContainer fluid>
-        <AppBreadcrumb />
-      </CContainer>
+      </CContainer> */}
     </CHeader>
   );
 };

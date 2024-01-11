@@ -115,8 +115,8 @@ export default function Pets() {
               <Icons.Edit
                 className="editIcon"
                 style={{
-                  width: "1em",
-                  height: "1em",
+                  width: "1rem",
+                  height: "1rem",
                 }}
                 onClick={() => {
                   const editdata = datatableData.find(
@@ -230,7 +230,7 @@ export default function Pets() {
               </a>
             </li>
             <li className="breadcrumb-item active" aria-current="page">
-              Users
+              Pet
             </li>
           </ol>
         </nav>
@@ -240,8 +240,8 @@ export default function Pets() {
         className="btn btn-primary"
         style={{
           position: "absolute",
-          top: 129,
-          right: 50,
+          top: 90,
+          right: 30,
           borderRadius: 1,
           fontWeight: "bold",
           marginBottom: "10px",
