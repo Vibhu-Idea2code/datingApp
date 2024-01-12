@@ -17,8 +17,8 @@ if (fromuserid === touserid) {
   return res.status(400).json({ message: 'Cannot like your own ID' });
 }
 const newLike = new Like({
-  fromuserid,
-  touserid
+  touserid,
+  fromuserid
   });
   const result = await newLike.save();
       res.status(200).json({ message: 'Like successful.',  data: result});
@@ -31,22 +31,83 @@ const newLike = new Like({
 /* ------------------------------- LIST BY ID ------------------------------- */
 const getLikesByUserId = async (req, res) => {
   try {
-    const { fromuserid } = req.params;
+    const { touserid } = req.params;
 
     // Count the number of likes where the likedUser is the specified userId
-    const likeCount = await Like.countDocuments({ fromuserid });
+    const likeCount = await Like.countDocuments({ touserid });
+    const user = await Like.find().populate("fromuserid");
 
-    return res.status(200).json({ data:likeCount });
+        if (!user) {
+          return res.status(404).json({ message: 'User not found' });
+        }
+    
+
+    return res.status(200).json({ data:likeCount,user });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Internal Server Error' });
   }
 };
 
+/* -------------------------- LIKED ALL COMMON LIST ------------------------- */
+const getAllUsersWithLikes = async (req, res) => {
+  try {
+    // Fetch all users
+    const users = await User.find();
+
+    // Create an array to store user details with like counts
+    const usersWithLikes = [];
+
+    // Iterate through each user and get the like count
+    for (const user of users) {
+      const { _id, name, age } = user;
+
+      // Count the number of likes where the likedUser is the current user's ID
+      const likeCount = await Like.countDocuments({ touserid: _id });
+
+      // Add user details with like count to the array
+      usersWithLikes.push({ _id, name, age, likeCount });
+    }
+
+    return res.status(200).json({ data: usersWithLikes });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+// const getLikesByUserId = async (req, res) => {
+//   try {
+//     const { touserid } = req.params;
+
+//     // Count the number of likes where the likedUser is the specified userId
+//     const likeCount = await Like.countDocuments({ touserid });
+
+//     // Assuming you have a User model or collection
+//     const user = await User.findOne({ _id: touserid });
+
+//     if (!user) {
+//       return res.status(404).json({ message: 'User not found' });
+//     }
+
+//     const userData = {
+//       first_name: user.first_name, // Replace with the actual field name for the user's name
+//       age: user.age,   // Replace with the actual field name for the user's age
+//     };
+
+//     return res.status(200).json({ data: { likeCount, user: userData } });
+//   } catch (error) {
+//     console.error(error);
+//     return res.status(500).json({ message: 'Internal Server Error' });
+//   }
+// };
+
+
+
 
 
   
   
 module.exports = {
-  createLike,getLikesByUserId
+  createLike,getLikesByUserId,getAllUsersWithLikes
 };

@@ -7,10 +7,12 @@ const cors = require("cors");
 const routes = require("./src/routes/v1");
 const path = require("path");
 // require("./src/middlewares/upload");
+// const { Server } = require("socket.io");
+const socketIO = require('socket.io');
 const app = express();
-const { Server } = require("socket.io");
+
 const server = http.createServer(app);
-const io = new Server(server);
+const io = socketIO(server);
 
 app.use(cors());
 
@@ -22,9 +24,30 @@ app.use(cors());
 app.options("*", cors());
 
 app.use(express.static(path.resolve(__dirname, `./src/public`)));
-io.on("connection", (socket) => {
-  socket.on("user-message", (message) => {
-    io.emit("message", message);
+// io.on("connection", (socket) => {
+//   socket.on("notification", (message) => {
+//     console.log('Received notification:', message);
+//     io.emit("notification", message);
+//   });
+//     // Handle disconnection
+//     socket.on('disconnect', () => {
+//       console.log('User disconnected');
+//     });
+//   });
+
+io.on('connection', (socket) => {
+  console.log('A user connected');
+
+  // Handle disconnection
+  socket.on('disconnect', () => {
+    console.log('User disconnected');
+  });
+
+  // Handle notification event
+  socket.on('sendNotification', (data) => {
+    console.log('Notification received:', data);
+    // Broadcast the notification to all connected clients
+    io.emit('receiveNotification', data);
   });
 });
 

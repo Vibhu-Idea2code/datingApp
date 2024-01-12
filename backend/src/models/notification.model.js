@@ -6,7 +6,15 @@ title:{
 description:{
     type: String,
 },
+read: { type: Boolean, default: false },
+
+user: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
+    },
+  ],
 })
 
 const Notification = mongoose.model("notification", notificationSchema);
-module.exports = Notification;
+module.exports = Notification;     
