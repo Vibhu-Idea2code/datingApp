@@ -59,4 +59,21 @@
 .theme-btn{
     background-color: #ff4d67;
 }
+.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.MuiSelect-select{
+    padding: 6px;
+}
 
+/* styles.css */
+
+/* Default styles for larger screens */
+.responsive-table {
+    width: 100%;
+  }
+  
+  /* Media query for smaller screens */
+  @media (max-width: 600px) {
+    .responsive-table {
+      overflow-x: auto;
+    }
+  }
+  

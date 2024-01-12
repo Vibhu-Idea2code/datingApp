@@ -259,7 +259,8 @@ const UserForm = () => {
                     invalid={!!errors.phoneNumber}
                   />
                   <CFormFeedback invalid>
-                    Please enter a phoneNumber                  </CFormFeedback>
+                    Please enter a phoneNumber{" "}
+                  </CFormFeedback>
                 </CInputGroup>
               </CCol>
               {/*====================== min age===================== */}
@@ -300,7 +301,7 @@ const UserForm = () => {
                   </CFormFeedback>
                 </CInputGroup>
               </CCol>
-          
+
               {/*====================== latitude ===================== */}
               <CCol md={4}>
                 <CFormLabel htmlFor="lat">latitude</CFormLabel>
@@ -363,43 +364,49 @@ const UserForm = () => {
 
               {/*====================== sexual orientation ===================== */}
 
-              <CCol md={4}>
-                <CFormLabel htmlFor="sexual">Sexual Oreintation</CFormLabel>
-                <Controller
-                  name="sexual"
-                  style={{ marginTop: "16px", marginBottom: "16px" }}
-                  control={control}
-                  defaultValue={isupdate === "" ? [] : getValues("sexual")}
-                  error={!!errors.sexual}
-                  rules={{ required: "Sexual Orientation is required" }}
-                  render={({ field }) => (
-                    <>
-                    
-                      <Select
-                        {...field}
-                        labelId="sexual"
-                        id="sexual"
-                        style={{
-                          width: "400px",
-                          height: "40px",
-                          marginBottom: "16px",
-                        }}
-                        multiple>
+              {/* const options = [{
+ { value: "male", label: "Male" },
+ { value: "female", label: "Female" },
+}]; */}
 
-                        {sexualOrientationOptions.map((cat) => (
-                          <MenuItem key={cat._id} value={cat._id}>
-                            {cat.name}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </>
+              {/* return <CMultiSelect options={options} selectionType="tags" /> */}
+
+              <CCol sm={12} md={4}>
+                <CFormLabel htmlFor="sexual">Sexual Oreintation</CFormLabel>
+                <div>
+                  <Controller
+                    name="sexual"
+                    control={control}
+                    defaultValue={isupdate === "" ? [] : getValues("sexual")}
+                    error={!!errors.sexual}
+                    rules={{ required: "Sexual Orientation is required" }}
+                    render={({ field }) => (
+                      <>
+                        <Select
+                          {...field}
+                          labelId="sexual"
+                          id="sexual"
+                          style={{
+                            maxWidth: "100%", // Set maximum width to 100%
+                            minWidth: "100%", // Set maximum width to 100%
+                          }}
+                          autoWidth={false}
+                          multiple>
+                          {sexualOrientationOptions.map((cat) => (
+                            <MenuItem key={cat._id} value={cat._id}>
+                              {cat.name}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </>
+                    )}
+                  />
+                  {errors.sexual && (
+                    <span style={{ color: "#e55353" }}>
+                      {errors.sexual.message}
+                    </span>
                   )}
-                />
-                {errors.sexual && (
-                  <span style={{ color: "#e55353" }}>
-                    {errors.sexual.message}
-                  </span>
-                )}
+                </div>
               </CCol>
 
               {/*====================== pets ===================== */}
@@ -420,10 +427,10 @@ const UserForm = () => {
                           labelId="pets"
                           id="pets"
                           style={{
-                            width: "400px",
-                            height: "40px",
-                            marginBottom: "16px",
+                            maxWidth: "100%", // Set maximum width to 100%
+                            minWidth: "100%", // Set maximum width to 100%
                           }}
+                          autoWidth={false}
                           multiple>
                           {pet.map((cat) => (
                             <MenuItem key={cat._id} value={cat._id}>
@@ -444,77 +451,81 @@ const UserForm = () => {
               {/*====================== interest===================== */}
               <CCol md={4}>
                 <CFormLabel htmlFor="interest">Interest</CFormLabel>
-                <Controller
-                  name="interest"
-                  // style={{ marginTop: "16px", marginBottom: "16px" }}
-                  control={control}
-                  defaultValue={isupdate === "" ? [] : getValues("interest")}
-                  error={!!errors.interest}
-                  rules={{ required: "Interest is required" }}
-                  render={({ field }) => (
-                    <>
-                      <Select
-                        {...field}
-                        labelId="interest"
-                        id="interest"
-                        style={{
-                          width: "400px",
-                          height: "40px",
-                          marginBottom: "16px",
-                        }}
-                        multiple>
-                        {interest.map((cat) => (
-                          <MenuItem key={cat._id} value={cat._id}>
-                            {cat.name}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </>
+                <div>
+                  <Controller
+                    name="interest"
+                    // style={{ marginTop: "16px", marginBottom: "16px" }}
+                    control={control}
+                    defaultValue={isupdate === "" ? [] : getValues("interest")}
+                    error={!!errors.interest}
+                    rules={{ required: "Interest is required" }}
+                    render={({ field }) => (
+                      <>
+                        <Select
+                          {...field}
+                          labelId="interest"
+                          id="interest"
+                          style={{
+                            maxWidth: "100%", // Set maximum width to 100%
+                            minWidth: "100%", // Set maximum width to 100%
+                          }}
+                          autoWidth={false}
+                          multiple>
+                          {interest.map((cat) => (
+                            <MenuItem key={cat._id} value={cat._id}>
+                              {cat.name}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </>
+                    )}
+                  />
+                  {errors.interest && (
+                    <span style={{ color: "#e55353" }}>
+                      {errors.interest.message}
+                    </span>
                   )}
-                />
-                {errors.interest && (
-                  <span style={{ color: "#e55353" }}>
-                    {errors.interest.message}
-                  </span>
-                )}
+                </div>
               </CCol>
               {/*====================== zodiac sign ===================== */}
               <CCol md={4}>
                 <CFormLabel htmlFor="sign">Zodiac Sign</CFormLabel>
-                <Controller
-                  name="sign"
-                  // style={{ marginTop: "16px", marginBottom: "16px" }}
-                  control={control}
-                  defaultValue={isupdate === "" ? [] : getValues("sign")}
-                  onChange={(e) => setValue("sign", e.target.value)}
-                  error={!!errors.sign}
-                  rules={{ required: "zodiac Sign is required" }}
-                  render={({ field }) => (
-                    <>
-                      <Select
-                        {...field}
-                        labelId="sign"
-                        id="sign"
-                        style={{
-                          width: "400px",
-                          height: "40px",
-                          marginBottom: "16px",
-                        }}
-                        multiple>
-                        {sign.map((cat) => (
-                          <MenuItem key={cat._id} value={cat._id}>
-                            {cat.name}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </>
+                <div>
+                  <Controller
+                    name="sign"
+                    // style={{ marginTop: "16px", marginBottom: "16px" }}
+                    control={control}
+                    defaultValue={isupdate === "" ? [] : getValues("sign")}
+                    onChange={(e) => setValue("sign", e.target.value)}
+                    error={!!errors.sign}
+                    rules={{ required: "zodiac Sign is required" }}
+                    render={({ field }) => (
+                      <>
+                        <Select
+                          {...field}
+                          labelId="sign"
+                          id="sign"
+                          style={{
+                            maxWidth: "100%", // Set maximum width to 100%
+                            minWidth: "100%", // Set maximum width to 100%
+                          }}
+                          autoWidth={false}
+                          multiple>
+                          {sign.map((cat) => (
+                            <MenuItem key={cat._id} value={cat._id}>
+                              {cat.name}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </>
+                    )}
+                  />
+                  {errors.sign && (
+                    <span style={{ color: "#e55353" }}>
+                      {errors.sign.message}
+                    </span>
                   )}
-                />
-                {errors.sign && (
-                  <span style={{ color: "#e55353" }}>
-                    {errors.sign.message}
-                  </span>
-                )}
+                </div>
               </CCol>
               {/*====================== school===================== */}
               <CCol md={4}>

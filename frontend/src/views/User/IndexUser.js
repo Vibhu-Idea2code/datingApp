@@ -14,10 +14,15 @@ import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import { Grid, Switch } from "@mui/material";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from "react-toastify";
 import * as Icons from "@mui/icons-material";
-import 'react-toastify/dist/ReactToastify.css';
-import { allUsers, deleteMultiUser, updateUserStatus, deleteUser } from '../../apiController';
+import "react-toastify/dist/ReactToastify.css";
+import {
+  allUsers,
+  deleteMultiUser,
+  updateUserStatus,
+  deleteUser,
+} from "../../apiController";
 // import no_profile from "../../../assets/images/users/no_profile.jpg";
 import swal from "sweetalert";
 
@@ -33,11 +38,30 @@ export default function IndexUser() {
     });
   };
 
-
-
   useEffect(() => {
     getData();
   }, []);
+
+  // const columns = ["Name", "Company", "City", "State"];
+
+  // const data = [
+  //   ["Joe James", "Test Corp", "Yonkers", "NY"],
+  //   ["John Walsh", "Test Corp", "Hartford", "CT"],
+  //   ["Bob Herm", "Test Corp", "Tampa", "FL"],
+  //   ["James Houston", "Test Corp", "Dallas", "TX"],
+  //  ];
+
+  //  const options = {
+  //   filterType: 'checkbox',
+  // };
+  // return(
+  // <MUIDataTable
+  //   title={"Employee List"}
+  //   data={data}
+  //   columns={columns}
+  //   options={options}
+  // />
+  // )
 
   const columns = [
     {
@@ -81,7 +105,6 @@ export default function IndexUser() {
     //   },
     // },
 
-    
     {
       name: "status",
       label: "Status",
@@ -97,12 +120,13 @@ export default function IndexUser() {
               checked={status}
               onChange={() => {
                 const data = { id: _id, status: !status };
-                updateUserStatus(data, _id)                
+                updateUserStatus(data, _id)
                   .then(() => {
                     toast.success("status changed successfully!", {
-                      key: data.data,_id
+                      key: data.data,
+                      _id,
                     });
-                   getData();
+                    getData();
                   })
                   .catch(() => {
                     console.error("something went wrong!", {
@@ -125,12 +149,12 @@ export default function IndexUser() {
           return (
             <div>
               <Icons.Edit
-                className="editIcon"
-                style={{
-                  marginRight: "10px",
-                  marginBottom: "5px",
-                  color: "green",
-                }}
+                // className="editIcon"
+                // style={{
+                //   marginRight: "10px",
+                //   marginBottom: "5px",
+                //   color: "green",
+                // }}
                 onClick={() => {
                   const editdata = datatableData.find(
                     (data) => data._id === value
@@ -143,12 +167,12 @@ export default function IndexUser() {
                 }}
               />
               <Icons.Delete
-                className="deleteIcon"
-                style={{
-                  marginRight: "10px",
-                  marginBottom: "5px",
-                  color: "6E260E",
-                }}
+                // className="deleteIcon"
+                // style={{
+                //   marginRight: "10px",
+                //   marginBottom: "5px",
+                //   color: "6E260E",
+                // }}
                 onClick={async () => {
                   const confirm = await swal({
                     title: "Are you sure?",
@@ -157,7 +181,7 @@ export default function IndexUser() {
                     buttons: ["No, cancel it!", "Yes, I am sure!"],
                     dangerMode: true,
                   });
-                         if (confirm) {
+                  if (confirm) {
                     // console.log(confirm);
                     await axios
                       .delete(
@@ -243,7 +267,7 @@ export default function IndexUser() {
       <div className="container-fluid">
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb m-0 mb-3 ms-2">
-        <ToastContainer />
+            <ToastContainer />
             <li className="breadcrumb-item">
               <a className="" href="/">
                 Home
@@ -257,7 +281,7 @@ export default function IndexUser() {
       </div>
 
       <Button
-      className="generalBtn"
+        className="generalBtn"
         // style={{
         //   position: "absolute",
         //   top: 90,
