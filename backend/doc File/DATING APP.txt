@@ -233,9 +233,42 @@ done  update profile in admin side in react
 remaning
 notification  crud
 
+======11 jan ===============
+admin side design in admin pannel
+
+remaning 
+notification
+
+======12 jan====================
+admin side design in admin pannel
+
+remaning 
+notification
+
+only see
+socket.io
+
+====13 jan===============
+remaning
+liked (whom,who)
+liked,superlike,NOPE
+PLAN
+notification
+CHAT (sms notification)
+when someone like your post show a pop up with the name of person who liked you and when click
+
+boost:
+filter (all filtering field)wise list then match and then sms chat
+superlike
+
+boost concept when user boost then monthly any 2 time free boost(half min)boost likes  
+
+
+login time (no find database then send mail) logo set
 
 
 
+notification match
 
 
 

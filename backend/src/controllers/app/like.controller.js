@@ -35,14 +35,17 @@ const getLikesByUserId = async (req, res) => {
 
     // Count the number of likes where the likedUser is the specified userId
     const likeCount = await Like.countDocuments({ touserid });
-    const user = await Like.find().populate("fromuserid");
+    const user = await Like.find({ touserid }).populate({
+      path: "fromuserid",
+      select: ["_id","first_name","age"],
+    });
 
         if (!user) {
           return res.status(404).json({ message: 'User not found' });
         }
-    
+        const fromUserIds = user.map((like) => like.fromuserid);
 
-    return res.status(200).json({ data:likeCount,user });
+    return res.status(200).json({ data:likeCount,fromUserIds});
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Internal Server Error' });
@@ -60,14 +63,17 @@ const getAllUsersWithLikes = async (req, res) => {
 
     // Iterate through each user and get the like count
     for (const user of users) {
-      const { _id, name, age } = user;
+      const { _id, name, age,distance } = user;
 
       // Count the number of likes where the likedUser is the current user's ID
       const likeCount = await Like.countDocuments({ touserid: _id });
 
       // Add user details with like count to the array
-      usersWithLikes.push({ _id, name, age, likeCount });
+      usersWithLikes.push({ _id, name, age, likeCount,distance });
     }
+
+    // Sort the array by name, handling cases where name is undefined
+    usersWithLikes.sort((a, b) => (a.distance && b.distance ? a.distance.localeCompare(b.distance) : 0));
 
     return res.status(200).json({ data: usersWithLikes });
   } catch (error) {

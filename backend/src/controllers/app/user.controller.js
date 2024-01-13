@@ -29,8 +29,9 @@ const getUserListRole = async (req, res) => {
 /* ------------------------ GET USER LIST BY DISTANCE ADMIN SIDE----------------------- */
 const userList = async (req, res) => {
   try {
-    const getUser = await userService.getUserList();
-    console.log(getUser[0]);
+    
+    const getUser = await userService.getUserListDis();
+    console.log(getUser[0],getUser[0].lat,getUser[0].lat);
     var userDetailsData = [];
     for (let i = 0; i < getUser.length; i++) {
       // console.log(getUser[i].first_name, getUser[i].last_name);
@@ -39,15 +40,14 @@ const userList = async (req, res) => {
       var userDetails = {
         first_name: getUser[i].first_name,
         age: getUser[i].age,
-        distances: distance(
-          getUser[i]._id,
-          37.0902,
-          95.7129,
-          getUser[i].lat,
-          getUser[i].long
-          // getUser[i].lat1,
-          // getUser[i].long2,
-        ),
+        lat:get
+        // distances: distance(
+        //   getUser[i]._id,
+        //   37.0902,
+        //   95.7129,
+        //   getUser[i].lat,
+        //   getUser[i].long
+        // ),
       };
       userDetailsData.push(userDetails);
     }
@@ -100,6 +100,55 @@ const getUserDetails = async (req, res) => {
     res.status(400).json({ success: false, message: error.message });
   }
 };
+
+const getUserLatLong = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+
+    // Retrieve details for the specified user
+    const user = await userService.getUserById(userId);
+    
+    if (!user) {
+      throw new Error("User not found!");
+    }
+
+    // Retrieve all users from the database
+    const allUsers = await userService.getUserListDis();
+
+    // Compare the location of the specified user with all other users
+    const usersNearby = allUsers.filter(otherUser => {
+      // Check the condition for proximity (you can define your own logic here)
+      return (
+        Math.abs(user.lat - otherUser.lat) < 0.1 &&
+        Math.abs(user.long - otherUser.long) < 0.1
+      );
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "User details and nearby users retrieved successfully!",
+      data: {
+        userDetails: {
+          first_name: user.first_name,
+          age: user.age,
+          lat: user.lat,
+          long: user.long
+        },
+        usersNearby: usersNearby.map(user => ({
+          userId: user._id,
+          firstName: user.first_name,
+          lat: user.lat,
+          long: user.long
+        }))
+      },
+    });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
+
+
 
 const getUserDetailsAll = async (req, res) => {
   try {
@@ -407,6 +456,7 @@ module.exports = {
   deleteManyUsers,
   userList,
   getUserDetailsAll,
+  getUserLatLong,
   // purchasePlan
   // updateSetting
 };

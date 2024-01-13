@@ -97,13 +97,14 @@ const loginEmail = async (req, res) => {
   try {
     // validation;
     const reqBody = req.body;
-    const { email, lat1, long1 } = req.body;
+    const { email } = req.body;
     console.log(req.body);
     const findUser = await userService.findUserByLogonEmail(reqBody.email);
     console.log(findUser, "++++");
+    console.log(__dirname,"dgfsdsgd")
     if (!findUser) {
       ejs.renderFile(
-        path.join(__dirname, "../views/login-template-nouser.ejs"),
+        path.join(__dirname, "../../views/login-template-nouser.ejs"),
         {
           email: reqBody.email,
           // otp: ("0".repeat(4) + Math.floor(Math.random() * 10 ** 4)).slice(-4),
@@ -112,7 +113,7 @@ const loginEmail = async (req, res) => {
         },
         async (err, data) => {
           if (err) {
-            throw new Error("Something went wrong, please try again.");
+            // throw new Error("Something went wrong, please try again.");
           } else {
             emailService.sendMail(reqBody.email, data, "Verify Email");
           }
@@ -120,7 +121,7 @@ const loginEmail = async (req, res) => {
       );
     } else {
       ejs.renderFile(
-        path.join(__dirname, "../views/login-template.ejs"),
+        path.join(__dirname, "../../views/login-template.ejs"),
         {
           email: reqBody.email,
           // otp: ("0".repeat(4) + Math.floor(Math.random() * 10 ** 4)).slice(-4),
@@ -133,7 +134,7 @@ const loginEmail = async (req, res) => {
             if (userCreated) {
               // await userService.deleteUserByEmail(reqBody.email);
             }
-            throw new Error("Something went wrong, please try again.");
+            // throw new Error("Something went wrong, please try again.");
           } else {
             emailService.sendMail(reqBody.email, data, "Verify Email");
           }
@@ -143,7 +144,7 @@ const loginEmail = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "send mail successfully",
-      // data: { find },
+      data: { findUser },
     });
   } catch (error) {
     res.status(404).json({ error: error.message });

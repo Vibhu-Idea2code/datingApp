@@ -32,11 +32,14 @@ router.get("/like/:userId", userController.getLikesByUserId);
 
 router.get("/role", accessToken(), userController.getAllUser); // admin side (all user list)
 router.get("/role-list", accessToken(), userController.getUserListRole); // ROLE WISE
-router.get("/list",accessToken(), userController.userList); // HOME PAGE (DISTANCE,USERID,FIRSTNAME)
+router.get("/list",
+// accessToken(),
+ userController.userList); // HOME PAGE (DISTANCE,USERID,FIRSTNAME)
 
 /* ----------------------------- get user by id ----------------------------- */
 router.get("/getid-user/:userId", userController.getUserDetails); // HOME PAGE (DISTANCE,USERID,FIRSTNAME) USING USER ID
 router.get("/getid-user-all/:userId", userController.getUserDetailsAll); //HOME PAGE (FULLY DETAILS) USING USER ID
+router.get("/getid-user-all-latlong/:userId", userController.getUserLatLong); //HOME PAGE (FULLY DETAILS) USING USER ID
 
 //  /* ---------------------------- delete user list ---------------------------- */
 router.delete("/delete-user/:userId", userController.deleteUser);

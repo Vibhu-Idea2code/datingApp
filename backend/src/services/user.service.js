@@ -32,6 +32,9 @@ const getUserList = async (filter, options) => {
   });;
 };
 
+const getUserListDis = async (filter, options) => {
+  return User.find()
+};
 
 /**
  * Get user by email
@@ -62,6 +65,8 @@ const findOtpByOtp = async (otp) => {
 const getUserById = async (userId) => {
   return User.findById(userId);
 };
+
+// Assuming userService has a method to fetch all users
 
 // const user = await User.findById(userId).
 const getUserByIdRef = async (userId) => {
@@ -170,5 +175,7 @@ module.exports = {
   getUserByIdRef,
   updateDetailsSign,
   updateDetailsPets,
-  updateDetailsSexualOrientation
+  updateDetailsSexualOrientation,
+  getUserListDis,
+  // getAllUsers
 };
