@@ -95,7 +95,7 @@ function loginUser(dispatch, data, navigate, setIsLoading, setError) {
             ? response.data.baseUrl + response.data.data.admin_image
             : null,
           };
-          // console.log(userObject.username,"dfhfghfhg")
+          console.log(userObject,"dfhfghfhg")
           localStorage.setItem("user", JSON.stringify(userObject));
           setIsLoading(false);
           dispatch(
