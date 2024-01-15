@@ -12,7 +12,7 @@ const UserForm = React.lazy(() => import("./views/User/UserForm"));
 /* --------------------------- SEXUAL ORIENTATION --------------------------- */
 const List = React.lazy(() => import("./views/Sexual Orientation/Index"));
 const SeexualOrientationForm = React.lazy(() =>
-  import("./views/Sexual Orientation/SeexualOrientationForm")
+import("./views/Sexual Orientation/SeexualOrientationForm")
 );
 
 /* --------------------------------- HOBBIES -------------------------------- */
@@ -26,6 +26,9 @@ const AddPet = React.lazy(() => import("./views/Pet/AddPet"));
 /* ------------------------------- ZODIAC SIGN ------------------------------ */
 const Sign = React.lazy(() => import("./views/Zodiac Sign/IndexSign"));
 const AddSign = React.lazy(() => import("./views/Zodiac Sign/AddSign"));
+
+const Notification=React.lazy(()=>import('./views/notification/Index'));
+const AddNotification=React.lazy(()=>import('./views/notification/NotificationForm'))
 
 // const View = React.lazy(() => import("./views/theme/Users/west/ViewDemo"));
 // const Test = React.lazy(() => import("./views/theme/colors/west/test"));
@@ -114,6 +117,10 @@ const routes = [
 
   { path: '/profile', name: 'Profile', element: Profile },
   { path: '/changePassword', name: 'Change Password', element: changePassword },
+
+  { path: '/notifications', name: '', element: Notification },
+  { path: '/AddNotification', name: '', element: AddNotification },
+
   // { path: '/user/views', name: 'User', element: Users },
   // { path: '/user/common', name: 'common', element: common },
   // { path: "/view", name: "", element: View },

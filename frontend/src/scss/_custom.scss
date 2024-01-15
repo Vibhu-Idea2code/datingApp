@@ -77,3 +77,20 @@
     }
   }
   
+
+  @media (max-width: 900px) {
+    .MuiTableHead-root {
+      display: none !important;
+    }
+    .MuiTableCell-sizeMedium {
+      display: inline-block !important;
+    }
+    .MuiTableCell-paddingCheckbox {
+      display: table-cell !important;
+    }
+  }
+  @media (max-width: 426px) {
+    .tss-1vd39vz-MUIDataTableBodyCell-stackedCommon {
+      font-size: 10px !important;
+    }
+  }

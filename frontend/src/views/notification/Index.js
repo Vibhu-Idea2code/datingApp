@@ -9,19 +9,19 @@ import { Grid, IconButton, Switch } from "@mui/material";
 import * as Icons from "@mui/icons-material";
 import swal from "sweetalert";
 import "../../scss/_custom.scss";
-import {  updateZodiacSignStatus,deleteMultiZodiacSign  } from '../../apiController';
+import {  updateNotificationStatus,deleteMultiNotification,notification  } from '../../apiController';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
 
-export default function Sign() {
+export default function Notification() {
   const navigate = useNavigate();
   // const [rows, setRows] = useState([]);
   const [datatableData, setdatatableData] = useState([]);
 
-  const getData = async () => {
-    await axios.get("http://localhost:9500/v1/sign/list").then((res) => {
+  const getData = async (data) => {
+    await notification(data).then((res) => {
       setdatatableData(res.data.data);
     });
   };
@@ -33,13 +33,21 @@ export default function Sign() {
   const columns = [
     /* ---------------------------- COLUMNS FOR NAME ---------------------------- */
     {
-      name: "name",
-      label: "Name",
+      name: "title",
+      label: "Title",
       options: {
         filter: true,
         sort: true,
       },
     },
+    {
+        name: "description",
+        label: "Description",
+        options: {
+          filter: true,
+          sort: true,
+        },
+      },
     /* --------------------------- COLUMNS FOR STATUS --------------------------- */
     {
       name: "status",
@@ -56,7 +64,7 @@ export default function Sign() {
               checked={status}
               onChange={() => {
                 const data = { id: _id, status: !status };
-                updateZodiacSignStatus(data, _id)
+                updateNotificationStatus(data, _id)
                   .then(() => {
                     toast.success("status changed successfully!", {
                       key: data._id,
@@ -123,7 +131,7 @@ export default function Sign() {
                   const editdata = datatableData.find(
                     (data) => data._id === value
                   );
-                  navigate("/AddSign", {
+                  navigate("/AddNotification", {
                     state: { editdata: editdata },
                   });
                 }}
@@ -147,7 +155,7 @@ export default function Sign() {
                     // console.log(confirm);
                     await axios
                       .delete(
-                        `http://localhost:9500/v1/sign/delete/${value}`,
+                        `http://localhost:9500/v1/notification/delete/${value}`,
                         value
                       )
                       .then((res) => {
@@ -167,6 +175,7 @@ export default function Sign() {
     },
   ];
 
+
   const deleteMultiple = async (index) => {
     const id = index.data.map(
       (index1) =>
@@ -182,7 +191,7 @@ export default function Sign() {
       dangerMode: true,
     });
     if (confirm) {
-      deleteMultiZodiacSign(id)
+        deleteMultiNotification(id)
         .then(() => {
           getData();
    
@@ -197,6 +206,10 @@ export default function Sign() {
         });
     }
   };
+
+
+  
+
 
   const SelectedRowsToolbar = ({ selectedRows, data }) => {
     return (
@@ -232,7 +245,7 @@ export default function Sign() {
               </a>
             </li>
             <li className="breadcrumb-item active" aria-current="page">
-              Zodiac Sign
+              Notification
             </li>
           </ol>
         </nav>
@@ -250,13 +263,30 @@ export default function Sign() {
         }}
         variant="contained"
         onClick={() => {
-          navigate("/AddSign");
+          navigate("/AddNotification");
         }}>
-        Add Zodiac Sign
+        Add Notification
+      </Button>
+
+      <Button
+        style={{
+          position: "absolute",
+          top: 90,
+          right: 212,
+          borderRadius: 1,
+          fontWeight: "bold",
+          marginBottom: "10px",
+          backgroundColor: "#4caf50", // You can change the color as needed
+        }}
+        variant="contained"
+        onClick={() => {
+          // setShowConfirm(true);
+        }}>
+        Send Notification
       </Button>
 
       <MUIDataTable
-        title={"Zodiac Sign"}
+        title={"Notification"}
         data={datatableData}
         columns={columns}
         options={options}

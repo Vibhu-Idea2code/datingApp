@@ -86,6 +86,9 @@ export const checkmailid = (data) =>
 export const resetPassword = (data) =>
   axios.put(`${mainUrl}/admin/resetPassword`, data);
 
+
+
+
 // Get admin details
 export const adminDetails = () =>
   axios.get(`${mainUrl}/admin/list`, {
@@ -241,3 +244,44 @@ export const deleteMultiZodiacSign = (data) => {
     data: { id: data },
   });
 };
+
+/* ------------------------------ NOTIFICATION ------------------------------ */
+
+export const notification = (data) =>
+axios.get(`${mainUrl}/v1/notification/list`, data);
+
+export const updateNotificationStatus = (data, id) =>
+  axios.put(
+    `${mainUrl}/v1/notification/update/${id}`,
+    data
+    //  {
+    //   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    // }
+  );
+
+  // export const updateNotificationStatus = (data, id) =>
+  // axios.put(
+  //   `${mainUrl}/v1/notification/update/${id}`,
+  //   data
+  //   //  {
+  //   //   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  //   // }
+  // );
+
+  // delete multiple Users
+export const deleteMultiNotification = (data) => {
+  return axios.delete(`${mainUrl}/v1/notification/delete-many`,
+   {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    data: { id: data },
+  }
+  );
+};
+
+//Delete Single User
+export const deleteNotification = (id) =>
+  axios.delete(`${mainUrl}/v1/notification/delete/${id}`, 
+  // {
+  //   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  // }
+  );

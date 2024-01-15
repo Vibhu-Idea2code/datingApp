@@ -5,8 +5,8 @@ import { cilList, cilPeople } from "@coreui/icons";
 import {
   cilAnimal,
   cilSpeedometer,
-  cilMusicNote
-,
+  cilMusicNote,
+  cilBell,
   cilStarHalf,
   cilWc,
 } from "@coreui/icons";
@@ -64,6 +64,13 @@ const _nav = [
     name: "Zodiac Sign",
     to: "/zodiac_sign_list",
     icon: <CIcon icon={cilStarHalf} customClassName="nav-icon" />,
+  },
+
+  {
+    component: CNavItem,
+    name: "Notifications",
+    to: "/notifications",
+    icon: <CIcon icon={cilBell} customClassName="nav-icon" />,
   },
   // {
   //   component: CNavTitle,
