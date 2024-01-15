@@ -10,6 +10,7 @@ module.exports.adminService= require("./admin.service");
 module.exports.planService= require("./plan.service");
 module.exports.likeService= require("./like.service");
 module.exports.tokenService= require("./token.service");
+module.exports.notificationService= require("./notification.service");
 
 
 

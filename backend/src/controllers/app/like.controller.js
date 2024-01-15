@@ -44,7 +44,7 @@ const getLikesByUserId = async (req, res) => {
           return res.status(404).json({ message: 'User not found' });
         }
         const fromUserIds = user.map((like) => like.fromuserid);
-
+        console.log(fromUserIds)
     return res.status(200).json({ data:likeCount,fromUserIds});
   } catch (error) {
     console.error(error);

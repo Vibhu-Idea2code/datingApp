@@ -255,20 +255,48 @@ liked,superlike,NOPE
 PLAN
 notification
 CHAT (sms notification)
-when someone like your post show a pop up with the name of person who liked you and when click
 
-boost:
+
+Boost:
 filter (all filtering field)wise list then match and then sms chat
 superlike
 
-boost concept when user boost then monthly any 2 time free boost(half min)boost likes  
+
+Boost concept when user boost then monthly any 2 time free boost(half min)boost likes  
 
 
-login time (no find database then send mail) logo set
+Login time (no find database then send mail) logo set
+
+
+Notification Match
+
+
+nofification type:-
+like,
+super like
+NOPE
+boost
+sms 
 
 
 
-notification match
+
+
+======15 jan ===============
+done notification (both side) without firebase 
+
+
+
+remaning
+http://localhost:9500/v1/like/like/658932a2ba08c5205c03f57d
+this api fromuserid is null
+
+
+supper like
+boost
+preminum
+gold
+nope = all type add plan and create table
 
 
 

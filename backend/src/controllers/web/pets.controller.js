@@ -112,7 +112,7 @@ const multipleDelete = async (req, res) => {
   }
 };
 
-const updatePetStatus= async (req, res) => {
+const updatePetStatus= async (req, res,next) => {
  
   try {
     const id = new mongoose.Types.ObjectId(req.params.id);

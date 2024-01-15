@@ -7,6 +7,8 @@ const signRoute = require("./web/sign.route");
 const interestRoute = require("./web/interest.route");
 const planRoute = require("./web/plan.route");
 const adminRoute = require("./web/admin.route");
+const notificationRoute = require("./web/notification.route");
+
 const router = express.Router();
 
 router.use("/pet", petRoute);
@@ -15,6 +17,8 @@ router.use("/sign", signRoute);
 router.use("/interest", interestRoute);
 router.use("/plan", planRoute);
 router.use("/admin", adminRoute);
+router.use("/notification", notificationRoute);
+
 /* -------------------------------{APP} USER ROUTES ------------------------------ */
 const userRoute = require("./app/user.route");
 const listingRoute = require("./app/listing.route");

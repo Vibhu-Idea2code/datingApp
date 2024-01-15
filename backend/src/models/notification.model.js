@@ -6,14 +6,14 @@ title:{
 description:{
     type: String,
 },
-read: { type: Boolean, default: false },
+status: { type: Boolean, default: false },
 
-user: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "user",
-    },
-  ],
+// user: [
+//     {
+//       type: mongoose.Schema.Types.ObjectId,
+//       ref: "user",
+//     },
+//   ],
 })
 
 const Notification = mongoose.model("notification", notificationSchema);
