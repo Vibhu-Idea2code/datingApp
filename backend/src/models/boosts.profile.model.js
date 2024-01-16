@@ -1,14 +1,14 @@
 const mongoose = require("mongoose");
 
-const likeSchema = new mongoose.Schema(
+const BoostSchema = new mongoose.Schema(
   {
     LikeType:{
       type:String,
     },
-    fromuserid: 
+    plan: 
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'user',
+        ref: 'plan',
       },
       touserid: 
       {
@@ -28,5 +28,5 @@ const likeSchema = new mongoose.Schema(
 );
 
 // Declaring model for plan
-const Like = mongoose.model("like", likeSchema);
-module.exports = Like;
+const Boost = mongoose.model("boost", BoostSchema);
+module.exports = Boost;

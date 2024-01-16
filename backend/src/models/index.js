@@ -11,3 +11,6 @@ module.exports.Like = require("./like.model");
 module.exports.Token = require("./token.model");
 module.exports.Subscription = require("./subscription.model");
 module.exports.Message = require("./message.model");
+module.exports.SuperLike = require("./superLike.model");
+
+

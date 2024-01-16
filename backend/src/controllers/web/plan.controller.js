@@ -1,4 +1,6 @@
+const { Plan } = require("../../models");
 const { planService } = require("../../services");
+const mongoose = require("mongoose");
 
 const createPlan = async (req, res) => {
   try {
@@ -11,7 +13,7 @@ const createPlan = async (req, res) => {
     res.status(200).json({
       message: "Successfully created a new Plan",
       success: true,
-      data: { plan },
+      data:  plan ,
     });
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
@@ -88,4 +90,51 @@ const updatePlan = async (req, res) => {
     });
   }
 };
-module.exports = { createPlan, getPlanList, getPlanId, deletePlan,updatePlan };
+
+
+/* -------------------------- MULTIPLE DELETE BY ID ------------------------- */
+const multipleDelete = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const result = await Plan.deleteMany({ _id: { $in: id } });
+    if (result.deletedCount === 0) {
+      throw new Error("No plan deleted");
+    }
+    return res.status(200).send({
+      success: true,
+      message: "Deleted Successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).send({
+      success: false,
+      message: `${err}`,
+    });
+  }
+};
+/* ----------------------- UPDATE NOTIFICATION STATUS ----------------------- */
+const updatePlansStatus= async (req, res,next) => {
+
+  try {
+    const id = new mongoose.Types.ObjectId(req.params.id);
+    const plan = await Plan.findById(id);
+
+    if (!plan) {
+      throw new Error("plan not found!");
+    }
+
+    plan.status = !plan.status;
+    const result = await plan.save();
+
+    res.status(200).json({
+      success: true,
+      message: "plan Status Update successfully!!",
+      data: result,
+    
+    });
+  } catch (err) {
+    next(err);
+  }
+
+};
+module.exports = { createPlan, getPlanList, getPlanId, deletePlan,updatePlan ,multipleDelete,updatePlansStatus};

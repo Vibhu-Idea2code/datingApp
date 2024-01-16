@@ -43,8 +43,33 @@ const getLikesByUserId = async (req, res) => {
         if (!user) {
           return res.status(404).json({ message: 'User not found' });
         }
+        console.log(user)
         const fromUserIds = user.map((like) => like.fromuserid);
-        console.log(fromUserIds)
+    return res.status(200).json({ data:likeCount,fromUserIds});
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+
+/* ------------------------------- LIST BY ID ------------------------------- */
+const getSuperLikesByUserId = async (req, res) => {
+  try {
+    const { touserid } = req.params;
+
+    // Count the number of likes where the likedUser is the specified userId
+    const likeCount = await Like.countDocuments({ touserid });
+    const user = await Like.find({ touserid }).populate({
+      path: "fromuserid",
+      select: ["_id","first_name","age"],
+    });
+
+        if (!user) {
+          return res.status(404).json({ message: 'User not found' });
+        }
+        console.log(user)
+        const fromUserIds = user.map((like) => like.fromuserid);
     return res.status(200).json({ data:likeCount,fromUserIds});
   } catch (error) {
     console.error(error);

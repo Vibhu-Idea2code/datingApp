@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const likeSchema = new mongoose.Schema(
+const SuperLikeSchema = new mongoose.Schema(
   {
     LikeType:{
       type:String,
@@ -28,5 +28,5 @@ const likeSchema = new mongoose.Schema(
 );
 
 // Declaring model for plan
-const Like = mongoose.model("like", likeSchema);
-module.exports = Like;
+const SuperLike = mongoose.model("superlike", SuperLikeSchema);
+module.exports = SuperLike;

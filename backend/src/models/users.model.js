@@ -27,6 +27,9 @@ const userSchema = new mongoose.Schema(
     gender: {
       type: String,
     },
+    boost:[
+      {type : mongoose.Types.ObjectId , ref : 'boost'}
+    ],
     sexual: [
       {
         type: mongoose.Schema.Types.ObjectId,

@@ -16,4 +16,9 @@ planController.deletePlan);
 
 router.put('/update/:planId',
 planController.updatePlan);
+
+router.delete("/delete-many", planController.multipleDelete);
+
+router.put("/updatePlanStatus/:id",planController.updatePlansStatus);
+
 module.exports=router;

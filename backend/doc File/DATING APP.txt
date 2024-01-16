@@ -279,24 +279,83 @@ boost
 sms 
 
 
-
-
-
 ======15 jan ===============
-done notification (both side) without firebase 
-
-
+done 
+notification (both side) without firebase 
 
 remaning
 http://localhost:9500/v1/like/like/658932a2ba08c5205c03f57d
 this api fromuserid is null
-
 
 supper like
 boost
 preminum
 gold
 nope = all type add plan and create table
+
+
+=============16 jan ============== (note)
+
+subscription table:
+user name
+plan
+price
+duration
+start date 
+end date
+cancelled on 
+status
+
+then start clone and check daily day of time then status active or deactive
+
+design active and deactive status  
+
+reports for block users
+
+if user side list,deactive user then disable user in frontend pannel(try it)
+
+
+
+
+top pick and like chage to superLike and likes(as per as sir)
+
+boots means profile boosts(as per as sir)
+
+superLike means (same as like but limit is we can use only 3 time superLike)(as per as sir)
+
+
+remaning---------------
+boost table(same as super like)
+superlike table 
+nope table 
+subsription table (above define)
+block user table(if user status is false then show this table)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

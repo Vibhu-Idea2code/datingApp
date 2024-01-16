@@ -31,22 +31,23 @@ const userList = async (req, res) => {
   try {
     const getUser = await userService.getUserListDis();
     console.log(getUser[0], getUser[0].lat, getUser[0].lat);
+    getUser.sort((a, b) => b.boost - a.boost);
     var userDetailsData = [];
     for (let i = 0; i < getUser.length; i++) {
-      // console.log(getUser[i].first_name, getUser[i].last_name);
+      console.log(getUser[i].first_name, getUser[i].last_name);
       const clientId = getUser[i]._id;
       console.log(clientId);
       var userDetails = {
         first_name: getUser[i].first_name,
         age: getUser[i].age,
-        lat: get,
-        // distances: distance(
-        //   getUser[i]._id,
-        //   37.0902,
-        //   95.7129,
-        //   getUser[i].lat,
-        //   getUser[i].long
-        // ),
+  
+        distances: distance(
+          getUser[i]._id,
+          37.0902,
+          95.7129,
+          getUser[i].lat,
+          getUser[i].long
+        ),
       };
       userDetailsData.push(userDetails);
     }
