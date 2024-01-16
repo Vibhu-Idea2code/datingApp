@@ -50,7 +50,7 @@ const InterestForm = () => {
       setisupdate(editdata._id);
       setValue("name", editdata.name);
       setImgPreview(baseurl + editdata.logo);
-      setNewUrl(baseurl + editdata.logo);
+      setValue(baseurl + editdata.logo);
     }
     setdefaultLoading(false);
   }, []);
@@ -170,8 +170,11 @@ const InterestForm = () => {
                             alt="img"
                             width="100"
                             height="100"
+                            margin-top ="15px"
                           />
                         )}
+
+                        
                         {/* {imgPreviews.map((preview, index) => (
                           <img
                             key={index}

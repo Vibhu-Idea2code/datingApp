@@ -285,3 +285,46 @@ export const deleteNotification = (id) =>
   //   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
   // }
   );
+
+
+  /* ------------------------------- CREATE PLAN ------------------------------ */
+
+  export const plans = (data) =>
+axios.get(`${mainUrl}/v1/plan/list`, data);
+
+export const updatePlansStatus = (data, id) =>
+  axios.put(
+    `${mainUrl}/v1/plan/updatePlanStatus/${id}`,
+    data,
+     {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    }
+  );
+
+//   // export const updateNotificationStatus = (data, id) =>
+//   // axios.put(
+//   //   `${mainUrl}/v1/notification/update/${id}`,
+//   //   data
+//   //   //  {
+//   //   //   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+//   //   // }
+//   // );
+
+//   // delete multiple Users
+export const deleteMultiPlan = (data) => {
+  return axios.delete(`${mainUrl}/v1/plan/delete-many`,
+   {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    data: { id: data },
+  }
+  );
+};
+
+// //Delete Single User
+// export const deleteNotification = (id) =>
+//   axios.delete(`${mainUrl}/v1/notification/delete/${id}`, 
+//   // {
+//   //   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+//   // }
+//   );
+

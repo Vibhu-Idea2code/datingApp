@@ -30,6 +30,9 @@ const AddSign = React.lazy(() => import("./views/Zodiac Sign/AddSign"));
 const Notification=React.lazy(()=>import('./views/notification/Index'));
 const AddNotification=React.lazy(()=>import('./views/notification/NotificationForm'))
 
+const Plans=React.lazy(()=>import('./views/Plans/Index'));
+const AddPlans=React.lazy(()=>import('./views/Plans/planForm'))
+
 // const View = React.lazy(() => import("./views/theme/Users/west/ViewDemo"));
 // const Test = React.lazy(() => import("./views/theme/colors/west/test"));
 
@@ -120,6 +123,9 @@ const routes = [
 
   { path: '/notifications', name: '', element: Notification },
   { path: '/AddNotification', name: '', element: AddNotification },
+
+  { path: '/plans', name: '', element: Plans },
+  { path: '/AddPlans', name: '', element: AddPlans },
 
   // { path: '/user/views', name: 'User', element: Users },
   // { path: '/user/common', name: 'common', element: common },
