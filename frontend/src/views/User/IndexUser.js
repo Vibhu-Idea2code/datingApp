@@ -282,15 +282,15 @@ export default function IndexUser() {
 
       <Button
         className="generalBtn"
-        // style={{
-        //   position: "absolute",
-        //   top: 90,
-        //   right: 50,
-        //   borderRadius: 1,
-        //   fontWeight: "bold",
-        //   marginBottom: "10px",
-        //   backgroundColor: "#ff4d67",
-        // }}
+        style={{
+          position: "absolute",
+          top: 90,
+          right: 50,
+          borderRadius: 1,
+          fontWeight: "bold",
+          marginBottom: "10px",
+          backgroundColor: "#ff4d67",
+        }}
         variant="contained"
         // color="primary"
         onClick={() => {

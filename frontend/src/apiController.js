@@ -328,3 +328,12 @@ export const deleteMultiPlan = (data) => {
 //   // }
 //   );
 
+export const subscription = (data) =>
+axios.get(`${mainUrl}/v1/sub/list`, data);
+
+
+// const transformedData = res.data.subCategory.map((subCategory) => ({
+//   ...subCategory,
+//   languages: subCategory.languages?.map((language) => language.languagesName),
+//   categoryName: subCategory.categoryName?.map((category) => category.categoryName),
+// }))

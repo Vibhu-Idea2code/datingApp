@@ -80,6 +80,13 @@ const _nav = [
     to: "/plans",
     icon: <CIcon icon={cilCalendar} customClassName="nav-icon" />,
   },
+
+  {
+    component: CNavItem,
+    name: "Subscription",
+    to: "/subscription",
+    icon: <CIcon icon={cilCalendar} customClassName="nav-icon" />,
+  },
   // {
   //   component: CNavTitle,
   //   name: "",

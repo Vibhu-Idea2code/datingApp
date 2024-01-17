@@ -33,6 +33,9 @@ const AddNotification=React.lazy(()=>import('./views/notification/NotificationFo
 const Plans=React.lazy(()=>import('./views/Plans/Index'));
 const AddPlans=React.lazy(()=>import('./views/Plans/planForm'))
 
+const Subscription =React.lazy(()=>import('./views/subscriptions/index'));
+// const AddSubscription=React.lazy(()=>import('./views/subscriptions/subscriptionFrom'))
+
 // const View = React.lazy(() => import("./views/theme/Users/west/ViewDemo"));
 // const Test = React.lazy(() => import("./views/theme/colors/west/test"));
 
@@ -126,6 +129,9 @@ const routes = [
 
   { path: '/plans', name: '', element: Plans },
   { path: '/AddPlans', name: '', element: AddPlans },
+
+  { path: '/subscription', name: '', element: Subscription },
+  // { path: '/AddSubscription', name: '', element: AddSubscription },
 
   // { path: '/user/views', name: 'User', element: Users },
   // { path: '/user/common', name: 'common', element: common },
