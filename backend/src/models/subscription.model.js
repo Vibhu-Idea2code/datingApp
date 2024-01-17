@@ -1,14 +1,16 @@
 const mongoose = require("mongoose");
+// const moment = require('moment');
+const moment = require('moment-timezone');
 
 const subSchema = new mongoose.Schema(
   {
-    plan: [
+    planid: [
         {
           type: mongoose.Schema.Types.ObjectId,
           ref: 'plan',
         },
       ],
-      user: [
+      userid: [
         {
           type: mongoose.Schema.Types.ObjectId,
           ref: 'user',
@@ -16,18 +18,30 @@ const subSchema = new mongoose.Schema(
       ],
       status:{
         type : String ,
-        default:'0',
+        default:true,
         // enum: ['pending','approved'],
-      },
+      }, 
     is_active: {
       type: Boolean,
-      default: false,
+      default: true,
     },
+    StartDate: {
+      type: Date,
+      default: new Date(), // This will use the current date and time in the system's time zone
+    },
+    
+    endDate:{
+      type: Date
+    },
+   cancelled:{
+    type:String,
+    default:"N/A"
+   },
   },
-  {
-    timestamps: true,
-    versionKey: false,
-  }
+  // {
+  //   timestamps: true,
+  //   versionKey: false,
+  // }
 );
 
 // subscribe table

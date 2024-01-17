@@ -186,8 +186,17 @@ const deleteInterest = async (req, res) => {
       throw new Error("interset not found!");
     }
 
-    await interestService.deleteHobbies(hobbiesId);
 
+    const deleteInterest=await interestService.deleteHobbies(hobbiesId);
+    if (deleteInterest) {
+      const filePath = `./public/profile_images/${interset.logo}`;
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+    } else {
+      throw new Error("Something went wrong, please try again or later!");
+    }
+    
     res.status(200).json({
       success: true,
       message: "interset delete successfully!",

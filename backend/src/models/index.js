@@ -1,6 +1,6 @@
 module.exports.Admin = require("./admin.model");
 module.exports.User = require("./users.model");
-module.exports.Location = require("./location.model");
+module.exports.Location = require("./demo/location.model");
 module.exports.Notification = require("./notification.model");
 module.exports.Hobbies = require("./interest.model");
 module.exports.Sexual = require("./sexual.oriantetaion.model");
@@ -11,6 +11,6 @@ module.exports.Like = require("./like.model");
 module.exports.Token = require("./token.model");
 module.exports.Subscription = require("./subscription.model");
 module.exports.Message = require("./message.model");
-module.exports.SuperLike = require("./superLike.model");
+module.exports.SuperLike = require("./demo/superLike.model");
 
 

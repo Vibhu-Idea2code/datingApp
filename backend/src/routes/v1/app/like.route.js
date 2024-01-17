@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.post('/like-create', likeController.createLike);
 
-router.get('/like/:touserid', likeController.getLikesByUserId);
+router.get('/like/:action', likeController.getLikesByUserId);
 
 router.get('/like-all-list',likeController.getAllUsersWithLikes);
 module.exports = router;

@@ -15,6 +15,18 @@ const likeSchema = new mongoose.Schema(
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user',
       },
+      planStatus:{
+        type : Boolean ,
+        default:false
+      },
+      plan: 
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'plan',
+      },
+      action:{
+        type : String , 
+      },
       read:
       {
         type : Boolean ,

@@ -334,8 +334,15 @@ block user table(if user status is false then show this table)
 
 
 
+=========17 jan ==============
+done like,superlike,nope,boost SCREEN
+done subscription  (both side)
 
 
+remaning
+boost profile set at home page
+design admin panel in subscription(active stus valu baki)
+reports (as per as bitlove)
 
 
 

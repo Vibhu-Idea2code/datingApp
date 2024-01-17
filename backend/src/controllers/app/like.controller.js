@@ -1,56 +1,151 @@
 const Like = require('../../models/like.model');
+const Plan = require('../../models/plan.model');
 const User = require('../../models/users.model');
 
 /* ---------------------------- CREATE LIKE TABLE --------------------------- */
+// const createLike = async (req, res) => {
+//   try {
+//     // const {  } = req.params;
+//     const { fromuserid, touserid} = req.body;
+
+//     const existingLike = await Like.findOne({ fromuserid, touserid });
+
+// if (existingLike) {
+//   // A like already exists, handle the situation (e.g., send an error response)
+//   return res.status(400).json({ message: 'User already liked this profile' });
+// }
+// if (fromuserid === touserid) {
+//   return res.status(400).json({ message: 'Cannot like your own ID' });
+// }
+// const newLike = new Like({
+//   touserid,
+//   fromuserid
+//   });
+//   const result = await newLike.save();
+//       res.status(200).json({ message: 'Like successful.',  data: result});
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: 'Internal Server Error' });
+//   }
+// };
+
 const createLike = async (req, res) => {
   try {
-    // const {  } = req.params;
-    const { fromuserid, touserid} = req.body;
+    const { fromuserid, touserid, action, planid } = req.body;
 
     const existingLike = await Like.findOne({ fromuserid, touserid });
 
-if (existingLike) {
-  // A like already exists, handle the situation (e.g., send an error response)
-  return res.status(400).json({ message: 'User already liked this profile' });
-}
-if (fromuserid === touserid) {
-  return res.status(400).json({ message: 'Cannot like your own ID' });
-}
-const newLike = new Like({
-  touserid,
-  fromuserid
-  });
-  const result = await newLike.save();
-      res.status(200).json({ message: 'Like successful.',  data: result});
+    if (existingLike) {
+      return res.status(400).json({ message: 'User already liked this profile' });
+    }
+
+    if (fromuserid === touserid) {
+      return res.status(400).json({ message: 'Cannot like your own ID' });
+    }
+
+    let newAction;
+// 1-like, 2-superlike, 3-boost, 4-nope
+    switch (action) {
+      case "1":
+        newAction = '1';
+        break;
+      case '2':
+        newAction = '2';
+        break;
+      case '3':
+        newAction = '3';
+        break;
+      case '4':
+        newAction = '4';
+        break;
+      default:
+        return res.status(400).json({ message: 'Invalid action' });
+    }
+
+    // Check if the user has purchased a plan
+    let planStatus = false;
+
+    if (planid) {
+      // If planId is provided, set planStatus to true
+      planStatus = true;
+    }
+    if (!planStatus) {
+      return res.status(400).json({ planStatus: false });
+    }
+    const newLike = new Like({
+      touserid,
+      fromuserid,
+      action: newAction,
+      planStatus: planStatus
+    });
+
+    const result = await newLike.save();
+    
+    res.status(200).json({ message: `${newAction} successful.`, data: result });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 };
 
+
+
+
 /* ------------------------------- LIST BY ID ------------------------------- */
+// const getLikesByUserId = async (req, res) => {
+//   try {
+//     const { touserid } = req.params;
+
+//     // Count the number of likes where the likedUser is the specified userId
+//     const likeCount = await Like.countDocuments({ touserid });
+//     const user = await Like.find({ touserid }).populate({
+//       path: "fromuserid",
+//       select: ["_id","first_name","age"],
+//     });
+
+//         if (!user) {
+//           return res.status(404).json({ message: 'User not found' });
+//         }
+//         console.log(user)
+//         const fromUserIds = user.map((like) => like.fromuserid);
+//     return res.status(200).json({ data:likeCount,fromUserIds});
+//   } catch (error) {
+//     console.error(error);
+//     return res.status(500).json({ message: 'Internal Server Error' });
+//   }
+// };
+
 const getLikesByUserId = async (req, res) => {
   try {
-    const { touserid } = req.params;
+    const { action } = req.params;
 
-    // Count the number of likes where the likedUser is the specified userId
-    const likeCount = await Like.countDocuments({ touserid });
-    const user = await Like.find({ touserid }).populate({
-      path: "fromuserid",
-      select: ["_id","first_name","age"],
-    });
+    console.log('Received action:', action,"like controller line no:-122"); // Add this line for debugging
 
-        if (!user) {
-          return res.status(404).json({ message: 'User not found' });
-        }
-        console.log(user)
-        const fromUserIds = user.map((like) => like.fromuserid);
-    return res.status(200).json({ data:likeCount,fromUserIds});
+    // Validate the action parameter
+    const validActions = ["1", '2', '3', '4'];
+    if (!validActions.includes(action)) {
+      console.log('Invalid action parameter:', action,"like controller line no:-127"); // Add this line for debugging
+      return res.status(400).json({ message: 'Invalid action parameter' });
+    }
+
+    // Assuming 'fromUserId' is the field in your Like model representing the user
+    const likes = await Like.find({ action }).select('fromuserid');
+
+    // Extracting unique fromUserIds
+    const uniqueFromUserIds = [...new Set(likes.map(like => like.fromuserid))];
+
+    // Fetching user details based on unique fromUserIds
+    const users = await User.find({ _id: { $in: uniqueFromUserIds } }).select('first_name age');
+
+    res.status(200).json({ data: users });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: 'Internal Server Error' });
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 };
+
+
+
 
 
 /* ------------------------------- LIST BY ID ------------------------------- */
