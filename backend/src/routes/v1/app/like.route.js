@@ -11,4 +11,6 @@ router.post('/like-create', likeController.createLike);
 router.get('/like/:action', likeController.getLikesByUserId);
 
 router.get('/like-all-list',likeController.getAllUsersWithLikes);
+router.get('/like-home',likeController.getLikesByUser);
+
 module.exports = router;

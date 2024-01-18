@@ -4,6 +4,7 @@ module.exports.authController = require("./app/auth.controller");
 module.exports.listingController = require("./app/listing.controller");
 module.exports.UpdateController = require("./app/update.controller");
 module.exports.likeController = require("./app/like.controller");
+module.exports.reportController = require("./app/report.controller");
 
 
 /* -----------------------------(ADMIN) WEB CONTROLLER ----------------------------- */

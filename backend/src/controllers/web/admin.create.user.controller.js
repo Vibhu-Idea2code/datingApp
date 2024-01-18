@@ -247,6 +247,29 @@ const getAllUser = async (req, res) => {
     }
   };
 
+    /* ------------------------------ UPDATE STATUS ----------------------------- */
+    const updateUserStatusMange = async (req, res, next) => {
+      try {
+        const allUsers = await User.find()
+        const status = true;
+        if (status) {
+          res.status(200).json({
+            success: true,
+            message: "true means block user list",
+            data: allUsers, // Include the list of all users in the response
+          });
+        } else {
+          res.status(200).json({
+            success: true,
+            message: "false means unblock user list",
+            data: null,
+          });
+        }
+      } catch (err) {
+        next(err);
+      }
+    };
+
   // Delete a multiple banner  or sub banner  with there Id's
 const deleteMultiUser = async (req, res, next) => {
   try {
@@ -276,6 +299,7 @@ const deleteMultiUser = async (req, res, next) => {
     deleteManyUsersByAdmin,
     getAllUser,
     updateUserStatus,
-    deleteMultiUser
+    deleteMultiUser,
+    updateUserStatusMange
   };
   

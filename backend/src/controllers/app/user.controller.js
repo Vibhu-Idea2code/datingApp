@@ -1,5 +1,5 @@
 const { userService } = require("../../services");
-const { User } = require("../../models"); // use in delete many
+const { User, Like } = require("../../models"); // use in delete many
 const distance = require("../../helpers/distanceCalculate");
 const userHelper = require("../../helpers/userHelper");
 
@@ -27,42 +27,47 @@ const getUserListRole = async (req, res) => {
 };
 
 /* ------------------------ GET USER LIST BY DISTANCE ADMIN SIDE----------------------- */
-const userList = async (req, res) => {
-  try {
-    const getUser = await userService.getUserListDis();
-    console.log(getUser[0], getUser[0].lat, getUser[0].lat);
-    getUser.sort((a, b) => b.boost - a.boost);
-    var userDetailsData = [];
-    for (let i = 0; i < getUser.length; i++) {
-      console.log(getUser[i].first_name, getUser[i].last_name);
-      const clientId = getUser[i]._id;
-      console.log(clientId);
-      var userDetails = {
-        first_name: getUser[i].first_name,
-        age: getUser[i].age,
-  
-        distances: distance(
-          getUser[i]._id,
-          37.0902,
-          95.7129,
-          getUser[i].lat,
-          getUser[i].long
-        ),
-      };
-      userDetailsData.push(userDetails);
+  const userList = async (req, res) => {
+    try {
+      const getUser = await userService.getUserListDis();
+      
+      
+      console.log(getUser[0], getUser[0].lat, getUser[0].lat);
+      getUser.sort((a, b) => b.boost - a.boost);
+      var userDetailsData = [];
+      for (let i = 0; i < getUser.length; i++) {
+        console.log(getUser[i].first_name, getUser[i].last_name);
+        const clientId = getUser[i]._id;
+        console.log(clientId);
+        var userDetails = {
+          first_name: getUser[i].first_name,
+          age: getUser[i].age,
+          like:getUser[i].like,
+          
+    
+          distances: distance(
+            getUser[i]._id,
+            37.0902,
+            95.7129,
+            getUser[i].lat,
+            getUser[i].long
+          ),
+        };
+        userDetailsData.push(userDetails);
+      }
+      res.status(200).json({
+        success: true,
+        message: "user List!",
+        data: userDetailsData,
+        like
+      });
+    } catch (error) {
+      res.status(400).json({
+        success: false,
+        message: error.message,
+      });
     }
-    res.status(200).json({
-      success: true,
-      message: "user List!",
-      data: userDetailsData,
-    });
-  } catch (error) {
-    res.status(400).json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
+  };
 
 /* --------------- GET USER LIST  (SIMPLE) WITH AUTH ADMIN SIDE--------------- */
 const getAllUser = async (req, res) => {

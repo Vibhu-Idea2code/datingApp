@@ -54,6 +54,9 @@ const createLike = async (req, res) => {
         break;
       case '3':
         newAction = '3';
+        if (fromuserid) {
+          return res.status(400).json({ message: 'Boost action does not require fromuserid' });
+        }
         break;
       case '4':
         newAction = '4';
@@ -146,6 +149,44 @@ const getLikesByUserId = async (req, res) => {
 
 
 
+const getLikesByUser = async (req, res) => {
+  try {
+    // Directly destructure the 'action' from req.params
+    const { action } = req.params;
+
+    console.log('Received action:', action, "like controller line no:-122");
+
+    // Validate the action parameter
+    const validActions = ["1", '2', '3', '4'];
+    if (!validActions.includes(action)) {
+      console.log('Invalid action parameter:', action, "like controller line no:-127");
+      return res.status(400).json({ message: 'Invalid action parameter' });
+    }
+
+    // Assuming 'fromUserId' is the field in your Like model representing the user
+    const likes = await Like.find({ action }).select('fromuserid');
+
+    // Extracting unique fromUserIds
+    const uniqueFromUserIds = [...new Set(likes.map(like => like.fromuserid))];
+
+    // Fetching user details based on unique fromUserIds
+    const users = await User.find({ _id: { $in: uniqueFromUserIds } }).select('first_name age');
+
+    // Separate users with action 3 and others
+    const action3Users = users.filter(user => likes.find(like => like.fromuserid === user._id && like.action === '3'));
+    const otherUsers = users.filter(user => !action3Users.includes(user));
+
+    // Concatenate the two lists, with action 3 users first
+    const finalUserList = [...action3Users, ...otherUsers];
+
+    res.status(200).json({ data: finalUserList });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+
 
 
 /* ------------------------------- LIST BY ID ------------------------------- */
@@ -235,5 +276,5 @@ const getAllUsersWithLikes = async (req, res) => {
   
   
 module.exports = {
-  createLike,getLikesByUserId,getAllUsersWithLikes
+  createLike,getLikesByUserId,getAllUsersWithLikes,getLikesByUser
 };

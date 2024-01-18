@@ -30,7 +30,9 @@ router.get("/like/:userId", userController.getLikesByUserId);
 
 /* ------------------------------- get user list ------------------------------------------- */
 
-router.get("/role", accessToken(), userController.getAllUser); // admin side (all user list)
+router.get("/role", 
+// accessToken(),
+ userController.getAllUser); // admin side (all user list)
 router.get("/role-list", accessToken(), userController.getUserListRole); // ROLE WISE
 router.get("/list",
 // accessToken(),

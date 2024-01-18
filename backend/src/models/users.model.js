@@ -27,8 +27,8 @@ const userSchema = new mongoose.Schema(
     gender: {
       type: String,
     },
-    boost:[
-      {type : mongoose.Types.ObjectId , ref : 'boost'}
+    like:[
+      {type : mongoose.Types.ObjectId , ref : 'like'}
     ],
     sexual: [
       {
@@ -36,6 +36,7 @@ const userSchema = new mongoose.Schema(
         ref: "sexual",
       },
     ],
+
 
     showMe: {
       type: String,
@@ -118,7 +119,7 @@ const userSchema = new mongoose.Schema(
     },
     status: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     company: {
       type: String,

@@ -81,6 +81,8 @@ router.delete("/delete-many", adminUserController.deleteManyUsersByAdmin);
 
 router.put("/updateUserStatus/:id",adminUserController.updateUserStatus);
 
+router.get("/mangeStatus",adminUserController.updateUserStatusMange);
+
 router.delete("/deleteMultiUser",adminUserController.deleteMultiUser);
 
 // router.get("/role", auth());

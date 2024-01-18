@@ -345,6 +345,15 @@ design admin panel in subscription(active stus valu baki)
 reports (as per as bitlove)
 
 
+============== 18 jan =================
+
+design subscription in admin pannel
+report (both side)
+boost profile 
+
+
+remaning
+chat screen with socket io and chat api
 
 
 

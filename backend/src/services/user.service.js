@@ -29,11 +29,21 @@ const getUserList = async (filter, options) => {
   }).populate({
     path: "sexual",
     select: ["_id", "name"],
+  }).populate({
+    path: "like",
+    select: ["_id", "fromuserid",],
   });;
 };
 
 const getUserListDis = async (filter, options) => {
-  return User.find()
+  return User.find() .populate({
+    path: "like",
+    select: ["_id","first_name"],
+  });
+};
+const getUserListSort = async (filter, options) => {
+  // return User.find()
+return  User.find({ ...filter, action: "3" }); 
 };
 
 /**
@@ -177,5 +187,6 @@ module.exports = {
   updateDetailsPets,
   updateDetailsSexualOrientation,
   getUserListDis,
+  getUserListSort
   // getAllUsers
 };

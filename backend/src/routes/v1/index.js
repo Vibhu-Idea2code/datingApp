@@ -25,12 +25,16 @@ const userRoute = require("./app/user.route");
 const listingRoute = require("./app/listing.route");
 const likeRoute = require("./app/like.route");
 const subRoute = require("./web/subscription.route");
+const reportRoute = require("./app/report.route");
+
 
 
 router.use("/user", userRoute);
 router.use("/list", listingRoute);
 router.use("/like", likeRoute);
 router.use("/sub", subRoute);
+router.use("/report", reportRoute);
+
 
 
 
