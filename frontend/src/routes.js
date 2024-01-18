@@ -34,6 +34,9 @@ const Plans=React.lazy(()=>import('./views/Plans/Index'));
 const AddPlans=React.lazy(()=>import('./views/Plans/planForm'))
 
 const Subscription =React.lazy(()=>import('./views/subscriptions/index'));
+
+const Reports =React.lazy(()=>import('./views/Reports/index'));
+
 // const AddSubscription=React.lazy(()=>import('./views/subscriptions/subscriptionFrom'))
 
 // const View = React.lazy(() => import("./views/theme/Users/west/ViewDemo"));
@@ -131,6 +134,9 @@ const routes = [
   { path: '/AddPlans', name: '', element: AddPlans },
 
   { path: '/subscription', name: '', element: Subscription },
+
+  { path: '/report', name: '', element: Reports },
+
   // { path: '/AddSubscription', name: '', element: AddSubscription },
 
   // { path: '/user/views', name: 'User', element: Users },

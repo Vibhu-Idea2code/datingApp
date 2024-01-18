@@ -9,8 +9,11 @@ import {
   cilBell,
   cilStarHalf,
   cilWc,
-  cilCalendar
+  cilCalendar,
+  cilCalendarCheck
 } from "@coreui/icons";
+
+
 import { CNavGroup, CNavItem, CNavTitle } from "@coreui/react";
 
 const _nav = [
@@ -85,7 +88,13 @@ const _nav = [
     component: CNavItem,
     name: "Subscription",
     to: "/subscription",
-    icon: <CIcon icon={cilCalendar} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilCalendarCheck} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: "Reports",
+    to: "/report",
+    icon: <CIcon icon={cilCalendarCheck} customClassName="nav-icon" />,
   },
   // {
   //   component: CNavTitle,

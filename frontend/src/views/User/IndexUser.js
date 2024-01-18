@@ -107,7 +107,7 @@ export default function IndexUser() {
 
     {
       name: "status",
-      label: "Status",
+      label: "BlockUser",
       options: {
         filter: true,
         sort: false,

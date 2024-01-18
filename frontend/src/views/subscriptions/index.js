@@ -9,11 +9,7 @@ import { Grid, IconButton, Switch } from "@mui/material";
 import * as Icons from "@mui/icons-material";
 import swal from "sweetalert";
 import "../../scss/_custom.scss";
-import {
-  updateNotificationStatus,
-  deleteMultiNotification,
-  subscription,
-} from "../../apiController";
+import { subscription } from "../../apiController";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -31,15 +27,11 @@ export default function subscriptions() {
         planName: data.planid?.map((plan) => plan.planType),
         prices: data.planid?.map((plan) => plan.price),
         durations: data.planid?.map((plan) => plan.duration),
-
-        names:data.userid?.map((user)=>user.first_name),
-        
-
+        names: data.userid?.map((user) => user.first_name),
       }));
-      
+
       console.log(transformedData);
       setdatatableData(transformedData);
-      
     });
   };
 
@@ -51,237 +43,160 @@ export default function subscriptions() {
     /* ---------------------------- COLUMNS FOR NAME ---------------------------- */
     {
       name: "names",
-      label: "first_name",
+      label: "Name",
       options: {
-        filter: true,
-        sort: true,
+        // filter: true,
+        // sort: true,
+        // customBodyRender: (value, tableMeta, updateValue) => (
+        //   // <div
+        //   //   style={{
+        //   //   textAlign:"center"  // font keep centre
+        //   //   }}
+        //   // >
+        //   //   {value}
+        //   // </div>
+        // ),
+        // sort: false, // sorting is disable
       },
     },
     {
       name: "planName",
       label: "PlanName",
       options: {
-        filter: true,
-        sort: true,
+        // filter: true,
+        // sort: true,
+        // customBodyRender: (value, tableMeta, updateValue) => (
+        //   <div
+        //     style={{
+        //     textAlign:"center"
+        //     }}
+        //   >
+        //     {value}
+        //   </div>
+        // ),
+        // sort: false,
       },
     },
     {
       name: "prices",
       label: "Price",
       options: {
-        filter: true,
-        sort: true,
+        // filter: true,
+        // sort: true,
+        // customBodyRender: (value, tableMeta, updateValue) => (
+        //   <div
+        //     style={{
+        //     textAlign:"center"
+        //     }}
+        //   >
+        //     {value}
+        //   </div>
+        // ),
+        // sort: false,
       },
     },
     {
       name: "StartDate",
       label: "StartDate",
       options: {
-        filter: true,
-        sort: true,
+        // filter: true,
+        // sort: true,
+        // customBodyRender: (value, tableMeta, updateValue) => (
+        //   <div
+        //     style={{
+        //     textAlign:"center !important"
+        //     }}
+        //   >
+        //     {value}
+        //   </div>
+        // ),
+        // sort: false,
       },
     },
     {
       name: "endDate",
       label: "EndDate",
       options: {
-        filter: true,
-        sort: true,
+        // filter: true,
+        // sort: true,
+        // customBodyRender: (value, tableMeta, updateValue) => (
+        //   <div
+        //     style={{
+        //     // textAlign:"center !important"
+        //     }}
+        //   >
+        //     {value}
+        //   </div>
+        // ),
+        // sort: false,
       },
     },
     {
       name: "durations",
-      label: "duration",
+      label: "Duration",
       options: {
-        filter: true,
-        sort: true,
+        // filter: true,
+        // sort: true,
+      //   customBodyRender: (value, tableMeta, updateValue) => (
+      //     <div
+      //       style={{
+      //       textAlign:"center"
+      //       }}
+      //     >
+      //       {value}
+      //     </div>
+      //   ),
+      //   // sort: false,
       },
     },
     {
       name: "cancelled",
-      label: "cancelled",
+      label: "Cancelled",
       options: {
         filter: true,
         sort: true,
+        // customBodyRender: (value, tableMeta, updateValue) => (
+        //   <div
+        //     style={{
+        //     textAlign:"center"
+        //     }}
+        //   >
+        //     {value}
+        //   </div>
+        // ),
+        // sort: false,
       },
     },
-    /* --------------------------- COLUMNS FOR STATUS --------------------------- */
     {
       name: "status",
-      label: "Status",
+      label: "Active",
       options: {
         filter: true,
         sort: false,
-        // customBodyRender: (_, { rowIndex }) => {
-        //   // console.log(datatableData[rowIndex]);
-        //   const { status, _id } = datatableData[rowIndex];
-        //   return (
-        //     // <p>asd</p>
-        //     <Switch
-        //       checked={status}
-        //       onChange={() => {
-        //         const data = { id: _id, status: !status };
-        //         updateNotificationStatus(data, _id)
-        //           .then(() => {
-        //             toast.success("status changed successfully!", {
-        //               key: data._id,
-        //             });
-        //             getData();
-
-        //           })
-        //           .catch(() => {
-        //             toast.error("something went wrong!", {
-        //               key: data._id,
-        //             });
-        //           });
-        //       }}
-        //     />
-        //   );
-        // },
+        customBodyRender: (value, tableMeta, updateValue) => (
+          <div
+            style={{
+              backgroundColor: "green", 
+              color:"white",// Example: Set background color for the entire cell
+              padding: "8px", // Add padding for better visibility
+              borderRadius: "34%", // Add border-radius for rounded corners
+              display: "inline-block", // Ensure block-level display for inline styling
+            }}
+          >
+            {value}
+          </div>
+        ),
+       
       },
-    },
-    /* --------------------------- COLUMNS FOR ACTIONS -------------------------- */
-    // {
-    //   name: "_id",
-    //   label: "Action",
-    //   options: {
-    //     customBodyRender: (value) => {
-    //       const editdata = datatableData.find((data) => data._id === value);
-    //       // console.log(editdata);
-    //       return (
-    //         <div>
-    //           {/* <Icons.BarChart
-    //             className="insightsIcon"
-    //             onClick={() => {
-    //               const userdata = datatableData.find(
-    //                 (data) => data._id === value
-    //               );
-
-    //               const currentDate = new Date();
-    //               const options = {
-    //                 year: "numeric",
-    //                 month: "2-digit",
-    //                 day: "2-digit",
-    //               };
-    //               const formattedDate = new Intl.DateTimeFormat(
-    //                 "en-US",
-    //                 options
-    //               ).format(currentDate);
-    //               const insightdata = { userid: value, date: formattedDate };
-
-    //               navigate("/popup", {
-    //                 state: {
-    //                   userdata: userdata,
-    //                   insightdata: insightdata,
-    //                 },
-    //               });
-    //             }}
-    //           /> */}
-    //           <Icons.Edit
-    //             className="editIcon"
-    //             style={{
-    //               width: "1em",
-    //               height: "1em",
-    //               cursor: "pointer",
-    //             }}
-    //             onClick={() => {
-    //               const editdata = datatableData.find(
-    //                 (data) => data._id === value
-    //               );
-    //               navigate("/AddNotification", {
-    //                 state: { editdata: editdata },
-    //               });
-    //             }}
-    //           />
-    //           <Icons.Delete
-    //             className="deleteIcon"
-    //             style={{
-    //               width: "1em",
-    //               height: "1em",
-    //               cursor: "pointer",
-    //             }}
-    //             onClick={async () => {
-    //               const confirm = await swal({
-    //                 title: "Are you sure?",
-    //                 text: "Are you sure that you want to delete this user?",
-    //                 icon: "warning",
-    //                 buttons: ["No, cancel it!", "Yes, I am sure!"],
-    //                 dangerMode: true,
-    //               });
-    //               if (confirm) {
-    //                 // console.log(confirm);
-    //                 await axios
-    //                   .delete(
-    //                     `http://localhost:9500/v1/notification/delete/${value}`,
-    //                     value
-    //                   )
-    //                   .then((res) => {
-    //                     console.log("deleted successfully!");
-    //                     getData();
-    //                   })
-    //                   .catch(() => {
-    //                     console.error("something went wrong!", {});
-    //                   });
-    //               }
-    //             }}
-    //           />
-    //         </div>
-    //       );
-    //     },
-    //   },
-    // },
+    },  
   ];
 
-  //   const deleteMultiple = async (index) => {
-  //     const id = index.data.map(
-  //       (index1) =>
-  //         datatableData.find(
-  //           (data, index2) => index2 === index1.dataIndex && data._id
-  //         )._id
-  //     );
-  //     const confirm = await swal({
-  //       title: "Are you sure?",
-  //       text: "Are you sure that you want to delete this users?",
-  //       icon: "warning",
-  //       buttons: ["No, cancel it!", "Yes, I am sure!"],
-  //       dangerMode: true,
-  //     });
-  //     if (confirm) {
-  //         deleteMultiNotification(id)
-  //         .then(() => {
-  //           getData();
-
-  //           toast.success("Deleted successfully!", {
-  //             key: id,
-  //           });
-  //         })
-  //         .catch(() => {
-  //           toast.error("Something went wrong!", {
-  //             key: id,
-  //           });
-  //         });
-  //     }
-  //   };
-
-  //   const SelectedRowsToolbar = ({ selectedRows, data }) => {
-  //     return (
-  //       <div>
-  //         <IconButton onClick={() => deleteMultiple(selectedRows, data)}>
-  //           <Icons.Delete />
-  //         </IconButton>
-  //       </div>
-  //     );
-  //   };
-
   const options = {
-    customToolbarSelect: (selectedRows, data) => (
-      <SelectedRowsToolbar
-        selectedRows={selectedRows}
-        data={data}
-        columns={columns}
-        datatableTitle="test"
-      />
-    ),
+
+    selectableRows: 'none',
+    sort: false,
+    
+  
   };
   return (
     <Grid>
@@ -303,7 +218,7 @@ export default function subscriptions() {
       </div>
 
       <MUIDataTable
-        title={"Notification"}
+        title={"Subscription"}
         data={datatableData}
         columns={columns}
         options={options}
