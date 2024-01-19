@@ -18,12 +18,14 @@ export default function report() {
 
   const getData = async (data) => {
     await reports(data).then((res) => {
-      console.log(res.data.data);
+      console.log(res.data.report);
 
-      const transformedData = res.data.data.map((data) => ({
-        ...data,
+      const transformedData = res.data.report.map((report) => ({
+        ...report,
         
-        // names: data.user.user?.map((user) => user.first_name),
+        user: report.user?.map((user) => user.first_name),
+        reportBy: report.reportBy?.map((reportBy) => reportBy.first_name),
+
       }));
 
     console.log(transformedData);
@@ -38,12 +40,12 @@ export default function report() {
   const columns = [
     /* ---------------------------- COLUMNS FOR NAME ---------------------------- */
     {
-      name: "names",
+      name: "user",
       label: "first_name",
       options: {},
     },
     {
-      name: "ReportBy",
+      name: "reportBy",
       label: "ReportBy",
       options: {},
     },
@@ -54,23 +56,24 @@ export default function report() {
     },
 
     {
-      name: "Status",
-      label: "Status",
+      name: "status",
+      label: "status",
       options: {
         filter: true,
         sort: false,
-    //     customBodyRender: (value, tableMeta, updateValue) => (
-    //       <div
-    //         style={{
-    //           backgroundColor: "green",
-    //           color: "white", // Example: Set background color for the entire cell
-    //           padding: "8px", // Add padding for better visibility
-    //           borderRadius: "34%", // Add border-radius for rounded corners
-    //           display: "inline-block", // Ensure block-level display for inline styling
-    //         }}>
-    //         {value}
-    //       </div>
-    //     ),
+        // customBodyRender: (value, tableMeta, updateValue) => (
+        //   <div
+        //     style={{
+        //       backgroundColor: "green",
+        //       color: "white", // Example: Set background color for the entire cell
+        //       padding: "8px", // Add padding for better visibility
+        //       borderRadius: "34%", // Add border-radius for rounded corners
+        //       display: "inline-block", // Ensure block-level display for inline styling
+        //     }}
+        //     >
+        //     {value}
+        //   </div>
+        // ),
       },
     },
   ];
