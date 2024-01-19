@@ -26,6 +26,7 @@ const listingRoute = require("./app/listing.route");
 const likeRoute = require("./app/like.route");
 const subRoute = require("./web/subscription.route");
 const reportRoute = require("./app/report.route");
+const boostRoute = require("./app/boost.route");
 
 
 
@@ -34,6 +35,7 @@ router.use("/list", listingRoute);
 router.use("/like", likeRoute);
 router.use("/sub", subRoute);
 router.use("/report", reportRoute);
+router.use("/boost", boostRoute);
 
 
 

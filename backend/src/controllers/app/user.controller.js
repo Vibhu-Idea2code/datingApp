@@ -27,47 +27,58 @@ const getUserListRole = async (req, res) => {
 };
 
 /* ------------------------ GET USER LIST BY DISTANCE ADMIN SIDE----------------------- */
-  const userList = async (req, res) => {
-    try {
-      const getUser = await userService.getUserListDis();
-      
-      
-      console.log(getUser[0], getUser[0].lat, getUser[0].lat);
-      getUser.sort((a, b) => b.boost - a.boost);
-      var userDetailsData = [];
-      for (let i = 0; i < getUser.length; i++) {
-        console.log(getUser[i].first_name, getUser[i].last_name);
-        const clientId = getUser[i]._id;
-        console.log(clientId);
-        var userDetails = {
-          first_name: getUser[i].first_name,
-          age: getUser[i].age,
-          like:getUser[i].like,
-          
-    
-          distances: distance(
-            getUser[i]._id,
-            37.0902,
-            95.7129,
-            getUser[i].lat,
-            getUser[i].long
-          ),
-        };
-        userDetailsData.push(userDetails);
+const userList = async (req, res) => {
+  try {
+    const getUser = await userService.getUserListDis();      
+    console.log(getUser[0], getUser[0].lat, getUser[0].lat);
+
+    // Sort based on boost, placing users with boostStatus true at the top
+    getUser.sort((a, b) => {
+      if (b.boostStatus && !a.boostStatus) {
+        return 1; // b comes first
+      } else if (!b.boostStatus && a.boostStatus) {
+        return -1; // a comes first
+      } else {
+        return b.boost - a.boost;
       }
-      res.status(200).json({
-        success: true,
-        message: "user List!",
-        data: userDetailsData,
-        like
-      });
-    } catch (error) {
-      res.status(400).json({
-        success: false,
-        message: error.message,
-      });
+    });
+
+    var userDetailsData = [];
+
+    for (let i = 0; i < getUser.length; i++) {
+      console.log(getUser[i].first_name, getUser[i].last_name);
+      const clientId = getUser[i]._id;
+      console.log(clientId);
+
+      var userDetails = {
+        first_name: getUser[i].first_name,
+        age: getUser[i].age,
+        boostStatus: getUser[i].boostStatus,
+        distances: distance(
+          getUser[i]._id,
+          37.0902,
+          95.7129,
+          getUser[i].lat,
+          getUser[i].long
+        ),
+      };
+
+      userDetailsData.push(userDetails);
     }
-  };
+
+    res.status(200).json({
+      success: true,
+      message: "user List!",
+      data: userDetailsData,
+    });
+
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 
 /* --------------- GET USER LIST  (SIMPLE) WITH AUTH ADMIN SIDE--------------- */
 const getAllUser = async (req, res) => {

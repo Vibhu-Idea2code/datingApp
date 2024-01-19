@@ -14,6 +14,7 @@ module.exports.notificationService= require("./notification.service");
 module.exports.superLikeService= require("./superLike.service");
 module.exports.subscriptionService= require("./subscription.service");
 module.exports.reportService= require("./report.service");
+module.exports.boostService= require("./boost.service");
 
 
 

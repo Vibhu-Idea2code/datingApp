@@ -30,8 +30,14 @@ const getUserList = async (filter, options) => {
     path: "sexual",
     select: ["_id", "name"],
   }).populate({
+    path: "boost",
+    select: ["_id","status"],
+  }).populate({
     path: "like",
     select: ["_id", "fromuserid",],
+  }).populate({
+    path: "plan",
+    select: ["_id", "planType",],
   });;
 };
 

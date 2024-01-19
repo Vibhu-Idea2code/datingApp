@@ -29,7 +29,7 @@ const createReport = async (req, res) => {
       res.status(200).json({
         message: "successfully fetched all report",
         status: true,
-        data: report ,
+        report: report ,
       });
     } catch (error) {
       res.status(400).json({ success: false, message: error.message });

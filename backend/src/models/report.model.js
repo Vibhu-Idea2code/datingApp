@@ -4,16 +4,19 @@ const reportSchema = new mongoose.Schema(
   {
    
     user: 
+    [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user',
       },
-      reportBy: 
+    ],
+      reportBy: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user',
       },
-      Status:{
+    ],
+      status:{
         type : Boolean ,
         default:false
       },

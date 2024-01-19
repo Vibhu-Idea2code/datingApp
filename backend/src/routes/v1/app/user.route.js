@@ -36,7 +36,8 @@ router.get("/role",
 router.get("/role-list", accessToken(), userController.getUserListRole); // ROLE WISE
 router.get("/list",
 // accessToken(),
- userController.userList); // HOME PAGE (DISTANCE,USERID,FIRSTNAME)
+ userController.userList
+ ); // HOME PAGE (DISTANCE,USERID,FIRSTNAME)
 
 /* ----------------------------- get user by id ----------------------------- */
 router.get("/getid-user/:userId", userController.getUserDetails); // HOME PAGE (DISTANCE,USERID,FIRSTNAME) USING USER ID
