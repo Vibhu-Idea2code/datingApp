@@ -43,7 +43,7 @@ export default function subscriptions() {
     /* ---------------------------- COLUMNS FOR NAME ---------------------------- */
     {
       name: "names",
-      label: "Name",
+      label: "NAME",
       options: {
         // filter: true,
         // sort: true,
@@ -61,7 +61,7 @@ export default function subscriptions() {
     },
     {
       name: "planName",
-      label: "PlanName",
+      label: "PLAN NAME",
       options: {
         // filter: true,
         // sort: true,
@@ -79,7 +79,7 @@ export default function subscriptions() {
     },
     {
       name: "prices",
-      label: "Price",
+      label: "PRICE",
       options: {
         // filter: true,
         // sort: true,
@@ -97,7 +97,7 @@ export default function subscriptions() {
     },
     {
       name: "StartDate",
-      label: "StartDate",
+      label: "START DATE",
       options: {
         // filter: true,
         // sort: true,
@@ -115,7 +115,7 @@ export default function subscriptions() {
     },
     {
       name: "endDate",
-      label: "EndDate",
+      label: "END DATE",
       options: {
         // filter: true,
         // sort: true,
@@ -133,7 +133,7 @@ export default function subscriptions() {
     },
     {
       name: "durations",
-      label: "Duration",
+      label: "DURATION",
       options: {
         // filter: true,
         // sort: true,
@@ -151,7 +151,7 @@ export default function subscriptions() {
     },
     {
       name: "cancelled",
-      label: "Cancelled",
+      label: "CANCELLED",
       options: {
         filter: true,
         sort: true,
@@ -162,14 +162,14 @@ export default function subscriptions() {
         //     }}
         //   >
         //     {value}
-        //   </div>
+          // </div>
         // ),
         // sort: false,
       },
     },
     {
       name: "status",
-      label: "Active",
+      label: "ACTIVE",
       options: {
         filter: true,
         sort: false,

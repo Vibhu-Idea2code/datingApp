@@ -10,7 +10,9 @@ import {
   cilStarHalf,
   cilWc,
   cilCalendar,
-  cilCalendarCheck
+  cilCalendarCheck,
+  cilSpreadsheet,
+  cilGift
 } from "@coreui/icons";
 
 
@@ -94,7 +96,7 @@ const _nav = [
     component: CNavItem,
     name: "Reports",
     to: "/report",
-    icon: <CIcon icon={cilCalendarCheck} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilSpreadsheet} customClassName="nav-icon" />,
   },
   // {
   //   component: CNavTitle,

@@ -22,7 +22,6 @@ export default function report() {
 
       const transformedData = res.data.report.map((report) => ({
         ...report,
-        
         user: report.user?.map((user) => user.first_name),
         reportBy: report.reportBy?.map((reportBy) => reportBy.first_name),
 
@@ -41,39 +40,38 @@ export default function report() {
     /* ---------------------------- COLUMNS FOR NAME ---------------------------- */
     {
       name: "user",
-      label: "first_name",
+      label: "NAME",
       options: {},
     },
     {
       name: "reportBy",
-      label: "ReportBy",
+      label: "REPORT BY",
       options: {},
     },
     {
       name: "reason",
-      label: "Reason",
+      label: "REASON",
       options: {},
     },
 
     {
-      name: "status",
-      label: "status",
+      name: "reportStatus",
+      label: "STATUS",
       options: {
         filter: true,
         sort: false,
-        // customBodyRender: (value, tableMeta, updateValue) => (
-        //   <div
-        //     style={{
-        //       backgroundColor: "green",
-        //       color: "white", // Example: Set background color for the entire cell
-        //       padding: "8px", // Add padding for better visibility
-        //       borderRadius: "34%", // Add border-radius for rounded corners
-        //       display: "inline-block", // Ensure block-level display for inline styling
-        //     }}
-        //     >
-        //     {value}
-        //   </div>
-        // ),
+        customBodyRender: (value, tableMeta, updateValue) => {
+          // Customize the rendering of the status here
+          return (
+            <Switch
+              checked={value === 'active'} // Adjust this condition based on your status values
+              onChange={() => {
+                // Handle status change if needed
+              }}
+              inputProps={{ 'aria-label': 'status switch' }}
+            />
+          );
+            },
       },
     },
   ];

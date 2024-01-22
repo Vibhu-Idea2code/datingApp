@@ -88,6 +88,10 @@ export const resetPassword = (data) =>
 
 
 
+  export const getDashboardCount = () =>
+  axios.get(`http://localhost:9500/v1/dashboard/getDashboardCount`, {
+    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+  });
 
 // Get admin details
 export const adminDetails = () =>
@@ -333,5 +337,11 @@ axios.get(`${mainUrl}/v1/sub/list`, data);
 
 export const reports = (data) =>
 axios.get(`${mainUrl}/v1/report/list`, data);
+
+
+export const getStatuswiseUserCount = () =>
+  axios.get(`http://localhost:9500/v1/admin/getStatuswiseUserCount`, {
+    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+  });
 
 
