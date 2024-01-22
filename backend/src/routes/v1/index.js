@@ -8,6 +8,7 @@ const interestRoute = require("./web/interest.route");
 const planRoute = require("./web/plan.route");
 const adminRoute = require("./web/admin.route");
 const notificationRoute = require("./web/notification.route");
+const dashboardRoute = require("./web/dashboard.route");
 
 
 const router = express.Router();
@@ -19,6 +20,8 @@ router.use("/interest", interestRoute);
 router.use("/plan", planRoute);
 router.use("/admin", adminRoute);
 router.use("/notification", notificationRoute);
+router.use("/dashboard", dashboardRoute);
+
 
 /* -------------------------------{APP} USER ROUTES ------------------------------ */
 const userRoute = require("./app/user.route");

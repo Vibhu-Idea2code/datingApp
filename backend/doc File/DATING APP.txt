@@ -360,24 +360,14 @@ chat screen with socket io and chat api
 home screen ma startdattime valu 
 boost ma cron set kravnu km k starttime and exact 30 min pachi endtime upr delete thavu jove database ma boost na table ma 
 in short ma boost valu jovanu che 
-home page ma boost vali profile avi gy chec
+home page ma boost vali profile avi gy che
 
 
+===========22 jan ======
+
+report status is not working
+
+10:18 after 30 mintues check boost table and user table
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+count kravanu stus plan mathi

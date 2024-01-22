@@ -147,6 +147,10 @@ const userSchema = new mongoose.Schema(
     aboutMe: {
       type: String,
     },
+    boostCount:{
+      type : Number ,
+      default:0,
+    },
 
     user_img: {
       // GALLERY IMAGES(MULTIPLE)

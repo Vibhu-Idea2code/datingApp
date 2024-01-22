@@ -38,7 +38,7 @@ async function updateUserStatus(userId, newStatus) {
       { status: newStatus },
       { new: true }
     );
-    console.log(updatedUser,"123456789")
+    // console.log(updatedUser,"123456789")
 
     if (!updatedUser) {
       throw new Error("User not found");
@@ -62,9 +62,65 @@ const getExpiredBoosts = async () => {
   }
 };
 
+// Assuming a mongoose-like syntax for database queries
+const getUserBoostCountInMonth = async (userId, year, month) => {
+  const startOfMonth = new Date(year, month, 1);
+  const endOfMonth = new Date(year, month + 1, 0, 23, 59, 59, 999);
+
+  const boostCount = await Boost.countDocuments({
+    user: userId,
+    startTime: { $gte: startOfMonth, $lte: endOfMonth },
+  });
+
+  return boostCount;
+};
 
 
+async function incrementUserBoostCount(userId) {
+  try {
+    // Find the user by ID and increment the boostCount
+    const updatedUser = await User.findByIdAndUpdate(userId, { $inc: { boostCount: 1 } }, { new: true });
 
+    if (!updatedUser) {
+      throw new Error("User not found");
+    }
+
+    return updatedUser;
+  } catch (error) {
+    throw new Error("Error incrementing user boost count");
+  }
+}
+
+// async function getUserBoostCountInMonth(userId, month) {
+//   try {
+//     // Find boosts created by the user in the current month
+//     const boosts = await Boost.find({
+//       createdBy: userId,
+//       startTime: {
+//         $gte: new Date(new Date().getFullYear(), month, 1),
+//         $lt: new Date(new Date().getFullYear(), month + 1, 1)
+//       }
+//     });
+
+//     return boosts.length;
+//   } catch (error) {
+//     throw new Error(`Error getting user boost count: ${error.message}`);
+//   }
+// }
+
+
+async function getBoostCountThisMonth(userId) {
+  const currentDate = new Date();
+  const startOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+  const endOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0, 23, 59, 59, 999);
+
+  const boostCount = await Boost.countDocuments({
+    userId: userId,
+    startTime: { $gte: startOfMonth, $lte: endOfMonth },
+  });
+
+  return boostCount;
+}
 
 /**get Boost list */
 const getBoostList = async (filter, options) => {
@@ -72,6 +128,39 @@ const getBoostList = async (filter, options) => {
     path: "touserid",
     select: ["_id", "first_name"],
   });
+};
+
+const getLastBoostTime = async (userId) => {
+  try {
+    const lastBoost = await Boost.findOne({ userId }).sort({ startTime: -1 });
+
+    if (lastBoost) {
+      return lastBoost.startTime.getTime(); // Return the timestamp of the last boost
+    }
+
+    return null; // User hasn't boosted before
+  } catch (error) {
+    throw new Error(`Error getting last boost time: ${error.message}`);
+  }
+};
+
+const isEligibleForBoost = async (userId) => {
+  try {
+    const lastBoostTime = await getLastBoostTime(userId);
+
+    if (!lastBoostTime) {
+      // User hasn't boosted before, so they are eligible
+      return true;
+    }
+
+    const currentTime = new Date().getTime();
+    const thirtyMinutesAgo = currentTime - 30 * 60 * 1000; // 30 minutes in milliseconds
+
+    // Check if the last boost time is before the cutoff time
+    return lastBoostTime < thirtyMinutesAgo;
+  } catch (error) {
+    throw new Error(`Error checking boost eligibility: ${error.message}`);
+  }
 };
 
 /**get Boost details by id */
@@ -133,5 +222,10 @@ module.exports = {
   manageBoostStatus,
   updateUserStatus,
   getExpiredBoosts,
-  deleteBoostById
+  incrementUserBoostCount,
+  deleteBoostById,
+  getLastBoostTime,
+  isEligibleForBoost,
+  getBoostCountThisMonth,
+  getUserBoostCountInMonth
 };

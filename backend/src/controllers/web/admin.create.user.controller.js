@@ -292,6 +292,25 @@ const deleteMultiUser = async (req, res, next) => {
   }
 };
   
+// API endpoint to get the total count of active and inactive users
+const getStatuswiseUserCount = async (req, res, next) => {
+  try {
+    const users = await User.find();
+    const activeCount = users.filter((user) => user.status).length;
+    const inactiveCount = users.length - activeCount;
+
+    const result = { activeCount: activeCount, inactiveCount: inactiveCount };
+    res.status(200).json({
+      success: true,
+      message: "stus is succefully!",
+      data: result,
+    
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
   module.exports = {
     UserUpdateDetailsByAdmin,
     UserRegisterByAdmin,
@@ -300,6 +319,7 @@ const deleteMultiUser = async (req, res, next) => {
     getAllUser,
     updateUserStatus,
     deleteMultiUser,
-    updateUserStatusMange
+    updateUserStatusMange,
+    getStatuswiseUserCount
   };
   

@@ -35,9 +35,15 @@ const createBoost = async (req, res) => {
       throw new Error("No such Boost");
     }
 
+    // Check if the user is eligible for boosting (e.g., not boosted within the last 30 minutes)
+    const isEligibleForBoost = await boostService.isEligibleForBoost(user._id);
+
+    if (!isEligibleForBoost) {
+      throw new Error("User is not eligible for another boost at the moment");
+    }
+
     const boostStartTime = new Date(boost.startTime);
-    const boostEndTime = new Date(boostStartTime.getTime() + 30 * 60 * 1000);
-// 30 minutes in milliseconds
+    const boostEndTime = new Date(boostStartTime.getTime() + 30 * 60 * 1000); // 30 minutes in milliseconds
     
     console.log(boostStartTime, "startTime");
     console.log(boostEndTime, "endTime");
@@ -45,41 +51,23 @@ const createBoost = async (req, res) => {
     // Update the boost object with the calculated end time
     boost.endTime = boostEndTime;
   
-  
     // Assuming there's a method like updateUserStatus in your boostService
     await boostService.updateUserStatus(user._id, true);
 
-    cron.schedule('* * * * *', async () => {
-      try {
-        const expiredBoosts = await boostService.getExpiredBoosts();
-        
-        if (expiredBoosts.length > 0) {
-          for (const boost of expiredBoosts) {
-            const boostStartTime = new Date(boost.startTime);
-            const currentTimestamp = new Date();
-    
-            // Check if the boost is older than 30 minutes
-            if (currentTimestamp - boostStartTime > 3 * 60 * 1000) {
-              // Assuming there's a method like deleteBoostById in your boostService
-              await boostService.deleteBoostById(boost._id);
-            }
-          }
-        }
-      } catch (error) {
-        console.error("Error in cron job:", error);
-      }
-    });
-    
+    // Increment the boost count for the user
+    await boostService.incrementUserBoostCount(user._id);
 
     res.status(200).json({
       message: "Successfully created a new Boost",
       success: true,
-      data: { boost, endTime: boostEndTime }, // Update the endTime in the response
+      data:  boost , // Update the endTime in the response
     });
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
   }
 };
+
+
 
 
 

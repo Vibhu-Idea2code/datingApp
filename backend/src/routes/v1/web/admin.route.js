@@ -5,6 +5,7 @@ const {
   adminUserController,
 } = require("../../../controllers");
 const { upload } = require("../../../middlewares/upload");
+
 const router = express.Router();
 // const auth = require("../../middlewares/auth");
 const {
@@ -19,6 +20,9 @@ router.post(
   authAdminController.register);
 
 router.post("/login", authAdminController.login);
+
+
+
 
 router.post(
   "/forgot",
@@ -48,6 +52,7 @@ router.get(
   adminController.getAdminList
 );
 
+
 router.post("/refreshToken", authAdminController.RefreshToken);
 
 
@@ -56,35 +61,38 @@ router.put(
   accessToken(),
   upload.single("admin_image"),
   adminController.updateAdmin
-);
-router.delete("/delete-admin/:adminId", adminController.deleteAdmin);
-
-/* -------------------------- CREATE USER BY ADMIN -------------------------- */
-router.get("/user-list", 
-accessToken(),
-adminUserController.getAllUser
-);
-router.post(
-  "/create-user",
-  // upload.single("image"),
-  upload.array("user_img"),
-  adminUserController.UserRegisterByAdmin
-);
-router.put(
-  "/update-user/:userId",
-  upload.array("user_img"),
-  adminUserController.UserUpdateDetailsByAdmin
-);
-router.delete("/delete-user/:userId", adminUserController.deleteUserByAdmin);
-
-router.delete("/delete-many", adminUserController.deleteManyUsersByAdmin);
-
-router.put("/updateUserStatus/:id",adminUserController.updateUserStatus);
-
-router.get("/mangeStatus",adminUserController.updateUserStatusMange);
-
-router.delete("/deleteMultiUser",adminUserController.deleteMultiUser);
-
-// router.get("/role", auth());
-
-module.exports = router;
+  );
+  router.delete("/delete-admin/:adminId", adminController.deleteAdmin);
+  
+  /* -------------------------- CREATE USER BY ADMIN -------------------------- */
+  router.get("/user-list", 
+  accessToken(),
+  adminUserController.getAllUser
+  );
+  router.post(
+    "/create-user",
+    // upload.single("image"),
+    upload.array("user_img"),
+    adminUserController.UserRegisterByAdmin
+    );
+    router.put(
+      "/update-user/:userId",
+      upload.array("user_img"),
+      adminUserController.UserUpdateDetailsByAdmin
+      );
+      router.delete("/delete-user/:userId", adminUserController.deleteUserByAdmin);
+      
+      router.delete("/delete-many", adminUserController.deleteManyUsersByAdmin);
+      
+      router.put("/updateUserStatus/:id",adminUserController.updateUserStatus);
+      
+      router.get("/mangeStatus",adminUserController.updateUserStatusMange);
+      
+      router.delete("/deleteMultiUser",adminUserController.deleteMultiUser);
+      
+      // router.get("/role", auth());
+      router.get("/getStatuswiseUserCount",   accessToken(),
+      adminUserController.getStatuswiseUserCount);
+      
+      module.exports = router;
+      

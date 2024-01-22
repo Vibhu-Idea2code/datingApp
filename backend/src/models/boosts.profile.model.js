@@ -2,9 +2,9 @@ const mongoose = require("mongoose");
 
 const BoostSchema = new mongoose.Schema(
   {
-    userId:[
-      {type : mongoose.Types.ObjectId , ref : 'user'}
-    ],
+    userId:{
+      type: String,
+    },
     status:{
       type:Boolean,
       default:true,
@@ -21,7 +21,7 @@ const BoostSchema = new mongoose.Schema(
     },
 },
   {
-    timestamps: true,
+    // timestamps: true,
     versionKey: false,
   },
 

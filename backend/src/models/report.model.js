@@ -16,7 +16,7 @@ const reportSchema = new mongoose.Schema(
         ref: 'user',
       },
     ],
-      status:{
+      reportStatus:{
         type : Boolean ,
         default:false
       },
