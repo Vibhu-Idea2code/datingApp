@@ -12,7 +12,8 @@ import {
   cilCalendar,
   cilCalendarCheck,
   cilSpreadsheet,
-  cilGift
+  cilGift,
+  cilMobile
 } from "@coreui/icons";
 
 
@@ -97,6 +98,12 @@ const _nav = [
     name: "Reports",
     to: "/report",
     icon: <CIcon icon={cilSpreadsheet} customClassName="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: "CountryCode",
+    to: "/CountryCode",
+    icon: <CIcon icon={cilMobile} customClassName="nav-icon" />,
   },
   // {
   //   component: CNavTitle,

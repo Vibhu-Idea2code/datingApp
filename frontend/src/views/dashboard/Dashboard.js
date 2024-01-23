@@ -68,16 +68,18 @@ const Dashboard = () => {
       const response = await getDashboardCount();
       const resUserCount = await getStatuswiseUserCount();
       setuserCount(resUserCount.data.data);
-      const newAllCount = response.data.info;
+      console.log(resUserCount.data.dataHobbies,"-----------")
+      const newAllCount = response.data.data;
+      console.log(response.data.data,"[][[][[][[[[]][]][")
       setAllCount(newAllCount);
      
       // setIsLoading(false);
     } catch (err) {
-      if (!err.response.data.isSuccess) {
-        if (err.response.data.status === 401) {
+      if (!err.response.data.data) {
+        if (!err.response.data.status === 200) {
           toast.error(err.response.data.message);
         } else {
-          console.log(err.response.data, 'else');
+          console.log(err.response.data.data, 'else');
         }
       }
     }

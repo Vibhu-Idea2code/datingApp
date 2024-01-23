@@ -211,6 +211,30 @@ export const deleteMultiInterest = (data) => {
   });
 };
 
+/* ------------------------------- COUNTRY CODE PART ------------------------------ */
+//Update sexual  Status
+export const updateCountryCodeStatus = (data, id) =>
+  axios.put(
+    `${mainUrl}/v1/countryCode/updateCodeStatus/${id}`,
+    data
+    //  {
+    //   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    // }
+  );
+
+// delete multiple Users
+export const deleteMultiCountryCode = (data) => {
+  return axios.delete(`${mainUrl}/v1/countryCode/deleteMulticode`, {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    data: { Ids: data },
+  });
+};
+
+export const deleteCountryCode = (id) =>
+  axios.delete(`${mainUrl}/v1/countryCode/delete/${id}`, {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  });
+
 /* ------------------------------- Pet PART ------------------------------ */
 //Update sexual  Status
 export const updatePetStatus = (data, id) =>

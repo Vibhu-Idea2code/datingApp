@@ -1,4 +1,5 @@
-import React from 'react'
+import { useState, useEffect } from "react";
+
 import {
   CRow,
   CCol,
@@ -7,355 +8,256 @@ import {
   CDropdownItem,
   CDropdownToggle,
   CWidgetStatsA,
-} from '@coreui/react'
-import { getStyle } from '@coreui/utils'
-import { CChartBar, CChartLine } from '@coreui/react-chartjs'
-import CIcon from '@coreui/icons-react'
-import {   cilOptions } from '@coreui/icons'
+  CCardHeader,
+  CCard,
+  CCardBody,
+  CCardTitle,
+} from "@coreui/react";
+import { getStyle } from "@coreui/utils";
+import { CChartBar, CChartLine } from "@coreui/react-chartjs";
+import CIcon from "@coreui/icons-react";
+import { cilOptions, cilPeople, cilUser } from "@coreui/icons";
+import {
+  getDashboardCount,
+  getLastUsers,
+  getStatuswiseUserCount,
+} from "../../apiController";
 
 const WidgetsDropdown = () => {
-  return (
-    <CRow>
-      <CCol sm={6} lg={3}>
-        <CWidgetStatsA
-          className="mb-4"
-          color="primary"
-          value={
-            <>
-              26K{' '}
-              <span className="fs-6 fw-normal">
-                (-12.4% <CIcon />)
-              </span>
-            </>
-          }
-          title="Users"
-          // action={
-          //   <CDropdown alignment="end">
-          //     <CDropdownToggle color="transparent" caret={false} className="p-0">
-          //       <CIcon icon={cilOptions} className="text-high-emphasis-inverse" />
-          //     </CDropdownToggle>
-          //     <CDropdownMenu>
-          //       <CDropdownItem>Action</CDropdownItem>
-          //       <CDropdownItem>Another action</CDropdownItem>
-          //       <CDropdownItem>Something else here...</CDropdownItem>
-          //       <CDropdownItem disabled>Disabled action</CDropdownItem>
-          //     </CDropdownMenu>
-          //   </CDropdown>
-          // }
-          chart={
-            <CChartLine
-              className="mt-3 mx-3"
-              style={{ height: '70px' }}
-              data={{
-                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-                datasets: [
-                  {
-                    label: 'My First dataset',
-                    backgroundColor: 'transparent',
-                    borderColor: 'rgba(255,255,255,.55)',
-                    pointBackgroundColor: getStyle('--cui-primary'),
-                    data: [65, 59, 84, 84, 51, 55, 40],
-                  },
-                ],
-              }}
-              options={{
-                plugins: {
-                  legend: {
-                    display: false,
-                  },
-                },
-                maintainAspectRatio: false,
-                scales: {
-                  x: {
-                    grid: {
-                      display: false,
-                      drawBorder: false,
-                    },
-                    ticks: {
-                      display: false,
-                    },
-                  },
-                  y: {
-                    min: 30,
-                    max: 89,
-                    display: false,
-                    grid: {
-                      display: false,
-                    },
-                    ticks: {
-                      display: false,
-                    },
-                  },
-                },
-                elements: {
-                  line: {
-                    borderWidth: 1,
-                    tension: 0.4,
-                  },
-                  point: {
-                    radius: 4,
-                    hitRadius: 10,
-                    hoverRadius: 4,
-                  },
-                },
-              }}
-            />
-          }
-        />
-      </CCol>
-      <CCol sm={6} lg={3}>
-        <CWidgetStatsA
-          className="mb-4"
-          color="info"
-          value={
-            <>
-              $6.200{' '}
-              <span className="fs-6 fw-normal">
-                (40.9% <CIcon />)
-              </span>
-            </>
-          }
-          title="Income"
-          // action={
-          //   <CDropdown alignment="end">
-          //     <CDropdownToggle color="transparent" caret={false} className="p-0">
-          //       <CIcon icon={cilOptions} className="text-high-emphasis-inverse" />
-          //     </CDropdownToggle>
-          //     <CDropdownMenu>
-          //       <CDropdownItem>Action</CDropdownItem>
-          //       <CDropdownItem>Another action</CDropdownItem>
-          //       <CDropdownItem>Something else here...</CDropdownItem>
-          //       <CDropdownItem disabled>Disabled action</CDropdownItem>
-          //     </CDropdownMenu>
-          //   </CDropdown>
-          // }
-          chart={
-            <CChartLine
-              className="mt-3 mx-3"
-              style={{ height: '70px' }}
-              data={{
-                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-                datasets: [
-                  {
-                    label: 'My First dataset',
-                    backgroundColor: 'transparent',
-                    borderColor: 'rgba(255,255,255,.55)',
-                    pointBackgroundColor: getStyle('--cui-info'),
-                    data: [1, 18, 9, 17, 34, 22, 11],
-                  },
-                ],
-              }}
-              options={{
-                plugins: {
-                  legend: {
-                    display: false,
-                  },
-                },
-                maintainAspectRatio: false,
-                scales: {
-                  x: {
-                    grid: {
-                      display: false,
-                      drawBorder: false,
-                    },
-                    ticks: {
-                      display: false,
-                    },
-                  },
-                  y: {
-                    min: -9,
-                    max: 39,
-                    display: false,
-                    grid: {
-                      display: false,
-                    },
-                    ticks: {
-                      display: false,
-                    },
-                  },
-                },
-                elements: {
-                  line: {
-                    borderWidth: 1,
-                  },
-                  point: {
-                    radius: 4,
-                    hitRadius: 10,
-                    hoverRadius: 4,
-                  },
-                },
-              }}
-            />
-          }
-        />
-      </CCol>
-      <CCol sm={6} lg={3}>
-        <CWidgetStatsA
-          className="mb-4"
-          color="warning"
-          value={
-            <>
-              2.49{' '}
-              <span className="fs-6 fw-normal">
-                (84.7% <CIcon  />)
-              </span>
-            </>
-          }
-          title="Conversion Rate"
-          // action={
-          //   <CDropdown alignment="end">
-          //     <CDropdownToggle color="transparent" caret={false} className="p-0">
-          //       <CIcon icon={cilOptions} className="text-high-emphasis-inverse" />
-          //     </CDropdownToggle>
-          //     <CDropdownMenu>
-          //       <CDropdownItem>Action</CDropdownItem>
-          //       <CDropdownItem>Another action</CDropdownItem>
-          //       <CDropdownItem>Something else here...</CDropdownItem>
-          //       <CDropdownItem disabled>Disabled action</CDropdownItem>
-          //     </CDropdownMenu>
-          //   </CDropdown>
-          // }
-          chart={
-            <CChartLine
-              className="mt-3"
-              style={{ height: '70px' }}
-              data={{
-                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-                datasets: [
-                  {
-                    label: 'My First dataset',
-                    backgroundColor: 'rgba(255,255,255,.2)',
-                    borderColor: 'rgba(255,255,255,.55)',
-                    data: [78, 81, 80, 45, 34, 12, 40],
-                    fill: true,
-                  },
-                ],
-              }}
-              options={{
-                plugins: {
-                  legend: {
-                    display: false,
-                  },
-                },
-                maintainAspectRatio: false,
-                scales: {
-                  x: {
-                    display: false,
-                  },
-                  y: {
-                    display: false,
-                  },
-                },
-                elements: {
-                  line: {
-                    borderWidth: 2,
-                    tension: 0.4,
-                  },
-                  point: {
-                    radius: 0,
-                    hitRadius: 10,
-                    hoverRadius: 4,
-                  },
-                },
-              }}
-            />
-          }
-        />
-      </CCol>
-      <CCol sm={6} lg={3}>
-        <CWidgetStatsA
-          className="mb-4"
-          color="danger"
-          value={
-            <>
-              44K{' '}
-              <span className="fs-6 fw-normal">
-                (-23.6% <CIcon />)
-              </span>
-            </>
-          }
-          title="Sessions"
-          // action={
-          //   <CDropdown alignment="end">
-          //     <CDropdownToggle color="transparent" caret={false} className="p-0">
-          //       <CIcon icon={cilOptions} className="text-high-emphasis-inverse" />
-          //     </CDropdownToggle>
-          //     <CDropdownMenu>
-          //       <CDropdownItem>Action</CDropdownItem>
-          //       <CDropdownItem>Another action</CDropdownItem>
-          //       <CDropdownItem>Something else here...</CDropdownItem>
-          //       <CDropdownItem disabled>Disabled action</CDropdownItem>
-          //     </CDropdownMenu>
-          //   </CDropdown>
-          // }
-          chart={
-            <CChartBar
-              className="mt-3 mx-3"
-              style={{ height: '70px' }}
-              data={{
-                labels: [
-                  'January',
-                  'February',
-                  'March',
-                  'April',
-                  'May',
-                  'June',
-                  'July',
-                  'August',
-                  'September',
-                  'October',
-                  'November',
-                  'December',
-                  'January',
-                  'February',
-                  'March',
-                  'April',
-                ],
-                datasets: [
-                  {
-                    label: 'My First dataset',
-                    backgroundColor: 'rgba(255,255,255,.2)',
-                    borderColor: 'rgba(255,255,255,.55)',
-                    data: [78, 81, 80, 45, 34, 12, 40, 85, 65, 23, 12, 98, 34, 84, 67, 82],
-                    barPercentage: 0.6,
-                  },
-                ],
-              }}
-              options={{
-                maintainAspectRatio: false,
-                plugins: {
-                  legend: {
-                    display: false,
-                  },
-                },
-                scales: {
-                  x: {
-                    grid: {
-                      display: false,
-                      drawTicks: false,
-                    },
-                    ticks: {
-                      display: false,
-                    },
-                  },
-                  y: {
-                    grid: {
-                      display: false,
-                      drawBorder: false,
-                      drawTicks: false,
-                    },
-                    ticks: {
-                      display: false,
-                    },
-                  },
-                },
-              }}
-            />
-          }
-        />
-      </CCol>
-    </CRow>
-  )
-}
+  const [isLoading, setIsLoading] = useState(true);
 
-export default WidgetsDropdown
+  /* ---------------------------------- USER ---------------------------------- */
+  const [allCount, setAllCount] = useState(null);
+
+  const [allCountTody, setAllCountToday] = useState(null);
+
+  const [allCountWeek, setAllCountWeek] = useState(null);
+
+  const [allCountMonth, setAllCountMonth] = useState(null);
+  /* ------------------------------ SUBSCRIPTION ------------------------------ */
+  const [allCountSub, setAllCountSub] = useState(null);
+
+  const [allCountSubTody, setAllCountSubToday] = useState(null);
+
+  const [allCountSubWeek, setAllCountSubWeek] = useState(null);
+
+  const [allCountSubMonth, setAllCountSubMonth] = useState(null);
+
+  const [userCount, setuserCount] = useState(null);
+  const [today, setToday] = useState(null);
+
+  const [datatableData, setdatatableData] = useState([]);
+  const random = (min, max) =>
+    Math.floor(Math.random() * (max - min + 1) + min);
+
+  const getAllCount = async () => {
+    try {
+      const response = await getDashboardCount();
+      const resUserCount = await getStatuswiseUserCount();
+
+      setuserCount(resUserCount.data.data);
+
+      const newAllCount = response.data.data;
+      // console.log(response.data.data,"123456")
+      setAllCount(newAllCount);
+
+      /* ---------------------------- TODAY COUNT USER ---------------------------- */
+      const newAllCountTody = response.data.data.today;
+      setAllCountToday(newAllCountTody);
+      /* ---------------------------- WEEKLY COUNT USER --------------------------- */
+      const newAllCountWeek = response.data.data.thisWeek;
+      setAllCountWeek(newAllCountWeek);
+
+      /* --------------------------- MONTHLY COUNT USER --------------------------- */
+      const newAllCountMonth = response.data.data.thisMonth;
+      setAllCountMonth(newAllCountMonth);
+
+      /* ---------------------------- ALL SUBSCRIPTION ---------------------------- */
+      const newAllCountsubs = response.data.data.subscriptionCount;
+      // console.log(response.data.data.subscriptionCount,"123456")
+      setAllCountSub(newAllCountsubs);
+      /* ---------------------------- TODAY COUNT USER ---------------------------- */
+      const newAllCountTodysubs = response.data.data.subtoday;
+      setAllCountSubToday(newAllCountTodysubs);
+      /* ---------------------------- WEEKLY COUNT USER --------------------------- */
+      const newAllCountWeeksubs = response.data.data.subthisWeek;
+      setAllCountSubWeek(newAllCountWeeksubs);
+
+      /* --------------------------- MONTHLY COUNT USER --------------------------- */
+      const newAllCountMonthsubs = response.data.data.subthisMonth;
+      setAllCountSubMonth(newAllCountMonthsubs);
+
+      // setIsLoading(false);
+    } catch (err) {
+      if (!err.response.data.isSuccess) {
+        if (err.response.data.status === 401) {
+          toast.error(err.response.data.message);
+        } else {
+          console.log(err.response.data.data, "else");
+        }
+      }
+    }
+  };
+
+  useEffect(() => {
+    getAllCount();
+  }, []);
+
+  return (
+    <>
+      <CRow>
+        <CCardBody>
+          <CCardTitle style={{ marginBottom: "20px" }}>
+            Numbers of Users
+          </CCardTitle>
+        </CCardBody>
+        {/* <CCardHeader>
+            <strong>User</strong>
+          </CCardHeader> */}
+        <CCol sm={6} lg={3}>
+          <CWidgetStatsA
+            className="mb-4"
+            // title="All Users"
+            color="primary"
+            value={
+              <>
+                <CIcon icon={cilPeople} />
+                <br></br>
+                <span style={{ fontSize: "16px" }}>All Users</span>
+                <br></br>
+                <span style={{ fontSize: "18px" }}> {allCount?.userCount}</span>
+              </>
+            }
+          />
+        </CCol>
+        <CCol sm={6} lg={3}>
+          <CWidgetStatsA
+            className="mb-4"
+            color="info"
+            // title="new user today"
+            value={
+              <>
+                <CIcon icon={cilUser} />
+                <br></br>
+                <span style={{ fontSize: "16px" }}>New User Today</span>
+                <br></br>
+                <span style={{ fontSize: "18px" }}> {allCountTody}</span>
+              </>
+            }
+          />
+        </CCol>
+        <CCol sm={6} lg={3}>
+          <CWidgetStatsA
+            className="mb-4"
+            color="warning"
+            // title="new user today"
+            value={
+              <>
+                <CIcon icon={cilUser} />
+                <br></br>
+                <span style={{ fontSize: "16px" }}>New User Weekly</span>
+                <br></br>
+                <span style={{ fontSize: "18px" }}> {allCountWeek}</span>
+              </>
+            }
+          />
+        </CCol>
+
+        <CCol sm={6} lg={3}>
+          <CWidgetStatsA
+            className="mb-4"
+            color="danger"
+            // title="new user today"
+            value={
+              <>
+                <CIcon icon={cilPeople} />
+                <br></br>
+                <span style={{ fontSize: "16px" }}>New User Monthly</span>
+                <br></br>
+                <span style={{ fontSize: "18px" }}> {allCountMonth}</span>
+              </>
+            }
+          />
+        </CCol>
+       
+      </CRow>
+
+      <CRow>
+        <CCardBody>
+          <CCardTitle style={{ marginBottom: "20px" }}>
+            Numbers of Subscriber
+          </CCardTitle>
+        </CCardBody>
+        <CCol sm={6} lg={3}>
+          <CWidgetStatsA
+            className="mb-4"
+            // title="All Subscribers"
+            color="primary"
+            value={
+              <>
+                <CIcon icon={cilPeople} />
+                <br></br>
+                <span style={{ fontSize: "16px" }}>All Subscribers</span>
+                <br></br>
+                <span style={{ fontSize: "18px" }}> {allCountSub}</span>
+              </>
+            }
+          />
+        </CCol>
+        <CCol sm={6} lg={3}>
+          <CWidgetStatsA
+            className="mb-4"
+            color="info"
+            value={
+              <>
+                <CIcon icon={cilUser} />
+                <br></br>
+                <span style={{ fontSize: "16px" }}>New Subscribers Today</span>
+                <br></br>
+                <span style={{ fontSize: "18px" }}>{allCountSubTody}</span>
+              </>
+            }
+          />
+        </CCol>
+        <CCol sm={6} lg={3}>
+          <CWidgetStatsA
+            className="mb-4"
+            color="warning"
+            // title="New Subscribers Weekly"
+            value={
+              <>
+                <CIcon icon={cilUser} />
+                <br></br>
+                <span style={{ fontSize: "16px" }}>New Subscribers Weekly</span>
+                <br></br>
+                <span style={{ fontSize: "18px" }}> {allCountSubWeek}</span>
+              </>
+            }
+          />
+        </CCol>
+
+        <CCol sm={6} lg={3}>
+          <CWidgetStatsA
+            className="mb-4"
+            color="danger"
+            // title="New Subscribers Monhtly"
+            value={
+              <>
+                <CIcon icon={cilPeople} />
+                <br></br>
+                <span style={{ fontSize: "16px" }}>
+                  New Subscribers Monhtly
+                </span>
+                <br></br>
+                <span style={{ fontSize: "18px" }}> {allCountSubMonth}</span>
+              </>
+            }
+          />
+        </CCol>
+       
+      </CRow>
+    </>
+  );
+};
+
+export default WidgetsDropdown;

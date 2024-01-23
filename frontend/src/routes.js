@@ -27,6 +27,11 @@ const AddPet = React.lazy(() => import("./views/Pet/AddPet"));
 const Sign = React.lazy(() => import("./views/Zodiac Sign/IndexSign"));
 const AddSign = React.lazy(() => import("./views/Zodiac Sign/AddSign"));
 
+/* --------------------------------- COUNTY CODE -------------------------------- */
+const CountryCode = React.lazy(() => import("./views/country Code/index"));
+const CountryCodeForm = React.lazy(() => import("./views/country Code/countryCodeFrom"));
+
+
 const Notification=React.lazy(()=>import('./views/notification/Index'));
 const AddNotification=React.lazy(()=>import('./views/notification/NotificationForm'))
 
@@ -115,6 +120,10 @@ const routes = [
   /* ---------------------- HOBBIES ROUTES WITH ADD,LIST ---------------------- */
   { path: "/interest", name: "", element: Interest, exact: true },
   { path: "/InterestForm", name: "", element: InterestForm, exact: true },
+
+    /* ---------------------- COUNTRY CODE ROUTES WITH ADD,LIST ---------------------- */
+    { path: "/CountryCode", name: "", element: CountryCode, exact: true },
+    { path: "/CountryCodeForm", name: "", element: CountryCodeForm  , exact: true },
 
   /* ------------------------ PETS ROUTES WITH ADD,LIST ----------------------- */
   { path: "/pets_list", name: "", element: Pets, exact: true },
