@@ -9,7 +9,7 @@ const {
   
 router.get("/getDashboardCount", 
 // authenticAdmin,
-accessToken(),
+// accessToken(),
  getDashboardCount);
 
 module.exports = router;

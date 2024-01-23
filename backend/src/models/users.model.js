@@ -27,7 +27,9 @@ const userSchema = new mongoose.Schema(
     gender: {
       type: String,
     },
-    
+    nationality:{
+      type : mongoose.Types.ObjectId , ref : 'countrycode'
+    },
     like:[
       {type : mongoose.Types.ObjectId , ref : 'like'}
     ],

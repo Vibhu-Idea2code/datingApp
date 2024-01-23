@@ -9,7 +9,7 @@ const storage = multer.diskStorage({
       file.fieldname == "profile" ||  
       file.fieldname == "logo" ||
       file.fieldname == "admin_image" ||  file.fieldname == "image" || 
-      file.fieldname == "user_img"
+      file.fieldname == "user_img" ||   file.fieldname == "countryflag" 
     ) {
       fs.mkdirSync(path.join(__dirname, "../public/profile_images"), {
         recursive: true,

@@ -20,6 +20,7 @@ module.exports.sexualController = require("./web/sexual.controller");
 module.exports.zodiacSignController = require("./web/sign.controller");
 module.exports.NotificationController = require("./web/notification.controller");
 module.exports.SubscriptionController = require("./web/subscription.controller");
+module.exports.countryCodeController = require("./web/countryCode.controller");
 
 /* ----------------------------- DEMO CONTROLLER ---------------------------- */
 // module.exports.tokenController = require("./demo/token.controller");

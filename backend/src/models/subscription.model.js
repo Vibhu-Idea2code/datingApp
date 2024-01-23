@@ -16,6 +16,9 @@ const subSchema = new mongoose.Schema(
           ref: 'user',
         },
       ],
+      nationality:{
+        type : mongoose.Types.ObjectId , ref : 'countrycode'
+      },
       status:{
         type : String ,
         default:true,

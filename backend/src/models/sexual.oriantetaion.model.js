@@ -5,6 +5,9 @@ const orientaionSchema = new mongoose.Schema({
   name: { type: String, required: true },
   logo: { type: String },
   status:{type: Boolean,default: true},
+  nationality:{
+    type : mongoose.Types.ObjectId , ref : 'countrycode'
+  },
 },{
   timestamps: true,
   versionKey: false

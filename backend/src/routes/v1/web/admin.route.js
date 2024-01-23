@@ -66,7 +66,7 @@ router.put(
   
   /* -------------------------- CREATE USER BY ADMIN -------------------------- */
   router.get("/user-list", 
-  accessToken(),
+  // accessToken(),
   adminUserController.getAllUser
   );
   router.post(

@@ -14,6 +14,8 @@ module.exports.Message = require("./message.model");
 module.exports.SuperLike = require("./demo/superLike.model");
 module.exports.Report = require("./report.model");
 module.exports.Boost = require("./boosts.profile.model");
+module.exports.CountryCode = require("./countryCode.model");
+
 
 
 

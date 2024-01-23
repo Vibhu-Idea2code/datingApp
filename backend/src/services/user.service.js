@@ -38,7 +38,10 @@ const getUserList = async (filter, options) => {
   }).populate({
     path: "plan",
     select: ["_id", "planType",],
-  });;
+  }).populate({
+    path: "nationality",
+    select: ["_id", "countryCode",],
+  });
 };
 
 const getUserListDis = async (filter, options) => {

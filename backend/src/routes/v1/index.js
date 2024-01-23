@@ -9,6 +9,7 @@ const planRoute = require("./web/plan.route");
 const adminRoute = require("./web/admin.route");
 const notificationRoute = require("./web/notification.route");
 const dashboardRoute = require("./web/dashboard.route");
+const countryCodeRoute = require("./web/countryCode.route");
 
 
 const router = express.Router();
@@ -21,6 +22,7 @@ router.use("/plan", planRoute);
 router.use("/admin", adminRoute);
 router.use("/notification", notificationRoute);
 router.use("/dashboard", dashboardRoute);
+router.use("/countryCode", countryCodeRoute);
 
 
 /* -------------------------------{APP} USER ROUTES ------------------------------ */
