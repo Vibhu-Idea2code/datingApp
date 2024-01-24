@@ -54,34 +54,53 @@ const createSubscription = async (req, res) => {
 
   const getSubListDas = async (req, res) => {
     try {
-      // Define age ranges
-      const ageRanges = [
-        { min: 18, max: 25 },
-        { min: 26, max: 30 },
-        // Add more age ranges as needed
-      ];
-  
-      // Create an object to store user counts for each age range
-      const ageRangeCounts = {};
-  
-      // Loop through each age range
-      ageRanges.forEach(range => {
-        // Use filter to get users within the current age range
-        const usersInAgeRange = Subscription.filter(user => user.age >= range.min && user.age <= range.max);
-  
-        // Store the count for the current age range
-        ageRangeCounts[`${range.min}-${range.max}`] = usersInAgeRange.length;
-      });
-  
+      const subscriptions = await Subscription.aggregate([
+        {
+          $lookup: {
+            from: "users", // Assuming the name of your user collection is "users"
+            localField: "userid",
+            foreignField: "_id",
+            as: "user",
+          },
+        },
+        {
+          $unwind: "$user",
+        },
+        {
+          $group: {
+            _id: {
+              $switch: {
+                branches: [
+                  { case: { $and: [{ $gte: ["$user.age", 18] }, { $lte: ["$user.age", 30] }] }, then: "18-30" },
+                  { case: { $and: [{ $gte: ["$user.age", 31] }, { $lte: ["$user.age", 39] }] }, then: "30-39" },
+                  // Add more cases for other age ranges as needed
+                ],
+                default: "Unknown",
+              },
+            },
+            count: { $sum: 1 },
+          },
+        },
+        {
+          $project: {
+            ageRange: "$_id",
+            count: 1,
+            _id: 0,
+          },
+        },
+      ]);
+
       res.status(200).json({
-        message: "Successfully fetched subscription data with age filtering",
+        message: "successfully fetched all Subscription",
         status: true,
-        ageRangeCounts,
+        data: subscriptions,
       });
     } catch (error) {
       res.status(400).json({ success: false, message: error.message });
     }
-  };
+};
+
+
 
   
 module.exports = { createSubscription,getSubList,getSubListDas}
