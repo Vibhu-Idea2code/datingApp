@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { getDashboardCount } = require("../../../controllers/web/dashboard.controller");
+const { getDashboardCount,getDadshboard } = require("../../../controllers/web/dashboard.controller");
 // const authenticAdmin = require("../../helper/verifyAdminToken");
 const {
     refreshToken,
@@ -11,5 +11,7 @@ router.get("/getDashboardCount",
 // authenticAdmin,
 // accessToken(),
  getDashboardCount);
+
+
 
 module.exports = router;

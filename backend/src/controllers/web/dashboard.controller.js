@@ -6,6 +6,7 @@ const Subscription = require("../../models/subscription.model");
 
 
 const mongoose = require("mongoose");
+const { userService } = require("../../services");
 
 //Get Dashboard Count Data
 const getDashboardCount = async (req, res, next) => {
@@ -43,18 +44,7 @@ const getDashboardCount = async (req, res, next) => {
     
         subtoday: subscriptionCountToday,
         subthisWeek: subscriptionCountThisWeek,
-        subthisMonth: subscriptionCountThisMonth,
-      // },
-      // subscriptionCount: {
-        
-      // },
-  //  today: userCountToday,
-  //     thisWeek: userCountThisWeek,
-  //     thisMonth: userCountThisMonth,
-  //     today: subscriptionCountToday,
-  //     thisWeek: subscriptionCountThisWeek,
-  //     thisMonth: subscriptionCountThisMonth,
-     
+        subthisMonth: subscriptionCountThisMonth,     
     };
 
     res.status(200).json({
@@ -66,6 +56,9 @@ const getDashboardCount = async (req, res, next) => {
     next(err);
   }
 };
+
+
+
 module.exports = {
-  getDashboardCount,
+  getDashboardCount
 };

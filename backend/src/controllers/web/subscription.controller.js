@@ -51,5 +51,37 @@ const createSubscription = async (req, res) => {
     }
   };
 
+
+  const getSubListDas = async (req, res) => {
+    try {
+      // Define age ranges
+      const ageRanges = [
+        { min: 18, max: 25 },
+        { min: 26, max: 30 },
+        // Add more age ranges as needed
+      ];
   
-module.exports = { createSubscription,getSubList}
+      // Create an object to store user counts for each age range
+      const ageRangeCounts = {};
+  
+      // Loop through each age range
+      ageRanges.forEach(range => {
+        // Use filter to get users within the current age range
+        const usersInAgeRange = Subscription.filter(user => user.age >= range.min && user.age <= range.max);
+  
+        // Store the count for the current age range
+        ageRangeCounts[`${range.min}-${range.max}`] = usersInAgeRange.length;
+      });
+  
+      res.status(200).json({
+        message: "Successfully fetched subscription data with age filtering",
+        status: true,
+        ageRangeCounts,
+      });
+    } catch (error) {
+      res.status(400).json({ success: false, message: error.message });
+    }
+  };
+
+  
+module.exports = { createSubscription,getSubList,getSubListDas}

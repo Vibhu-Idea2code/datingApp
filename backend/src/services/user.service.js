@@ -17,7 +17,8 @@ const createUser = async (first_name,last_name) => {
  * @returns {Promise<User>}
  */
 const getUserList = async (filter, options) => {
-  return User.find().populate({
+  return User.find()
+  .populate({
     path: "interest",
     select: ["_id", "name"],
   }).populate({

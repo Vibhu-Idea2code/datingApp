@@ -27,6 +27,8 @@ const deleteFiles = require("../../helpers/deleteFiles");
         jobTitle,
         email,
         phoneNumber,
+        nationality,
+        plan
       } = req.body; // Extract the 'role' and 'gender' fields from the request body
       const userExists = await userService.getUserById(userId);
       console.log(userExists);
@@ -61,6 +63,8 @@ const deleteFiles = require("../../helpers/deleteFiles");
       userExists.jobTitle = jobTitle; // Update the 'firstName' field
       userExists.email = email; // Update the 'firstName' field
       userExists.user_img = user_img; // Update the 'firstName
+      userExists.nationality = nationality; // Update the 'firstName
+      userExists.plan = plan; // Update the 'firstName
   
       const baseUrl =
       req.protocol +
@@ -146,6 +150,8 @@ const deleteFiles = require("../../helpers/deleteFiles");
         ageControl:reqBody.ageControl,
         distanceControl:reqBody.distanceControl,
         image:reqBody.image,
+        plan:reqBody.plan,
+        nationality:reqBody.nationality,
 
         // user_img: reqBody.user_img,
         // age:reqBody.age,
@@ -222,6 +228,58 @@ const getAllUser = async (req, res) => {
       res.status(404).json({ error: error.message });
     }
   };
+  // const User = require('../models/User'); // Import your User model
+  const getdashboard = async (req, res) => {
+    try {
+      // Define age ranges
+      const ageRanges = [
+        { min: 18, max: 25 },
+        { min: 26, max: 30 },
+        // Add more age ranges as needed
+      ];
+  
+      // Create an object to store the count and details for each age range and nationality
+      const ageRangeDetails = {};
+  
+      // Loop through each age range
+      for (const range of ageRanges) {
+        // Find users within the current age range
+        const usersInAgeRange = await User.find({
+          age: { $gte: range.min, $lte: range.max },
+        });
+  
+        // Filter users by nationality if provided
+        const filteredUsers = req.query.nationality
+          ? usersInAgeRange.filter((user) => user.nationality === req.query.nationality)
+          : usersInAgeRange;
+  
+        // Store the count and details in the ageRangeDetails object
+        ageRangeDetails[`${range.min}-${range.max}`] = {
+          count: filteredUsers.length,
+          users: filteredUsers.map((user) => ({
+            _id: user._id,
+            name: user.name,
+            age: user.age,
+            nationality: user.nationality,
+          })),
+        };
+      }
+  
+      res.status(200).json({
+        success: true,
+        message: "User details and age range counts successfully!",
+        ageRangeDetails: ageRangeDetails,
+      });
+    } catch (error) {
+      res.status(404).json({ error: error.message });
+    }
+  };
+  
+  
+  
+  
+  // module.exports = getdashboard;
+  
   
   /* ------------------------------ UPDATE STATUS ----------------------------- */
   const updateUserStatus = async (req, res, next) => {
@@ -320,6 +378,8 @@ const getStatuswiseUserCount = async (req, res, next) => {
     updateUserStatus,
     deleteMultiUser,
     updateUserStatusMange,
-    getStatuswiseUserCount
+    getStatuswiseUserCount,
+   getdashboard 
+
   };
   

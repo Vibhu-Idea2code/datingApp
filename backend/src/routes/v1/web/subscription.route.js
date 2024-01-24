@@ -8,6 +8,10 @@ SubscriptionController.createSubscription);
 router.get('/list',
 SubscriptionController.getSubList);
 
+
+router.get('/list-dash',
+SubscriptionController.getSubListDas);
+
 // router.get('/id/:planId',
 // planController.getPlanId);
 

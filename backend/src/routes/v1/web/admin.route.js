@@ -69,6 +69,12 @@ router.put(
   // accessToken(),
   adminUserController.getAllUser
   );
+
+  router.get("/dashboard", 
+  // accessToken(),
+  adminUserController.getdashboard
+  );
+
   router.post(
     "/create-user",
     // upload.single("image"),
