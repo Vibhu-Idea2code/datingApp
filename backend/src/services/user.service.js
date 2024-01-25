@@ -6,8 +6,8 @@ const User = require("../models/users.model");
  * @param {object} reqBody
  * @returns {Promise<User>}
  */
-const createUser = async (first_name,last_name) => {
-  return User.create(first_name,last_name);
+const createUser = async (first_name, last_name) => {
+  return User.create(first_name, last_name);
 };
 
 /**
@@ -18,42 +18,53 @@ const createUser = async (first_name,last_name) => {
  */
 const getUserList = async (filter, options) => {
   return User.find()
-  .populate({
-    path: "interest",
-    select: ["_id", "name"],
-  }).populate({
-    path: "sign",
-    select: ["_id", "name"],
-  }).populate({
-    path: "pets",
-    select: ["_id", "name"],
-  }).populate({
-    path: "sexual",
-    select: ["_id", "name"],
-  }).populate({
-    path: "boost",
-    select: ["_id","status"],
-  }).populate({
-    path: "like",
-    select: ["_id", "fromuserid",],
-  }).populate({
-    path: "plan",
-    select: ["_id", "planType",],
-  }).populate({
-    path: "nationality",
-    select: ["_id", "countryCode",],
-  });
+    .populate(
+       "interest"
+     
+    )
+    .populate({
+      path: "sign",
+      select: ["_id", "name"],
+    })
+    .populate(
+     "pets"
+      // select: ["_id", "name"],
+    )
+    .populate(
+      "sexual"
+    )
+    .populate(
+       "boost"
+      // select: ["_id", "status"],
+  
+    )
+    .populate(
+             "like"
+      // select: ["_id", "fromuserid"],
+    )
+    .populate({
+      path: "plan",
+      select: ["_id", "planType"],
+    })
+    .populate({
+      path: "nationality",
+      select: ["_id", "countryCode"],
+    })
+    .populate({
+      path: "subscription",
+      select: ["_id", "planid", "userid"],
+    });
 };
 
 const getUserListDis = async (filter, options) => {
-  return User.find() .populate({
+  return User.find().populate({
     path: "like",
-    select: ["_id","first_name"],
+    select: ["_id", "first_name"],
   });
 };
 const getUserListSort = async (filter, options) => {
   // return User.find()
-return  User.find({ ...filter, action: "3" }); 
+  return User.find({ ...filter, action: "3" });
 };
 
 /**
@@ -65,11 +76,11 @@ const getUserByEmail = async (email) => {
   return User.findOne({ email });
 };
 
-const getUserByPhone=async (phoneNumber)=>{
-  return User.findOne({phoneNumber});
-}
+const getUserByPhone = async (phoneNumber) => {
+  return User.findOne({ phoneNumber });
+};
 const findUserByEmail = async (email) => {
-  return await User.findOne({email});
+  return await User.findOne({ email });
 };
 const findOtpByOtp = async (otp) => {
   return await User.findOne(otp);
@@ -90,7 +101,7 @@ const getUserById = async (userId) => {
 
 // const user = await User.findById(userId).
 const getUserByIdRef = async (userId) => {
-  return User.findById(userId).populate('interest').exec();
+  return User.findById(userId).populate("interest").exec();
 };
 
 /**
@@ -109,7 +120,6 @@ const updateDetails = async (userId, updateBody) => {
  * @returns {Promise<User>}
  */
 const deleteUser = async (userId) => {
-  
   return User.findByIdAndDelete(userId);
 };
 
@@ -122,7 +132,7 @@ const getUserByPhoneNumber = async (phoneNumber) => {
 };
 
 const findUserByLogonEmail = async (email) => {
-  return await User.findOne({email});
+  return await User.findOne({ email });
 };
 const updateUser = async (userId, updateBody) => {
   return User.findByIdAndUpdate(userId, { $set: updateBody });
@@ -145,34 +155,30 @@ const getAllUser = async (role) => {
 };
 
 const updateDetailsInte = async (userId, updateBody) => {
-  return User.findByIdAndUpdate(userId, { $set: updateBody })
-  .populate({
-      path: "interest",
-      select: ["_id"],
-    });
+  return User.findByIdAndUpdate(userId, { $set: updateBody }).populate({
+    path: "interest",
+    select: ["_id"],
+  });
 };
 const updateDetailsSign = async (userId, updateBody) => {
-  return User.findByIdAndUpdate(userId, { $set: updateBody })
-  .populate({
-      path: "sign",
-      select: ["_id"],
-    });
+  return User.findByIdAndUpdate(userId, { $set: updateBody }).populate({
+    path: "sign",
+    select: ["_id"],
+  });
 };
 
 const updateDetailsPets = async (userId, updateBody) => {
-  return User.findByIdAndUpdate(userId, { $set: updateBody })
-  .populate({
-      path: "pets",//aa schema name avse
-      select: ["_id"],
-    });
+  return User.findByIdAndUpdate(userId, { $set: updateBody }).populate({
+    path: "pets", //aa schema name avse
+    select: ["_id"],
+  });
 };
 
 const updateDetailsSexualOrientation = async (userId, updateBody) => {
-  return User.findByIdAndUpdate(userId, { $set: updateBody })
-  .populate({
-      path: "sexual",//aa schema name avse
-      select: ["_id"],
-    });
+  return User.findByIdAndUpdate(userId, { $set: updateBody }).populate({
+    path: "sexual", //aa schema name avse
+    select: ["_id"],
+  });
 };
 module.exports = {
   createUser,
@@ -197,6 +203,6 @@ module.exports = {
   updateDetailsPets,
   updateDetailsSexualOrientation,
   getUserListDis,
-  getUserListSort
+  getUserListSort,
   // getAllUsers
 };

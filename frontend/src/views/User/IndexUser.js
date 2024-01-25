@@ -144,8 +144,8 @@ export default function IndexUser() {
       label: "Action",
       options: {
         customBodyRender: (value) => {
-          const editdata = datatableData.find((data) => data._id === value);
-          // console.log(editdata);
+          // const editdata = datatableData.find((data) => data._id === value);
+          // // console.log(editdata);
           return (
             <div>
               <Icons.Edit
@@ -159,6 +159,7 @@ export default function IndexUser() {
                   const editdata = datatableData.find(
                     (data) => data._id === value
                   );
+                  console.log(editdata,"editdata kjfsdfi")
                   navigate("/indexForm", {
                     state: { editdata: editdata, baseurl: baseurl },
                   });

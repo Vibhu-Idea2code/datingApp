@@ -47,18 +47,6 @@ const subSchema = new mongoose.Schema(
   // }
 );
 
-// subscribe table
-
-// user id 
-// plan id
-// plan name
-// status
-// timestamp
-// plan name
-// description
-// price per month
-// 1:active
-// 2:deactive
 
 // Declaring model for purchasenplan
 const Subscription = mongoose.model("subscription", subSchema);

@@ -56,7 +56,7 @@ const UserForm = () => {
     if (state) {
       // Access the state data (editdata and baseUrl)
       const { editdata, baseurl } = state;
-
+console.log(editdata,"editdata")
       setisupdate(editdata._id);
       setValue("first_name", editdata.first_name);
       setValue("last_name", editdata.last_name);
@@ -64,7 +64,13 @@ const UserForm = () => {
       setValue("interest", editdata.interest);
       setValue("sign", editdata.sign);
       setValue("pets", editdata.pets);
-      setValue("sexual", editdata.sexual);
+      // setValue("sexual", editdata.sexual.name);
+      // console.log(editdata.sexual,"editdata.sexual._id")
+    //   editdata.sexual.forEach(item => {
+    //     // console.log(item, "editdata.sexual item");
+    //     console.log(item._id, "editdata.sexual item ID");
+    // });
+    
       setValue("school", editdata.school);
       setValue("address", editdata.address);
       setValue("jobTitle", editdata.jobTitle);
@@ -346,6 +352,7 @@ const UserForm = () => {
               <CCol md={4}>
                 <CFormLabel htmlFor="birthDate">Birth Date</CFormLabel>
                 <CFormInput
+                selected={selectedDate}
                   type="date"
                   id="birthDate"
                   {...register("birthDate", {

@@ -28,13 +28,13 @@ const userSchema = new mongoose.Schema(
       type: String,
     },
     nationality:{
-      type : mongoose.Types.ObjectId , ref : 'countrycode'
+      type : mongoose.Schema.Types.ObjectId , ref : 'countrycode'
     },
     like:[
-      {type : mongoose.Types.ObjectId , ref : 'like'}
+      {type : mongoose.Schema.Types.ObjectId , ref : 'like'}
     ],
     boost:[
-      {type : mongoose.Types.ObjectId , ref : 'boost'}
+      {type : mongoose.Schema.Types.ObjectId , ref : 'boost'}
     ],
     sexual: [
       {
@@ -42,7 +42,9 @@ const userSchema = new mongoose.Schema(
         ref: "sexual",
       },
     ],
-
+    subscription:[
+      {type : mongoose.Schema.Types.ObjectId , ref : 'subscription'}
+    ],
 
     showMe: {
       type: String,

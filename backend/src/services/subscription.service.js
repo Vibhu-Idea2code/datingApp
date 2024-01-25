@@ -11,7 +11,7 @@ const getSubscriptionList = async (filter, options) => {
     select: ["_id", "name","planType","price","duration"],
   }).populate({
     path: "userid",
-    select: ["_id", "first_name"],
+    select: ["_id", "first_name","nationality"],
   });
 };
 

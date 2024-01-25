@@ -1,4 +1,4 @@
-const { Subscription } = require("../../models");
+const { Subscription, User } = require("../../models");
 const { subscriptionService } = require("../../services");
 const mongoose = require("mongoose");
 
@@ -51,54 +51,51 @@ const createSubscription = async (req, res) => {
     }
   };
 
-
-  const getSubListDas = async (req, res) => {
-    try {
-      const subscriptions = await Subscription.aggregate([
-        {
-          $lookup: {
-            from: "users", // Assuming the name of your user collection is "users"
-            localField: "userid",
-            foreignField: "_id",
-            as: "user",
-          },
-        },
-        {
-          $unwind: "$user",
-        },
-        {
-          $group: {
-            _id: {
-              $switch: {
-                branches: [
-                  { case: { $and: [{ $gte: ["$user.age", 18] }, { $lte: ["$user.age", 30] }] }, then: "18-30" },
-                  { case: { $and: [{ $gte: ["$user.age", 31] }, { $lte: ["$user.age", 39] }] }, then: "30-39" },
-                  // Add more cases for other age ranges as needed
-                ],
-                default: "Unknown",
-              },
-            },
-            count: { $sum: 1 },
-          },
-        },
-        {
-          $project: {
-            ageRange: "$_id",
-            count: 1,
-            _id: 0,
-          },
-        },
-      ]);
-
+        const getSubListDas = async (req, res) => {
+          try {
+            const staticAgeRange = [
+              { min: 18, max: 25 },
+              { min: 26, max: 30 },
+            ];
+  
+      const ageRangeDetails = {};
+  
+      for (const range of staticAgeRange) {
+        // Find subscriptions for users within the current age range and with the specified nationality
+        const subscriptions = await Subscription.find({
+          'userid.age': { $gte: range.min, $lte: range.max },
+        })
+          .populate({
+            path: 'userid',
+            populate: { path: 'user' } // Populate the countryCode field in the user document
+          });
+  
+        // Filter subscriptions based on nationality (assuming 'nationality' is a field in the CountryCode model)
+        const filteredSubscriptions = subscriptions.filter(sub => sub.userid.countryCode.nationality === 'desiredNationality');
+  
+        // Store details for the current age range
+        ageRangeDetails[`${range.min}-${range.max}`] = {
+          subscriptions: filteredSubscriptions,
+        };
+      }
+  
       res.status(200).json({
-        message: "successfully fetched all Subscription",
+        message: "Successfully fetched subscriptions based on age range and nationality",
         status: true,
-        data: subscriptions,
+        ageRangeDetails,
       });
     } catch (error) {
       res.status(400).json({ success: false, message: error.message });
     }
-};
+  };
+  
+  
+  
+
+  
+  
+  
+  
 
 
 
