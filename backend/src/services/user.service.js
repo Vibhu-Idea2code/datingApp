@@ -22,10 +22,9 @@ const getUserList = async (filter, options) => {
        "interest"
      
     )
-    .populate({
-      path: "sign",
-      select: ["_id", "name"],
-    })
+    .populate(
+      "sign"
+    )
     .populate(
      "pets"
       // select: ["_id", "name"],
@@ -42,18 +41,16 @@ const getUserList = async (filter, options) => {
              "like"
       // select: ["_id", "fromuserid"],
     )
-    .populate({
-      path: "plan",
-      select: ["_id", "planType"],
-    })
-    .populate({
-      path: "nationality",
-      select: ["_id", "countryCode"],
-    })
-    .populate({
-      path: "subscription",
-      select: ["_id", "planid", "userid"],
-    });
+    .populate(
+      "plan"
+     )
+    .populate(
+      "nationality"
+     
+    )
+    .populate(
+      "subscription"
+    );
 };
 
 const getUserListDis = async (filter, options) => {

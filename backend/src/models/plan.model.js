@@ -48,10 +48,10 @@ const planSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    purchasedByUser: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'user', // Assuming 'user' is the name of your user model
-    },
+    // purchasedByUser: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: 'user', // Assuming 'user' is the name of your user model
+    // },
   },
   {
     timestamps: true,

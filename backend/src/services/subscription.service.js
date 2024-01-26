@@ -6,13 +6,24 @@ const createSubscription = async (reqBody) => {
 };
 /**get Subscription list */
 const getSubscriptionList = async (filter, options) => {
- return Subscription.find().populate({
-    path: "planid",
-    select: ["_id", "name","planType","price","duration"],
-  }).populate({
-    path: "userid",
-    select: ["_id", "first_name","nationality"],
-  });
+ return Subscription.find()
+//  .populate(
+//   "planid"
+//     // path: "planid",
+//     // select: ["_id", "name","planType","price","duration"],
+  
+//   )
+.populate({
+  path: 'userid',
+  populate: [
+    // { path: 'plan', select: 'planType _id' }, // Include specific fields from Plan
+    { path: 'nationality', select: 'countryCode _id' } // Include specific fields from Nationality
+  ]
+})
+// .exec((err, Subscription) => {
+//   if (err) throw err;
+//   console.log(Subscription);
+// });
 };
 
 

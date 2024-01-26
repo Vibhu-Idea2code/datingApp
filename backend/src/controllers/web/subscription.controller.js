@@ -51,53 +51,77 @@ const createSubscription = async (req, res) => {
     }
   };
 
-        const getSubListDas = async (req, res) => {
-          try {
-            const staticAgeRange = [
-              { min: 18, max: 25 },
-              { min: 26, max: 30 },
-            ];
-  
-      const ageRangeDetails = {};
-  
-      for (const range of staticAgeRange) {
-        // Find subscriptions for users within the current age range and with the specified nationality
-        const subscriptions = await Subscription.find({
-          'userid.age': { $gte: range.min, $lte: range.max },
-        })
-          .populate({
-            path: 'userid',
-            populate: { path: 'user' } // Populate the countryCode field in the user document
-          });
-  
-        // Filter subscriptions based on nationality (assuming 'nationality' is a field in the CountryCode model)
-        const filteredSubscriptions = subscriptions.filter(sub => sub.userid.countryCode.nationality === 'desiredNationality');
-  
-        // Store details for the current age range
-        ageRangeDetails[`${range.min}-${range.max}`] = {
-          subscriptions: filteredSubscriptions,
-        };
-      }
-  
-      res.status(200).json({
-        message: "Successfully fetched subscriptions based on age range and nationality",
-        status: true,
-        ageRangeDetails,
-      });
+  const getSubListDas = async (req, res) => {
+    try {
+        // Define age ranges
+        const ageRanges = [
+            { min: 18, max: 20 },
+            { min: 21, max: 26 },
+            { min: 27, max: 29 },
+            { min: 30, max: 35 },
+            { min: 31, max: 41 },
+            { min: 42, max: 52 },
+            { min: 53, max: Infinity },
+            // Add more age ranges as needed
+            // ... add more age ranges as necessary
+        ];
+
+        const ageRangeDetails = {};
+
+        // Loop through each age range
+        for (const range of ageRanges) {
+            // Count users within the current age range
+            const usersCount = await User.countDocuments({
+                age: { $gte: range.min, $lte: range.max },
+            });
+
+            // Retrieve subscriptions based on age range
+            let subscriptions = await subscriptionService.getSubscriptionList(req, res, {
+                ageRange: range,
+                // Add more filters if needed
+            });
+
+            // Include user details only if there are users
+            if (usersCount > 0) {
+                ageRangeDetails[`${range.min}-${range.max}`] = {
+                    users: usersCount,
+                   
+                    user_details: await User.find({ age: { $gte: range.min, $lte: range.max } },), // Include user details
+                };
+            } else {
+                ageRangeDetails[`${range.min}-${range.max}`] = {
+                    users: 0,
+                };
+            }
+
+            // Exclude user details when usersCount is 0
+            if (usersCount === 0) {
+                delete ageRangeDetails[`${range.min}-${range.max}`].user_details;
+            }
+
+            console.log(`Subscriptions for age range ${range.min}-${range.max}:`, subscriptions);
+        }
+
+        res.status(200).json({
+            message: "Successfully fetched subscriptions with filters",
+            status: true,
+            data: ageRangeDetails,
+        });
     } catch (error) {
-      res.status(400).json({ success: false, message: error.message });
+        console.error('Error:', error);
+        res.status(400).json({ success: false, message: error.message });
     }
-  };
-  
+};
+
+
+
+
+
   
   
 
   
   
   
-  
-
-
-
   
 module.exports = { createSubscription,getSubList,getSubListDas}
