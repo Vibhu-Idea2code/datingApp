@@ -74,6 +74,7 @@ router.put(
   // accessToken(),
   adminUserController.getdashboard
   );
+  
 
   router.post(
     "/create-user",

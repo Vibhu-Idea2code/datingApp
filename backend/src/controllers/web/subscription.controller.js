@@ -51,6 +51,8 @@ const createSubscription = async (req, res) => {
     }
   };
 
+
+
   const getSubListDas = async (req, res) => {
     try {
         // Define age ranges
@@ -61,43 +63,71 @@ const createSubscription = async (req, res) => {
             { min: 30, max: 35 },
             { min: 31, max: 41 },
             { min: 42, max: 52 },
-            { min: 53, max: Infinity },
+            { min: 53, max: 64 },
+            { min: 65, max: Infinity},
             // Add more age ranges as needed
             // ... add more age ranges as necessary
         ];
 
-        const ageRangeDetails = {};
+        const ageRangeDetails = [];
 
-        // Loop through each age range
         for (const range of ageRanges) {
-            // Count users within the current age range
             const usersCount = await User.countDocuments({
                 age: { $gte: range.min, $lte: range.max },
             });
 
-            // Retrieve subscriptions based on age range
+            // Get subscription list for the current age range
             let subscriptions = await subscriptionService.getSubscriptionList(req, res, {
                 ageRange: range,
                 // Add more filters if needed
             });
+            subscriptions = subscriptions.filter(subscription => {
+              return subscription.age >= range.min && subscription.age <= range.max;
+          });
 
-            // Include user details only if there are users
+            const ageRangeDetail = {
+                range: `${range.min}-${range.max}`,
+                userCount: usersCount,
+                nationalityCounts: {},
+                userDetails: [],
+                subscriptions: subscriptions, // Include subscriptions in the result
+            };
+
             if (usersCount > 0) {
-                ageRangeDetails[`${range.min}-${range.max}`] = {
-                    users: usersCount,
-                   
-                    user_details: await User.find({ age: { $gte: range.min, $lte: range.max } },), // Include user details
-                };
-            } else {
-                ageRangeDetails[`${range.min}-${range.max}`] = {
-                    users: 0,
-                };
+                const nationalityCounts = await User.aggregate([
+                    {
+                        $match: {
+                            age: { $gte: range.min, $lte: range.max },
+                            nationality: { $exists: true },
+                        },
+                    },
+                    {
+                        $group: {
+                            _id: '$nationality',
+                            count: { $sum: 1 },
+                        },
+                    },
+                ]);
+
+                if (nationalityCounts.length > 0) {
+                    nationalityCounts.forEach((item) => {
+                        // Calculate the percentage and store it in the nationalityCounts object
+                        ageRangeDetail.nationalityCounts[item._id] = 
+                             item.count
+                            // percentage: (item.count / usersCount) * 100,
+                        
+                    });
+                }
+
+                // Include user details for users with unique nationality
+                const uniqueNationalities = Object.keys(ageRangeDetail.nationalityCounts);
+                ageRangeDetail.userDetails = await User.find({
+                    age: { $gte: range.min, $lte: range.max },
+                    nationality: { $in: uniqueNationalities },
+                }, 'nationality');
             }
 
-            // Exclude user details when usersCount is 0
-            if (usersCount === 0) {
-                delete ageRangeDetails[`${range.min}-${range.max}`].user_details;
-            }
+            ageRangeDetails.push(ageRangeDetail);
 
             console.log(`Subscriptions for age range ${range.min}-${range.max}:`, subscriptions);
         }
@@ -114,14 +144,6 @@ const createSubscription = async (req, res) => {
 };
 
 
-
-
-
-  
-  
-
-  
-  
   
   
 module.exports = { createSubscription,getSubList,getSubListDas}

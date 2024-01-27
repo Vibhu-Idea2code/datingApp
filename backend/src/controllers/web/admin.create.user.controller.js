@@ -228,52 +228,77 @@ const getAllUser = async (req, res) => {
       res.status(404).json({ error: error.message });
     }
   };
-  // const User = require('../models/User'); // Import your User model
+  
   const getdashboard = async (req, res) => {
     try {
-      // Define age ranges
-      const ageRanges = [
-        { min: 18, max: 25 },
-        { min: 26, max: 30 },
-        // Add more age ranges as needed
-      ];
-  
-      // Create an object to store the count and details for each age range and nationality
-      const ageRangeDetails = {};
-  
-      // Loop through each age range
-      for (const range of ageRanges) {
-        // Find users within the current age range
-        const usersInAgeRange = await User.find({
-          age: { $gte: range.min, $lte: range.max },
+        // Define age ranges
+        const ageRanges = [
+            { min: 18, max: 25 },
+            { min: 26, max: 30 },
+            { min: 31, max: 41 },
+            { min: 42, max: 52 },
+            { min: 53, max: 63 },
+            { min: 64, max: 74 },
+            { min: 75, max: Infinity },
+            // Add more age ranges as needed
+        ];
+
+        // Create an array to store the count and details for each age range and nationality
+        const ageRangeDetails = [];
+
+        // Loop through each age range
+        for (const range of ageRanges) {
+            // Find users within the current age range
+            const usersInAgeRange = await User.find({
+                age: { $gte: range.min, $lte: range.max },
+            });
+
+            // Filter users by nationality if provided
+            const filteredUsers = req.query.nationality
+                ? usersInAgeRange.filter((user) => user.nationality === req.query.nationality)
+                : usersInAgeRange;
+
+            // Filter out users with undefined nationality
+            const validUsers = filteredUsers.filter((user) => user.nationality);
+
+            // Group users by nationality and count them
+            const nationalityCount = validUsers.length;
+
+            // Calculate percentage
+            const totalUsersCount = usersInAgeRange.length;
+            const percentage = (nationalityCount / totalUsersCount) * 100;
+
+            // Include user details for users with unique nationality
+            const uniqueNationalities = validUsers.map(user => user.nationality);
+            const userDetails = await User.find({
+                age: { $gte: range.min, $lte: range.max },
+                nationality: { $in: uniqueNationalities },
+            }, 'nationality');
+
+            // Push the count, percentage, and details to the ageRangeDetails array
+            ageRangeDetails.push({
+                ageRange: `${range.min}-${range.max}`,
+                count: nationalityCount,
+                percentage: percentage,
+                userDetails: userDetails.map((user) => ({
+                    nationality: user.nationality,
+                })),
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "User details and age range counts successfully!",
+            ageRangeDetails: ageRangeDetails,
         });
-  
-        // Filter users by nationality if provided
-        const filteredUsers = req.query.nationality
-          ? usersInAgeRange.filter((user) => user.nationality === req.query.nationality)
-          : usersInAgeRange;
-  
-        // Store the count and details in the ageRangeDetails object
-        ageRangeDetails[`${range.min}-${range.max}`] = {
-          count: filteredUsers.length,
-          users: filteredUsers.map((user) => ({
-            _id: user._id,
-            name: user.name,
-            age: user.age,
-            nationality: user.nationality,
-          })),
-        };
-      }
-  
-      res.status(200).json({
-        success: true,
-        message: "User details and age range counts successfully!",
-        ageRangeDetails: ageRangeDetails,
-      });
     } catch (error) {
-      res.status(404).json({ error: error.message });
+        res.status(404).json({ error: error.message });
     }
-  };
+};
+
+
+
+
   
   
   

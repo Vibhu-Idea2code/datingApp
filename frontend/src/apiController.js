@@ -368,4 +368,9 @@ export const getStatuswiseUserCount = () =>
     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
   });
 
+  export const getSubscribtionwiseUserCount = () =>
+  axios.get(`http://localhost:9500/v1/sub/list-dash`, {
+    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+  });
+
 
