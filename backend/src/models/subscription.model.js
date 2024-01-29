@@ -4,18 +4,18 @@ const moment = require('moment-timezone');
 
 const subSchema = new mongoose.Schema(
   {
-    planid: [
+    planid: 
         {
           type: mongoose.Schema.Types.ObjectId,
           ref: 'plan',
         },
-      ],
-      userid: [
+      
+      userid: 
         {
           type: mongoose.Schema.Types.ObjectId,
           ref: 'user',
         },
-      ],
+      
       nationality:{
         type : mongoose.Types.ObjectId , ref : 'countrycode'
       },

@@ -28,7 +28,7 @@ const planSchema = new mongoose.Schema(
       type:String  // two option (weekly and monthly)
     },
     freeSuperLike:{
- type:String
+ type:Number
     },
     SuperLikeduration:{
       type:String  // two option (weekly and monthly)

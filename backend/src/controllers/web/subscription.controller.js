@@ -76,60 +76,51 @@ const createSubscription = async (req, res) => {
                 age: { $gte: range.min, $lte: range.max },
             });
 
-            // Get subscription list for the current age range
-            let subscriptions = await subscriptionService.getSubscriptionList(req, res, {
-                ageRange: range,
-                // Add more filters if needed
-            });
-            subscriptions = subscriptions.filter(subscription => {
-              return subscription.age >= range.min && subscription.age <= range.max;
-          });
-
+            
             const ageRangeDetail = {
                 range: `${range.min}-${range.max}`,
                 userCount: usersCount,
                 nationalityCounts: {},
-                userDetails: [],
-                subscriptions: subscriptions, // Include subscriptions in the result
+                // userDetails: [],
+                sub:[]
+           
             };
 
             if (usersCount > 0) {
-                const nationalityCounts = await User.aggregate([
-                    {
-                        $match: {
-                            age: { $gte: range.min, $lte: range.max },
-                            nationality: { $exists: true },
-                        },
-                    },
-                    {
-                        $group: {
-                            _id: '$nationality',
-                            count: { $sum: 1 },
-                        },
-                    },
-                ]);
-
-                if (nationalityCounts.length > 0) {
-                    nationalityCounts.forEach((item) => {
-                        // Calculate the percentage and store it in the nationalityCounts object
-                        ageRangeDetail.nationalityCounts[item._id] = 
-                             item.count
-                            // percentage: (item.count / usersCount) * 100,
-                        
-                    });
-                }
-
-                // Include user details for users with unique nationality
-                const uniqueNationalities = Object.keys(ageRangeDetail.nationalityCounts);
-                ageRangeDetail.userDetails = await User.find({
+              const nationalityCounts = await User.aggregate([
+                {
+                  $match: {
                     age: { $gte: range.min, $lte: range.max },
-                    nationality: { $in: uniqueNationalities },
-                }, 'nationality');
+                    nationality: { $exists: true },
+                  },
+                },
+                {
+                  $group: {
+                    _id: '$nationality',
+                    count: { $sum: 1 },
+                  },
+                },
+              ]);
+
+              
+              const sub=await Subscription.find().select('userid')
+              console.log(sub,'subscriptionssubscriptionssubscriptionssubscriptionssubscriptionssubscriptions')
+              
+                nationalityCounts.forEach((item) => {
+                    ageRangeDetail.nationalityCounts[item._id] = item.count;
+                    // Calculate percentage if needed
+                    // ageRangeDetail.nationalityCounts[item._id].percentage = (item.count / usersCount) * 100;
+                });
+
+               
+
+                // ageRangeDetail.userDetails = await User.find({
+                //     age: { $gte: range.min, $lte: range.max },
+             
+                // }, 'nationality');
             }
 
             ageRangeDetails.push(ageRangeDetail);
-
-            console.log(`Subscriptions for age range ${range.min}-${range.max}:`, subscriptions);
         }
 
         res.status(200).json({

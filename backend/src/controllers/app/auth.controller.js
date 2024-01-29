@@ -80,7 +80,9 @@ const register = async (req, res) => {
       last_name: reqBody.last_name,
       phoneNumber: reqBody.phoneNumber,
       jobTitle: reqBody.jobTitle,
-      user_img: reqBody.user_img,
+      user_img: reqBody.user_img, 
+      plan:reqBody.plan,
+
       // age:reqBody.age,
       age,
       token,
