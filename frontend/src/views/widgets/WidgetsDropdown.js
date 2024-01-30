@@ -21,7 +21,8 @@ import {
   getDashboardCount,
   getLastUsers,
   getStatuswiseUserCount,
-} from "../../apiController";
+} from "../../apiController"
+;
 
 const WidgetsDropdown = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -47,8 +48,9 @@ const WidgetsDropdown = () => {
   const [today, setToday] = useState(null);
 
   const [datatableData, setdatatableData] = useState([]);
-  const random = (min, max) =>
-    Math.floor(Math.random() * (max - min + 1) + min);
+
+  // const random = (min, max) =>
+  //   Math.floor(Math.random() * (max - min + 1) + min);
 
   const getAllCount = async () => {
     try {
