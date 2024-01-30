@@ -6,6 +6,7 @@ const config = require("./src/config/config");
 const cors = require("cors");
 const routes = require("./src/routes/v1");
 const path = require("path");
+require("./src/helpers/cron");
 // require("./src/middlewares/upload");
 // const { Server } = require("socket.io");
 const socketIO = require('socket.io');
@@ -22,6 +23,8 @@ app.use(bodyParser.json());
 
 app.use(cors());
 app.options("*", cors());
+
+
 
 app.use(express.static(path.resolve(__dirname, `./src/public`)));
 // io.on("connection", (socket) => {

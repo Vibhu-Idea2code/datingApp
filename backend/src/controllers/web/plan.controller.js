@@ -70,6 +70,7 @@ const deletePlan = async (req, res) => {
     }
   };
 
+
 const updatePlan = async (req, res) => {
   try {
     const planId = req.params.planId;
@@ -81,7 +82,7 @@ const updatePlan = async (req, res) => {
     res.status(201).json({
       success: true,
       message: "successfully updated",
-      data: { plan },
+      data:  plan ,
     });
   } catch (error) {
     res.status(400).json({

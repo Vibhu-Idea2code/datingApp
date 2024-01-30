@@ -18,7 +18,7 @@ const userHelper = require("../../helpers/userHelper");
 const register = async (req, res) => {
   // const { email, password, role } = req.body;
   try {
-    console.log(req.body);
+    // console.log(req.body);
     const reqBody = req.body;
     const existingUser = await userService.findUserByEmail(reqBody.email);
     if (existingUser) {
@@ -53,6 +53,17 @@ const register = async (req, res) => {
     }
     // Use helper to calculate age
     const age = userHelper.calculateAge(reqBody.birthDate);
+
+    if (reqBody.plan) {
+      // Assuming reqBody.plan contains information about the purchased plan
+      const planStartDate = new Date(); // Current date
+      const planEndDate = moment(planStartDate).add(reqBody.plan.days, 'days'); // Adjust based on plan details
+
+      // Update reqBody with plan dates
+      reqBody.startDatePlan = planStartDate;
+      reqBody.endDatePlan = planEndDate;
+    }
+
     let option = {
       email: reqBody.email,
       role: reqBody.role,
@@ -82,7 +93,8 @@ const register = async (req, res) => {
       jobTitle: reqBody.jobTitle,
       user_img: reqBody.user_img, 
       plan:reqBody.plan,
-
+      startDatePlan: reqBody.startDatePlan,
+      endDatePlan: reqBody.endDatePlan,
       // age:reqBody.age,
       age,
       token,
@@ -100,10 +112,10 @@ const loginEmail = async (req, res) => {
     // validation;
     const reqBody = req.body;
     const { email } = req.body;
-    console.log(req.body);
+    // console.log(req.body);
     const findUser = await userService.findUserByLogonEmail(reqBody.email);
-    console.log(findUser, "++++");
-    console.log(__dirname,"dgfsdsgd")
+    // console.log(findUser, "++++");
+    // console.log(__dirname,"dgfsdsgd")
     if (!findUser) {
       ejs.renderFile(
         path.join(__dirname, "../../views/login-template-nouser.ejs"),
@@ -206,7 +218,7 @@ const verifyOtp = async (req, res) => {
     const { phoneNumber, otp } = req.body;
 
     const findEmail = await verifyOtpService.findOtpByEmail({ phoneNumber });
-    console.log("findEmail", findEmail);
+    // console.log("findEmail", findEmail);
     if (!findEmail) {
       throw new Error("user not found");
     }

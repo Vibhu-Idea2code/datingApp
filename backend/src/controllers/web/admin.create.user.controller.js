@@ -31,7 +31,7 @@ const deleteFiles = require("../../helpers/deleteFiles");
         plan
       } = req.body; // Extract the 'role' and 'gender' fields from the request body
       const userExists = await userService.getUserById(userId);
-      console.log(userExists);
+      // console.log(userExists);
       // if (!userExists) {
       //   throw new Error("User not found!");
       // }
@@ -200,7 +200,7 @@ const deleteFiles = require("../../helpers/deleteFiles");
         message: "Deleted Successfully",
       });
     } catch (err) {
-      console.error(err);
+      // console.error(err);
       return res.status(500).send({
         success: false,
         message: `${err}`,

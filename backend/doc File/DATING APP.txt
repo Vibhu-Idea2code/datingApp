@@ -382,10 +382,14 @@ filter subscribtion remaning
 
 
 remaning
-dashboard 
+
+dashboard filter 
 boost  
-update in desing 
-plan update not working
+plan
+
+remaing 
+purchaseplan mange 
+
 
 
 

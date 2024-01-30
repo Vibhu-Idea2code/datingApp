@@ -63,11 +63,26 @@ const userSchema = new mongoose.Schema(
       },
     ],
     plan: [
-      {
+   {
         type: mongoose.Schema.Types.ObjectId,
         ref: "plan",
       },
     ],
+    freeboost:
+    {
+      type:Number,
+      default:0
+    },
+    totalboost:
+    {
+      type: Number,
+    },
+    startDatePlan:{
+      type: Date,
+    },
+    endDatePlan:{
+      type: Date,
+    },
     sign: [
       {
         type: mongoose.Schema.Types.ObjectId,

@@ -177,6 +177,40 @@ const updateDetailsSexualOrientation = async (userId, updateBody) => {
     select: ["_id"],
   });
 };
+
+// userService.js
+
+const updateUserEndDatePlan = async (email, updatedEndDate) => {
+  // Your implementation to update the user's end date plan in the database
+  // For example, using a database query or an ORM
+  // This function should handle the logic to update the user's data in your system
+
+  // Placeholder example using a hypothetical database model or ORM
+  // Replace this with the actual logic based on your system
+  try {
+    const user = await UserModel.findOneAndUpdate(
+      { email: email },
+      { $set: { endDatePlan: updatedEndDate } },
+      { new: true }
+    );
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    // Optionally, you can log or handle success cases here
+    console.log(`User ${email} end date plan updated successfully`);
+  } catch (error) {
+    console.error(`Error updating end date plan for user ${email}: ${error.message}`);
+    throw error; // Propagate the error to the calling function
+  }
+};
+
+// module.exports = {
+//   ,
+//   // Add other methods as needed
+// };
+
 module.exports = {
   createUser,
   getUserList,
@@ -191,6 +225,7 @@ module.exports = {
   getUserByPhone,
   findOtpByOtp,
   findUserByEmail,
+  updateUserEndDatePlan,
   updateUser,
   getUserListSimple,
   getAllUser,
