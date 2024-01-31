@@ -33,9 +33,9 @@ const userSchema = new mongoose.Schema(
     like:[
       {type : mongoose.Schema.Types.ObjectId , ref : 'like'}
     ],
-    boost:[
-      {type : mongoose.Schema.Types.ObjectId , ref : 'boost'}
-    ],
+    boost:
+      {type :Number, default:0 },
+    
     sexual: [
       {
         type: mongoose.Schema.Types.ObjectId,

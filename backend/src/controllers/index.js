@@ -6,6 +6,7 @@ module.exports.UpdateController = require("./app/update.controller");
 module.exports.likeController = require("./app/like.controller");
 module.exports.reportController = require("./app/report.controller");
 module.exports.boostController = require("./app/boost.controller");
+module.exports.purchasePlanController = require("./app/purchaseplan.controller");
 
 
 /* -----------------------------(ADMIN) WEB CONTROLLER ----------------------------- */

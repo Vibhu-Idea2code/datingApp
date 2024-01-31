@@ -19,10 +19,10 @@ const likeSchema = new mongoose.Schema(
         type : Boolean ,
         default:false
       },
-      plan: 
+      purchaseplan: 
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'plan',
+        ref: 'purchaseplan',
       },
       action:{
         type : String , 

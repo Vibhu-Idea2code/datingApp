@@ -68,13 +68,7 @@ const createLike = async (req, res) => {
     // Check if the user has purchased a plan
     let planStatus = false;
 
-    if (planid) {
-      // If planId is provided, set planStatus to true
-      planStatus = true;
-    }
-    if (!planStatus) {
-      return res.status(400).json({ planStatus: false });
-    }
+  
     const newLike = new Like({
       touserid,
       fromuserid,

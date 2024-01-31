@@ -32,6 +32,7 @@ const likeRoute = require("./app/like.route");
 const subRoute = require("./web/subscription.route");
 const reportRoute = require("./app/report.route");
 const boostRoute = require("./app/boost.route");
+const purchasePlanRoute = require("./app/purchasePlan.route");
 
 
 
@@ -41,6 +42,8 @@ router.use("/like", likeRoute);
 router.use("/sub", subRoute);
 router.use("/report", reportRoute);
 router.use("/boost", boostRoute);
+router.use("/purchaseplan", purchasePlanRoute);
+
 
 
 
