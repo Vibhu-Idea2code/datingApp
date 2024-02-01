@@ -1,30 +1,27 @@
 
-const { PurchasePlan, Plan } = require("../../models");
+const { PurchasePlan, Plan ,User} = require("../../models");
 // const { planService } = require("../../services");
 const mongoose = require("mongoose");
+// const { findOneAndUpdate } = require("../../models/like.model");
 
 const createPurchasePlan = async (req, res) => {
     try {
       const reqBody = req.body;
       console.log(reqBody, "++++++PurchasePlan");
   
-      // Assuming the boost value is present in reqBody.boost
-    //   const boostValue = reqBody.boost || 0;
-  
-      // Create a new PurchasePlan with an incremented boost value
       const plan = await PurchasePlan.create(
         reqBody,
-     
       );
   
       if (!plan) {
         throw new Error("no such Plan");
       }
   
+
       res.status(200).json({
         message: "Successfully created a new Plan",
         success: true,
-        data: plan,
+        data: freeBoostValue,
       });
     } catch (error) {
       res.status(400).json({ success: false, message: error.message });

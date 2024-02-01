@@ -46,31 +46,33 @@ axios.interceptors.response.use(
 
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-
-      try {
-        const refreshToken = localStorage.getItem("refreshToken");
-        const response = await axios.post(`${mainUrl}/v1/admin/refreshToken`, {
-          refreshToken,
-        });
-        const token = response.data.refreshToken;
-        console.log(
-          response.data.refreshToken,
-          "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
-        );
-        localStorage.setItem("token", token);
-        // Retry the original request with the new token
-        originalRequest.headers.Authorization = `Bearer ${token}`;
-        // console.log(originalRequest);
-        return axios(originalRequest);
-      } catch (error) {
-        // Handle refresh token error or redirect to login
-      }
-    }
-
-    if (error.response.status === 405) {
       localStorage.removeItem("token");
       window.location.reload();
     }
+    //   try {
+    //     const refreshToken = localStorage.getItem("refreshToken");
+    //     const response = await axios.post(`${mainUrl}/v1/admin/refreshToken`, {
+    //       refreshToken,
+    //     });
+    //     const token = response.data.refreshToken;
+    //     console.log(
+    //       response.data.refreshToken,
+    //       "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+    //     );
+    //     localStorage.setItem("token", token);
+    //     // Retry the original request with the new token
+    //     originalRequest.headers.Authorization = `Bearer ${token}`;
+    //     // console.log(originalRequest);
+    //     return axios(originalRequest);
+    //   } catch (error) {
+    //     // Handle refresh token error or redirect to login
+    //   }
+    // }
+
+    // if (error.response.status === 405) {
+    //   localStorage.removeItem("token");
+    //   window.location.reload();
+    // }
 
     return Promise.reject(error);
   }
@@ -124,10 +126,10 @@ export const changePasswords = (data) =>
 export const updateUserStatus = (data, id) =>
   axios.put(
     `${mainUrl}/v1/admin/updateUserStatus/${id}`,
-    data
-    //  {
-    //   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    // }
+    data,
+     {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    }
   );
 
 //Get All users
@@ -141,6 +143,11 @@ export const deleteUser = (id) =>
   axios.post(`${mainUrl}/admin/user/deleteUser/${id}`, {
     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
   });
+
+  // export const deleteInterest = (id) =>
+  // axios.post(`${mainUrl}/admin/user/deleteUser/${id}`, {
+  //   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  // });
 
 // delete multiple Users
 export const deleteMultiUser = (data) => {
@@ -160,11 +167,11 @@ export const deleteMultiUser = (data) => {
 export const addUser = (data) =>
   axios.post(
     `${mainUrl}/admin/user/addUser`,
-    data
-    //  {
-    //   headers: { Authorization: `Bearer ${localStorage.getItem('token')}`
-    // }
-    // }
+    data,
+     {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}`
+    }
+    }
   );
 
 //Update Admin Profile
@@ -178,10 +185,10 @@ export const UpdateProfile = (data) =>
 export const updateSexualStatus = (data, id) =>
   axios.put(
     `${mainUrl}/v1/sexual/updateSexualOrientationStatus/${id}`,
-    data
-    //  {
-    //   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    // }
+    data,
+     {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    }
   );
 
 // delete multiple Users
@@ -197,10 +204,10 @@ export const deleteMultiSexualOrientation = (data) => {
 export const updateInterestStatus = (data, id) =>
   axios.put(
     `${mainUrl}/v1/interest/updateInterestStatus/${id}`,
-    data
-    //  {
-    //   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    // }
+    data,
+     {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    }
   );
 
 // delete multiple Users
@@ -216,10 +223,10 @@ export const deleteMultiInterest = (data) => {
 export const updateCountryCodeStatus = (data, id) =>
   axios.put(
     `${mainUrl}/v1/countryCode/updateCodeStatus/${id}`,
-    data
-    //  {
-    //   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    // }
+    data,
+     {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    }
   );
 
 // delete multiple Users
@@ -240,10 +247,10 @@ export const deleteCountryCode = (id) =>
 export const updatePetStatus = (data, id) =>
   axios.put(
     `${mainUrl}/v1/pet/updatePetStatus/${id}`,
-    data
-    //  {
-    //   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    // }
+    data,
+     {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    }
   );
 
 // delete multiple Users
@@ -259,10 +266,10 @@ export const deleteMultiPet = (data) => {
 export const updateZodiacSignStatus = (data, id) =>
   axios.put(
     `${mainUrl}/v1/sign/updateSignStatus/${id}`,
-    data
-    //  {
-    //   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    // }
+    data,
+     {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    }
   );
 
 // delete multiple Users
@@ -276,15 +283,19 @@ export const deleteMultiZodiacSign = (data) => {
 /* ------------------------------ NOTIFICATION ------------------------------ */
 
 export const notification = (data) =>
-axios.get(`${mainUrl}/v1/notification/list`, data);
+axios.get(`${mainUrl}/v1/notification/list`, data,
+{
+  headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+}
+);
 
 export const updateNotificationStatus = (data, id) =>
   axios.put(
     `${mainUrl}/v1/notification/update/${id}`,
-    data
-    //  {
-    //   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    // }
+    data,
+     {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    }
   );
 
   // export const updateNotificationStatus = (data, id) =>
@@ -309,9 +320,9 @@ export const deleteMultiNotification = (data) => {
 //Delete Single User
 export const deleteNotification = (id) =>
   axios.delete(`${mainUrl}/v1/notification/delete/${id}`, 
-  // {
-  //   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-  // }
+  {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  }
   );
 
 
@@ -373,4 +384,9 @@ export const getStatuswiseUserCount = () =>
     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
   });
 
-
+  export const getUser = () =>
+  axios.get(`http://localhost:9500/v1/admin/user-list`, 
+  {
+    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+  }
+  );

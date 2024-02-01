@@ -33,7 +33,9 @@ export default function Interest() {
   const [baseurl, setbaseurl] = useState("");
   const getData = async () => {
     await axios
-      .get("http://localhost:9500/v1/interest/list-interest")
+      .get("http://localhost:9500/v1/interest/list-interest",  {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      })
       .then((res) => {
         setdatatableData(res.data.data.getHob);
         setbaseurl(res.data.baseUrl);

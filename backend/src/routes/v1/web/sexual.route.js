@@ -1,11 +1,16 @@
 const express=require('express');
 const {sexualController}=require('../../../controllers');
 const router=express.Router();
+const {
+    refreshToken,
+    accessToken,
+  } = require("../../../middlewares/AdminAuth");
 
 router.post('/create-sexual',
 sexualController.createSexual);
 
 router.get('/list',
+accessToken(),
 sexualController.getSexualList);
 
 router.get('/id/:SexualId',

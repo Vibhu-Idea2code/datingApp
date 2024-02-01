@@ -124,7 +124,10 @@ console.log(editdata,"editdata")
       if (isupdate) {
         await axios.put(
           `http://localhost:9500/v1/admin/update-user/${isupdate}`,
-          formData
+          formData,
+          // {
+          //   headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+          // }
         );
         localStorage.setItem("redirectSuccess", "true");
         localStorage.setItem("redirectMessage", "Added user successfully!");
@@ -132,7 +135,10 @@ console.log(editdata,"editdata")
       } else {
         await axios.post(
           "http://localhost:9500/v1/admin/create-user",
-          formData
+          formData,
+          // {
+          //   headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+          // }
         );
         // await updateUserProfile(formData, isupdate);
         localStorage.setItem("redirectSuccess", "true");
@@ -154,7 +160,9 @@ console.log(editdata,"editdata")
   };
   const Sexual = async () => {
     try {
-      const response = await axios.get("http://localhost:9500/v1/sexual/list");
+      const response = await axios.get("http://localhost:9500/v1/sexual/list",{
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      });
       setSexualOrientationOptions(response.data.data);
     } catch (error) {
       console.error("Error fetching Sexual data:", error);
@@ -163,7 +171,9 @@ console.log(editdata,"editdata")
 
   const Pet = async () => {
     try {
-      const response = await axios.get("http://localhost:9500/v1/pet/list");
+      const response = await axios.get("http://localhost:9500/v1/pet/list",{
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      });
       setPet(response.data.data);
     } catch (error) {
       console.error("Error fetching Sexual data:", error);
@@ -172,7 +182,10 @@ console.log(editdata,"editdata")
 
   const ZodiacSign = async () => {
     try {
-      const response = await axios.get("http://localhost:9500/v1/sign/list");
+      const response = await axios.get("http://localhost:9500/v1/sign/list",
+      {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      });
       setSign(response.data.data);
     } catch (error) {
       console.error("Error fetching Sexual data:", error);
@@ -182,7 +195,10 @@ console.log(editdata,"editdata")
   const Interest = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:9500/v1/interest/list-interest"
+        "http://localhost:9500/v1/interest/list-interest",
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        }
       );
       setInterest(response.data.data.getHob);
       // console.log(response.data.data.getHob);

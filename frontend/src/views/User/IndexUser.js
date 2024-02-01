@@ -32,7 +32,10 @@ export default function IndexUser() {
   const [datatableData, setdatatableData] = useState([]);
   const [baseurl, setbaseurl] = useState([]);
   const getData = async () => {
-    await axios.get("http://localhost:9500/v1/admin/user-list").then((res) => {
+    await axios.get("http://localhost:9500/v1/admin/user-list",{
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    }
+    ).then((res) => {
       setdatatableData(res.data.data);
       setbaseurl(res.data.baseUrl);
     });
@@ -187,7 +190,9 @@ export default function IndexUser() {
                     await axios
                       .delete(
                         `http://localhost:9500/v1/admin/delete-user/${value}`,
-                        value
+                        value,{
+                          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+                        }
                       )
                       .then((res) => {
                         console.log("deleted successfully!");

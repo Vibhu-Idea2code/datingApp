@@ -7,13 +7,7 @@ const createSubscription = async (reqBody) => {
 /**get Subscription list */
 const getSubscriptionList = async (filters, options) => {
  return Subscription.find()
-.populate({
-  path: 'userid',
-  populate: [
-   
-    { path: 'nationality', select: 'countryCode _id' } // Include specific fields from Nationality
-  ]
-})
+.populate('userid').populate('planid')
 
 };
 

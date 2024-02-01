@@ -1,6 +1,10 @@
 const express=require('express');
 const {planController}=require('../../../controllers');
 const router=express.Router();
+const {
+    refreshToken,
+    accessToken,
+  } = require("../../../middlewares/AdminAuth");
 
 router.post('/create-plan',
 planController.createPlan);

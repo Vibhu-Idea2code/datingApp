@@ -21,7 +21,9 @@ export default function Sign() {
   const [datatableData, setdatatableData] = useState([]);
 
   const getData = async () => {
-    await axios.get("http://localhost:9500/v1/sign/list").then((res) => {
+    await axios.get("http://localhost:9500/v1/sign/list",{
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    }).then((res) => {
       setdatatableData(res.data.data);
     });
   };

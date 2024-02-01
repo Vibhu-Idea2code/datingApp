@@ -2,7 +2,10 @@ const express = require("express");
 // const auth = require("../../middlewares/auth");
 const { upload } = require("../../../middlewares/upload");
 const { hobbiesController } = require("../../../controllers");
-
+const {
+  refreshToken,
+  accessToken,
+} = require("../../../middlewares/AdminAuth");
 const router = express.Router();
 
 /** Create product */
@@ -20,7 +23,9 @@ router.get(
   hobbiesController.getDetailsById
 );
 
-router.get("/list-interest", hobbiesController.interestList);
+
+  router.get("/list-interest",  accessToken(),
+   hobbiesController.interestList);
 router.put(
   "/update/:hobbiesId",
   // auth(),

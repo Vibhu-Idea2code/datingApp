@@ -66,12 +66,12 @@ router.put(
   
   /* -------------------------- CREATE USER BY ADMIN -------------------------- */
   router.get("/user-list", 
-  // accessToken(),
+  accessToken(),
   adminUserController.getAllUser
   );
 
   router.get("/dashboard", 
-  // accessToken(),
+  accessToken(),
   adminUserController.getdashboard
   );
   
@@ -85,6 +85,7 @@ router.put(
     router.put(
       "/update-user/:userId",
       upload.array("user_img"),
+      accessToken(),
       adminUserController.UserUpdateDetailsByAdmin
       );
       router.delete("/delete-user/:userId", adminUserController.deleteUserByAdmin);
@@ -98,7 +99,7 @@ router.put(
       router.delete("/deleteMultiUser",adminUserController.deleteMultiUser);
       
       // router.get("/role", auth());
-      router.get("/getStatuswiseUserCount",   accessToken(),
+      router.get("/getStatuswiseUserCount",  
       adminUserController.getStatuswiseUserCount);
       
       module.exports = router;

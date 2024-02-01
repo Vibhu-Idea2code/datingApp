@@ -295,16 +295,6 @@ const getAllUser = async (req, res) => {
         res.status(404).json({ error: error.message });
     }
 };
-
-
-
-
-  
-  
-  
-  
-  // module.exports = getdashboard;
-  
   
   /* ------------------------------ UPDATE STATUS ----------------------------- */
   const updateUserStatus = async (req, res, next) => {
@@ -314,16 +304,14 @@ const getAllUser = async (req, res) => {
   
       if (!user) {
         throw new Error("User not found!");
-      }
-  
+      }  
       user.status = !user.status;
       const result = await user.save();
-  
+
       res.status(200).json({
         success: true,
         message: "User Status Update successfully!",
         data: result,
-      
       });
     } catch (err) {
       next(err);
@@ -353,7 +341,8 @@ const getAllUser = async (req, res) => {
       }
     };
 
-  // Delete a multiple banner  or sub banner  with there Id's
+   /* -------- Delete a multiple banner  or sub banner  with there Id's -------- */
+
 const deleteMultiUser = async (req, res, next) => {
   try {
     const { Ids } = req.body;
@@ -375,7 +364,8 @@ const deleteMultiUser = async (req, res, next) => {
   }
 };
   
-// API endpoint to get the total count of active and inactive users
+ /* ---- API endpoint to get the total count of active and inactive users ---- */
+
 const getStatuswiseUserCount = async (req, res, next) => {
   try {
     const users = await User.find();
@@ -404,7 +394,6 @@ const getStatuswiseUserCount = async (req, res, next) => {
     deleteMultiUser,
     updateUserStatusMange,
     getStatuswiseUserCount,
-   getdashboard 
-
+   getdashboard,
   };
   

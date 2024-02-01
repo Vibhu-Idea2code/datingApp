@@ -22,7 +22,10 @@ export default function SexualOrientation() {
   const [datatableData, setdatatableData] = useState([]);
 
   const getData = async () => {
-    await axios.get("http://localhost:9500/v1/sexual/list").then((res) => {
+    await axios.get("http://localhost:9500/v1/sexual/list", {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    }
+    ).then((res) => {
       setdatatableData(res.data.data);
     });
   };
@@ -145,7 +148,10 @@ export default function SexualOrientation() {
                     await axios
                       .delete(
                         `http://localhost:9500/v1/sexual/delete/${value}`,
-                        value
+                        value,
+                        {
+                          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+                        }
                       )
                       .then((res) => {
                         console.log("deleted successfully!");

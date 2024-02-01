@@ -2,6 +2,10 @@ const express=require('express');
 const {NotificationController}=require('../../../controllers');
 const { notificationService } = require('../../../services');
 const router=express.Router();
+const {
+    refreshToken,
+    accessToken,
+  } = require("../../../middlewares/AdminAuth");
 
 router.post('/create-notification',
 NotificationController.createNotification

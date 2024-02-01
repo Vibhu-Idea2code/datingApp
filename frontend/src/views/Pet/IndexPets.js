@@ -24,7 +24,9 @@ export default function Pets() {
   const [datatableData, setdatatableData] = useState([]);
 
   const getData = async () => {
-    await axios.get("http://localhost:9500/v1/pet/list").then((res) => {
+    await axios.get("http://localhost:9500/v1/pet/list",{
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+    }).then((res) => {
       setdatatableData(res.data.data);
     });
   };

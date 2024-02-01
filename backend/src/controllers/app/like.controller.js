@@ -1,3 +1,4 @@
+const { PurchasePlan } = require('../../models');
 const Like = require('../../models/like.model');
 const Plan = require('../../models/plan.model');
 const User = require('../../models/users.model');
@@ -31,9 +32,16 @@ const User = require('../../models/users.model');
 
 const createLike = async (req, res) => {
   try {
-    const { fromuserid, touserid, action, planid } = req.body;
+    const { fromuserid, touserid, action, PurchasePlanid } = req.body;
 
-    const existingLike = await Like.findOne({ fromuserid, touserid });
+      // Check if the user has purchased a plan
+      const purchasedPlan = await PurchasePlan.findById(PurchasePlanid);
+
+      if (!purchasedPlan) {
+        return res.status(400).json({ message: 'User has not purchased a plan' });
+      }
+
+      const existingLike = await Like.findOne({ fromuserid, touserid });
 
     if (existingLike) {
       return res.status(400).json({ message: 'User already liked this profile' });
@@ -57,6 +65,13 @@ const createLike = async (req, res) => {
         if (fromuserid) {
           return res.status(400).json({ message: 'Boost action does not require fromuserid' });
         }
+        const user = await User.findById(touserid);
+        if (user.boost > 0) {
+          await User.findByIdAndUpdate(touserid, { $inc: { boost: -1 } });
+        } else {
+          return res.status(400).json({ message: 'Insufficient boost count' });
+        }
+        // await User.findByIdAndUpdate(touserid, { $inc: { boostCount: -1 } });
         break;
       case '4':
         newAction = '4';
@@ -80,13 +95,10 @@ const createLike = async (req, res) => {
     
     res.status(200).json({ message: `${newAction} successful.`, data: result });
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 };
-
-
-
 
 /* ------------------------------- LIST BY ID ------------------------------- */
 // const getLikesByUserId = async (req, res) => {
