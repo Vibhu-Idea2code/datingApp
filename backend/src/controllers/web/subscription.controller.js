@@ -17,8 +17,7 @@ const createSubscription = async (req, res) => {
       reqBody.endDate.setDate(reqBody.endDate.getDate() + planDuration);
   
       const sub = await subscriptionService.createSubscription(reqBody);
-  
-      if (!sub) {
+        if (!sub) {
         return res.status(400).json({ message: "Error creating the subscription" });
       }
   
@@ -65,8 +64,6 @@ const createSubscription = async (req, res) => {
             { min: 42, max: 52 },
             { min: 53, max: 64 },
             { min: 65, max: Infinity},
-            // Add more age ranges as needed
-            // ... add more age ranges as necessary
         ];
 
         const ageRangeDetails = [];
@@ -75,7 +72,6 @@ const createSubscription = async (req, res) => {
             const usersCount = await User.countDocuments({
                 age: { $gte: range.min, $lte: range.max },
             });
-
             
             const ageRangeDetail = {
                 range: `${range.min}-${range.max}`,
@@ -110,9 +106,7 @@ const createSubscription = async (req, res) => {
                     ageRangeDetail.nationalityCounts[item._id] = item.count;
                     // Calculate percentage if needed
                     // ageRangeDetail.nationalityCounts[item._id].percentage = (item.count / usersCount) * 100;
-                });
-
-               
+                });         
 
                 // ageRangeDetail.userDetails = await User.find({
                 //     age: { $gte: range.min, $lte: range.max },

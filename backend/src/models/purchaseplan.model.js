@@ -15,10 +15,11 @@ const purchasePlanSchema = new mongoose.Schema(
 
     startDate:{
       type: Date,
-      default: () => new Date()
+      // default: () => new Date()
     },
     endDate:{
       type: Date,
+
     },
      payment:{
       type:String,

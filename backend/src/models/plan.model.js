@@ -40,6 +40,9 @@ const planSchema = new mongoose.Schema(
     feature: {
       type: String,
     },
+    days:{
+    type:Number
+    },
     status:{
       type :Boolean,
       default: true,

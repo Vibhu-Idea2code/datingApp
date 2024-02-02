@@ -1,32 +1,30 @@
-const express=require('express');
-const {NotificationController}=require('../../../controllers');
-const { notificationService } = require('../../../services');
-const router=express.Router();
-const {
-    refreshToken,
-    accessToken,
-  } = require("../../../middlewares/AdminAuth");
+const express = require("express");
+const { NotificationController } = require("../../../controllers");
+const { notificationService } = require("../../../services");
+const router = express.Router();
+const { refreshToken, accessToken } = require("../../../middlewares/AdminAuth");
 
-router.post('/create-notification',
-NotificationController.createNotification
+router.post("/create-notification", NotificationController.createNotification);
+
+router.get("/list", NotificationController.getNotificationList);
+
+router.get("/id/:notificationId", NotificationController.getNotificationId);
+
+router.delete(
+  "/delete/:notificationId",
+  NotificationController.deleteNotification
 );
 
-router.get('/list',
-NotificationController.getNotificationList);
-
-router.get('/id/:notificationId',
-NotificationController.getNotificationId);
-
-router.delete('/delete/:notificationId',
-NotificationController.deleteNotification);
-
-router.put('/update/:notificationId',
-NotificationController.updateNotification
+router.put(
+  "/update/:notificationId",
+  NotificationController.updateNotification
 );
 
 router.delete("/delete-many", NotificationController.multipleDelete);
 
-router.put("/updateNotificationStatus/:id",NotificationController.updateNotificationStatus);
+router.put(
+  "/updateNotificationStatus/:id",
+  NotificationController.updateNotificationStatus
+);
 
-
-module.exports=router;
+module.exports = router;

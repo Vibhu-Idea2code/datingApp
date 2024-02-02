@@ -392,3 +392,15 @@ purchaseplan mange
 
 
 purchaseplan wise like api  recorrect when user boost use in like api  then km kbr pde k boost use thya k ny in purchaseplan ma
+
+subscribtion map ny chalti admin pannel
+
+keep me login(rember me)
+
+jya jya mobile number ave che tya tya countrycode levano
+for example countrycode +91
+            mobile number 2549494944
+
+login time upr device type for example 1 hoy to ios and 2 hoy to andriod
+
+api security mate   api token in 
