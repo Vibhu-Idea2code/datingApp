@@ -22,12 +22,19 @@ export default function subscriptions() {
     await subscription(data).then((res) => {
       console.log(res.data.data);
 
-      const transformedData = res.data.data?.map((data) => ({
+      const transformedData = res.data.data.map((data) => ({
         ...data,
-        planName:data.planid?.map((plan) => plan.planType),
-        prices:data.planid?.map((plan) => plan.price),
-        durations:data.planid?.map((plan) => plan.duration),
-        names:data.userid?.map((user) => user.first_name),
+        // for object (in response)
+        planName:data.planid == null ? '' : data.planid.planType,
+        prices:data.planid == null ? '' : data.planid.price,
+        durations:data.planid == null ? '' : data.planid.duration,
+        names:data.userid == null ? '' : data.userid.first_name,
+
+        // for array of object (in response)
+        // planName:data.planid?.map((plan) => plan.planType),
+        // prices:data.planid?.map((plan) => plan.price),
+        // durations:data.planid?.map((plan) => plan.duration),
+        // names:data.userid?.map((user) => user.first_name),
       }));      
       console.log(transformedData);
       setdatatableData(transformedData);
