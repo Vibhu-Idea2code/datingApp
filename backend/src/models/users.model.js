@@ -27,9 +27,9 @@ const userSchema = new mongoose.Schema(
     gender: {
       type: String,
     },
-    nationality:{
-      type : mongoose.Schema.Types.ObjectId , ref : 'countrycode'
-    },
+    // nationality:{
+    //   type : mongoose.Schema.Types.ObjectId , ref : 'countrycode'
+    // },
     like:[
       {type : mongoose.Schema.Types.ObjectId , ref : 'like'}
     ],
@@ -42,9 +42,9 @@ const userSchema = new mongoose.Schema(
         ref: "sexual",
       },
     ],
-    subscription:[
-      {type : mongoose.Schema.Types.ObjectId , ref : 'subscription'}
-    ],
+    // subscription:[
+    //   {type : mongoose.Schema.Types.ObjectId , ref : 'subscription'}
+    // ],
 
     showMe: {
       type: String,
@@ -52,9 +52,14 @@ const userSchema = new mongoose.Schema(
     school: {
       type: String,
     },
-    // interest:{
-    //   type: Array,
-    // }
+    countryCode:{
+      type : mongoose.Schema.Types.ObjectId ,
+      ref : 'countrycode',
+    },
+ subscription:{ 
+  type:Boolean,
+  default:false
+ },
 
     interest: [
       {

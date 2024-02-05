@@ -53,6 +53,7 @@ router.get(
 );
 
 
+
 router.post("/refreshToken", authAdminController.RefreshToken);
 
 
@@ -71,10 +72,19 @@ router.put(
   );
 
   router.get("/dashboard", 
-  accessToken(),
+  // accessToken(),
   adminUserController.getdashboard
   );
   
+  router.get("/dashboard-sexual", 
+  // accessToken(),
+  adminUserController.getdashboardSexual
+  );
+  
+  router.get("/dashboard-filter", 
+  // accessToken(),
+  adminUserController.getChatDash
+  );
 
   router.post(
     "/create-user",

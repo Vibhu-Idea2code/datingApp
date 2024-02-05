@@ -1,4 +1,4 @@
-const { Subscription } = require("../models");
+const { Subscription, User } = require("../models");
 
 /**create Like */
 const createSubscription = async (reqBody) => {
@@ -47,6 +47,16 @@ const manageSubscriptionStatus = async (SubscriptionId) => {
       { new: true }
     );
   };
+
+  const updateUserDas = async (userid,subscription) => {
+   
+    return User.findByIdAndUpdate(
+      userid,
+      { subscription: subscription },
+      { new: true }
+    );
+};
+
   
 module.exports = {
   createSubscription,
@@ -54,5 +64,6 @@ module.exports = {
   getSubscriptionById,
   updateSubscription,
   deleteSubscription,
-  manageSubscriptionStatus
+  manageSubscriptionStatus,
+  updateUserDas
 };

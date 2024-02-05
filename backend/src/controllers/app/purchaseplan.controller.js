@@ -39,7 +39,7 @@ const createPurchasePlan = async (req, res) => {
 
     const startDate = new Date();
     const endDate = new Date(startDate);
-    endDate.setDate(startDate.getDate() + 30);
+    endDate.setMonth(startDate.getMonth() + 1);
 
     console.log(endDate, "endDate");
 

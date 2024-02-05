@@ -28,7 +28,8 @@ const deleteFiles = require("../../helpers/deleteFiles");
         email,
         phoneNumber,
         nationality,
-        plan
+        plan,
+        countryCode
       } = req.body; // Extract the 'role' and 'gender' fields from the request body
       const userExists = await userService.getUserById(userId);
       // console.log(userExists);
@@ -65,7 +66,8 @@ const deleteFiles = require("../../helpers/deleteFiles");
       userExists.user_img = user_img; // Update the 'firstName
       userExists.nationality = nationality; // Update the 'firstName
       userExists.plan = plan; // Update the 'firstName
-  
+      userExists.countryCode=countryCode;
+      
       const baseUrl =
       req.protocol +
       "://" +
@@ -233,14 +235,14 @@ const getAllUser = async (req, res) => {
     try {
         // Define age ranges
         const ageRanges = [
-            { min: 18, max: 25 },
-            { min: 26, max: 30 },
-            { min: 31, max: 41 },
-            { min: 42, max: 52 },
-            { min: 53, max: 63 },
-            { min: 64, max: 74 },
-            { min: 75, max: Infinity },
-            // Add more age ranges as needed
+          { min: 18, max: 20 },
+          { min: 21, max: 26 },
+          { min: 27, max: 29 },
+          { min: 30, max: 35 },
+          { min: 31, max: 41 },
+          { min: 42, max: 52 },
+          { min: 53, max: 64 },
+          { min: 65, max: Infinity },
         ];
 
         // Create an array to store the count and details for each age range and nationality
@@ -254,34 +256,34 @@ const getAllUser = async (req, res) => {
             });
 
             // Filter users by nationality if provided
-            const filteredUsers = req.query.nationality
-                ? usersInAgeRange.filter((user) => user.nationality === req.query.nationality)
+            const filteredUsers = req.query.countryCode
+                ? usersInAgeRange.filter((user) => user.countryCode === req.query.countryCode)
                 : usersInAgeRange;
 
-            // Filter out users with undefined nationality
-            const validUsers = filteredUsers.filter((user) => user.nationality);
+            // Filter out users with undefined countryCode
+            const validUsers = filteredUsers.filter((user) => user.countryCode);
 
-            // Group users by nationality and count them
-            const nationalityCount = validUsers.length;
+            // Group users by countryCode and count them
+            const countryCodeCount = validUsers.length;
 
             // Calculate percentage
             const totalUsersCount = usersInAgeRange.length;
-            const percentage = (nationalityCount / totalUsersCount) * 100;
+            const percentage = (countryCodeCount / totalUsersCount) * 100;
 
-            // Include user details for users with unique nationality
-            const uniqueNationalities = validUsers.map(user => user.nationality);
+            // Include user details for users with unique countryCode
+            const uniqueNationalities = validUsers.map(user => user.countryCode);
             const userDetails = await User.find({
                 age: { $gte: range.min, $lte: range.max },
-                nationality: { $in: uniqueNationalities },
-            }, 'nationality');
+                countryCode: { $in: uniqueNationalities },
+            }, 'countryCode');
 
             // Push the count, percentage, and details to the ageRangeDetails array
             ageRangeDetails.push({
                 ageRange: `${range.min}-${range.max}`,
-                count: nationalityCount,
+                count: countryCodeCount,
                 percentage: percentage,
                 userDetails: userDetails.map((user) => ({
-                    nationality: user.nationality,
+                    countryCode: user.countryCode,
                 })),
             });
         }
@@ -296,6 +298,104 @@ const getAllUser = async (req, res) => {
     }
 };
   
+
+const getdashboardSexual = async (req, res) => {
+  try {
+    // Define age ranges
+    const ageRanges = [
+      { min: 18, max: 20 },
+      { min: 21, max: 26 },
+      { min: 27, max: 29 },
+      { min: 30, max: 35 },
+      { min: 31, max: 41 },
+      { min: 42, max: 52 },
+      { min: 53, max: 64 },
+      { min: 65, max: Infinity },
+    ];
+
+    // Create an array to store the count and details for each age range and nationality
+    const ageRangeDetails = [];
+    const totalUsersCount = await User.countDocuments();
+    // Loop through each age range
+    for (const range of ageRanges) {
+      // Find users within the current age range
+      const usersInAgeRange = await User.find({
+        age: { $gte: range.min, $lte: range.max },
+      });
+
+      // Filter users by nationality if provided
+      const filteredUsers = req.query.countryCode
+        ? usersInAgeRange.filter((user) => user.countryCode === req.query.countryCode)
+        : usersInAgeRange;
+
+      // Filter out users with undefined countryCode
+      const validUsers = filteredUsers.filter((user) => user.countryCode);
+
+      // Group users by countryCode and count them
+      const countryCodeCounts = {};
+      validUsers.forEach((user) => {
+        if (countryCodeCounts[user.countryCode]) {
+          countryCodeCounts[user.countryCode]++;
+        } else {
+          countryCodeCounts[user.countryCode] = 1;
+        }
+      });
+
+      // Calculate total user count for the age range
+      // const totalUsersCount = usersInAgeRange.length;
+
+      // Create an array to store details for each countryCode in the age range
+      const countryCodeDetails = [];
+
+      // Iterate over countryCodeCounts to calculate percentage and include user details
+      for (const countryCode in countryCodeCounts) {
+        const count = countryCodeCounts[countryCode];
+        // const percentage = (totalUsersCount /sexualCount ) * 100;
+
+        const userDetails = await User.find({
+          age: { $gte: range.min, $lte: range.max },
+          countryCode: countryCode,
+        }, 'countryCode sexual');
+
+        // Count users with a specific sexual orientation
+              // Extract unique sexual orientations from userDetails
+              const uniqueSexualOrientations = Array.from(new Set(userDetails.map(user => user.sexual)));
+
+              // Calculate sexualCount or set to null if no sexual orientations available
+              const sexualCount = uniqueSexualOrientations.length > 0 ? uniqueSexualOrientations.length : null;
+
+              const percentage = (sexualCount/totalUsersCount ) * 100;
+
+              // Push the details for each countryCode to countryCodeDetails array
+              countryCodeDetails.push({
+                countryCode: countryCode,
+                count: count,
+                percentage: percentage,
+                userDetails: userDetails.map((user) => ({
+                  countryCode: user.countryCode,
+                  // sexual: user.sexual,
+                })),
+                sexualCount: sexualCount,
+              });
+            }
+      
+            // Push the count and details for the age range to ageRangeDetails array
+            ageRangeDetails.push({
+              ageRange: `${range.min}-${range.max}`,
+              countryCodeDetails: countryCodeDetails,
+            });
+          }
+    res.status(200).json({
+      success: true,
+      message: "User details and age range counts successfully!",
+      ageRangeDetails: ageRangeDetails,
+    });
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+};
+
+
   /* ------------------------------ UPDATE STATUS ----------------------------- */
   const updateUserStatus = async (req, res, next) => {
     try {
@@ -384,6 +484,39 @@ const getStatuswiseUserCount = async (req, res, next) => {
   }
 };
 
+const getChatDash = async (req, res) => {
+  try {
+    const users = await User.find();
+
+    const trueCount = users.filter(user => user.subscription === true).length;
+    const falseCount = users.filter(user => user.subscription === false).length;
+
+    const modifiedUsers = users.map(user => ({
+      _id: user._id,
+      username: user.username,
+      subscription: user.subscription,
+
+      gender: user.subscription ? user.gender : undefined, // Add this line
+    }));
+
+    res.status(200).json({
+      status: 'success',
+      trueCount: trueCount,
+      falseCount: falseCount,
+      data: modifiedUsers,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Internal Server Error',
+    });
+  }
+};
+
+
+
+
   module.exports = {
     UserUpdateDetailsByAdmin,
     UserRegisterByAdmin,
@@ -395,5 +528,7 @@ const getStatuswiseUserCount = async (req, res, next) => {
     updateUserStatusMange,
     getStatuswiseUserCount,
    getdashboard,
+   getChatDash,
+   getdashboardSexual
   };
   

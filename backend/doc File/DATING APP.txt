@@ -356,51 +356,74 @@ remaning
 chat screen with socket io and chat api
 
 
-
-home screen ma startdattime valu 
-boost ma cron set kravnu km k starttime and exact 30 min pachi endtime upr delete thavu jove database ma boost na table ma 
-in short ma boost valu jovanu che 
-home page ma boost vali profile avi gy che
+ 
 
 
 ===========22 jan ======
 
-report status is not working
+report status is not working -- remaning
 
-10:18 after 30 mintues check boost table and user table
-
-
-count kravanu stus plan mathi
-
-
-dashboard list valu baki che 
-and boost api baki chedesign baki che edit icon vali
+10:18 after 30 mintues check boost table and user table -remaning
 
 
 
-filter subscribtion remaning
+filter subscribtion remaning - done
+count kravanu stus plan mathi --done
+(jya jya mobile number ave che tya tya countrycode levano
+for example countrycode +91
+            mobile number 2549494944)-----done
+subscribtion map ny chalti admin pannel ---------done
+dashboard filter -DONE
+plan --- done 
+
+
+
+dashboard list valu baki che design -reming (api -done)
+purchaseplan wise like api  recorrect when user boost use in like api  then km kbr pde k boost use thya k ny in purchaseplan ma --- done
+
+
+and boost api baki che design baki che edit icon vali ----remiang
+
+
+
 
 
 remaning
 
-dashboard filter 
-boost  
-plan
+
+
+DASHBOARD api
+----------------------------------------------------------------------------------------
+(dashboard subscribtion api ----done
+{http://localhost:9500/v1/sub/list-dash})
+
+(dashboard user api ----done
+{http://localhost:9500/v1/admin/dashboard})
+
+(dashboard sexual Orientation api ----done
+{http://localhost:9500/v1/admin/dashboard-sexual})
+
+(dashboar roundchat api ------done
+{http://localhost:9500/v1/admin/dashboard-filter})
+
+-------------------------------------------------------------------------------------------
+
+boost --- almost done remaning - crone set for half mintues
 
 remaing 
-purchaseplan mange 
+purchaseplan mange -- crone set 
 
 
-purchaseplan wise like api  recorrect when user boost use in like api  then km kbr pde k boost use thya k ny in purchaseplan ma
 
-subscribtion map ny chalti admin pannel
+
 
 keep me login(rember me)
-
-jya jya mobile number ave che tya tya countrycode levano
-for example countrycode +91
-            mobile number 2549494944
 
 login time upr device type for example 1 hoy to ios and 2 hoy to andriod
 
 api security mate   api token in 
+
+(home screen ma startdattime valu 
+boost ma cron set kravnu km k starttime and exact 30 min pachi endtime upr delete thavu jove database ma boost na table ma 
+in short ma boost valu jovanu che 
+home page ma boost vali profile avi gy che)-------some remiang

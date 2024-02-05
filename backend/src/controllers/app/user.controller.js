@@ -199,6 +199,7 @@ const getUserDetailsAll = async (req, res) => {
       role,
       age,
       maxDistance,
+      countryCode
     } = getDetails;
     res.status(200).json({
       success: true,
@@ -227,6 +228,7 @@ const getUserDetailsAll = async (req, res) => {
         role,
         age,
         maxDistance,
+        countryCode
       },
     });
   } catch (error) {
@@ -342,6 +344,7 @@ const updateDetails = async (req, res) => {
       jobTitle,
       email,
       phoneNumber,
+      countryCode
     } = req.body; // Extract the 'role' and 'gender' fields from the request body
     const userExists = await userService.getUserById(userId);
 
@@ -365,7 +368,7 @@ const updateDetails = async (req, res) => {
     userExists.maxDistance = maxDistance; // Update the 'firstName' field
     userExists.jobTitle = jobTitle; // Update the 'firstName' field
     userExists.email = email; // Update the 'firstName' field
-
+    userExists.countryCode = countryCode;
     await userService.updateUser(userId, userExists); // Save the updated user
 
     res.status(200).json({

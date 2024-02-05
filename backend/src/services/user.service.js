@@ -206,10 +206,17 @@ const updateUserEndDatePlan = async (email, updatedEndDate) => {
   }
 };
 
-// module.exports = {
-//   ,
-//   // Add other methods as needed
+// Assuming your userService has a function like this
+// const updateUserDas = async (userId,subscription) => {
+  
+//     // return User.findByIdAndUpdate(user._id, { subscription: user.subscription });
+//     await User.findByIdAndUpdate(
+//       userId,
+//       { subscription: subscription },
+//       { new: true }
+//     );
 // };
+
 
 module.exports = {
   createUser,
@@ -236,5 +243,6 @@ module.exports = {
   updateDetailsSexualOrientation,
   getUserListDis,
   getUserListSort,
+  // updateUserDas
   // getAllUsers
 };

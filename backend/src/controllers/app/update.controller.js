@@ -9,12 +9,13 @@ const updatePhone = async (req, res) => {
   try {
     // const reqBody=req.body;
     const userId = req.params.userId;
-    const { phoneNumber } = req.body; // Extract  'PHONENUMBER' fields from the request body
+    const { phoneNumber,countryCode } = req.body; // Extract  'PHONENUMBER' fields from the request body
     const userExists = await userService.getUserById(userId);
     if (!userExists) {
       throw new Error("User not found!");
     }
     userExists.phoneNumber = phoneNumber; // Update the 'phoneNumber'
+    userExists.countryCode = countryCode;
     await userService.updateUser(userId, userExists); // Save the updated user
     res.status(200).json({
       success: true,

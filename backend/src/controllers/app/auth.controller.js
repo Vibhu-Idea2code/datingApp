@@ -95,6 +95,7 @@ const register = async (req, res) => {
       plan:reqBody.plan,
       startDatePlan: reqBody.startDatePlan,
       endDatePlan: reqBody.endDatePlan,
+      countryCode:reqBody.countryCode,
       // age:reqBody.age,
       age,
       token,

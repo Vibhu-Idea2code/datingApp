@@ -13,7 +13,8 @@ router.get('/list',
 SubscriptionController.getSubList);
 
 
-router.get('/list-dash',accessToken(),
+router.get('/list-dash',
+// accessToken(),
 SubscriptionController.getSubListDas);
 
 // router.get('/id/:planId',
