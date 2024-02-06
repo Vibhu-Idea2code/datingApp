@@ -385,11 +385,7 @@ purchaseplan wise like api  recorrect when user boost use in like api  then km k
 and boost api baki che design baki che edit icon vali ----remiang
 
 
-
-
-
 remaning
-
 
 
 DASHBOARD api
@@ -406,7 +402,7 @@ DASHBOARD api
 (dashboar roundchat api ------done
 {http://localhost:9500/v1/admin/dashboard-filter})
 
--------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------
 
 boost --- almost done remaning - crone set for half mintues
 
@@ -426,7 +422,9 @@ api security mate   api token in
 (home screen ma startdattime valu 
 boost ma cron set kravnu km k starttime and exact 30 min pachi endtime upr delete thavu jove database ma boost na table ma 
 in short ma boost valu jovanu che 
-home page ma boost vali profile avi gy che)-------some remiang
+home page ma boost vali profile avi gy che)------- some remiang 
 
 
 delte -image valu (delete profile kriye to image bhi delte thy jva jove)-----remaing
+
+superlike remaning boost jevu j krvanu chge 

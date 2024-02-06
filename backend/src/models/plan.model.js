@@ -28,7 +28,7 @@ const planSchema = new mongoose.Schema(
       type:String  // two option (weekly and monthly)
     },
     freeSuperLike:{
- type:Number
+      type:Number
     },
     SuperLikeduration:{
       type:String  // two option (weekly and monthly)
@@ -41,7 +41,7 @@ const planSchema = new mongoose.Schema(
       type: String,
     },
     days:{
-    type:Number
+    type:Number,
     },
     status:{
       type :Boolean,
@@ -51,10 +51,6 @@ const planSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    // purchasedByUser: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: 'user', // Assuming 'user' is the name of your user model
-    // },
   },
   {
     timestamps: true,

@@ -161,7 +161,7 @@ const loginEmail = async (req, res) => {
       message: "send mail successfully",
       data: { findUser },
     });
-  } catch (error) {
+  } catch (error) {      
     res.status(404).json({ error: error.message });
   }
 };

@@ -6,7 +6,7 @@ const distance = (userId,lat1, lon1, lat2, lon2, unit)=>{
 	if ((lat1 == lat2) && (lon1 == lon2)) {
 		// return 0;
 		return {
-			userId,
+			// userId,
 			distance: 0,
 		  };
 	}
@@ -27,7 +27,7 @@ const distance = (userId,lat1, lon1, lat2, lon2, unit)=>{
 		// return dist;
 		dist = Math.round(dist * 100) / 100;
 		return {
-			userId,
+			// userId,
 			distance: dist,
 		  };
 	}

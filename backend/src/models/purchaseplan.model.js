@@ -12,7 +12,6 @@ const purchasePlanSchema = new mongoose.Schema(
     totalBoost:{type:Number},
     like: { type: Number },
     superLike: { type: Number },
-
     startDate:{
       type: Date,
       // default: () => new Date()

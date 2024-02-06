@@ -1,0 +1,19 @@
+
+ALL USER LAT LONG CALCULATE
+http://localhost:9500/v1/user/getid-user-all-latlong/65b8e715b175222d2962f9d6
+
+USER LIST BY ID
+http://localhost:9500/v1/user/getid-user-all/65b8e715b175222d2962f9d6
+
+HOME PAGE API WITH BOOST IMPLEMENT 
+http://localhost:9500/v1/user/list
+
+TOP PICKS WITH SUPER LIKES IMPLEMENT
+(je profile ma superlike vdhu ae profile first avi jove)
+(super like boost ni jem baki che)
+(user na table ma super like count kravanu and superlikestatus jovanu)
+
+
+http://localhost:9500/v1/user/getid-user-all-latlong/65c0784755433c9ab0009b4d
+upr ni api ma update user kre tyare je change thay ae baki che aema ny kbr pdti
+

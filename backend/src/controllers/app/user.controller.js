@@ -29,7 +29,7 @@ const getUserListRole = async (req, res) => {
 /* ------------------------ GET USER LIST BY DISTANCE ADMIN SIDE----------------------- */
 const userList = async (req, res) => {
   try {
-    const getUser = await userService.getUserListDis();      
+    const getUser = await userService.getUserListDis();
     console.log(getUser[0], getUser[0].lat, getUser[0].lat);
 
     // Sort based on boost, placing users with boostStatus true at the top
@@ -71,7 +71,6 @@ const userList = async (req, res) => {
       message: "user List!",
       data: userDetailsData,
     });
-
   } catch (error) {
     res.status(400).json({
       success: false,
@@ -139,30 +138,38 @@ const getUserLatLong = async (req, res) => {
       );
     });
 
+    const filterData = usersNearby.map((otherUser) => ({
+      userId: otherUser._id,
+      firstName: otherUser.first_name,
+      age: otherUser.age,
+      boostStatus: otherUser.boostStatus,
+      // lat: otherUser.lat,
+      // long: otherUser.long,
+      dis: distance(
+        user._id,
+        user.lat,
+        user.long,
+        otherUser.lat,
+        otherUser.long
+      ),
+    }));
+
+    const finalData = filterData.filter((item) => item.userId != userId);
+    
+    finalData.sort((a, b) => {
+      if (a.boostStatus === true && b.boostStatus === false) {
+        return -1; // a should come before b
+      } else if (a.boostStatus === false && b.boostStatus === true) {
+        return 1; // b should come before a
+      } else {
+        return 0; // no change in order
+      }
+    });
+      finalData.sort((a, b) => b.dis - a.dis);
     res.status(200).json({
       success: true,
       message: "User details and nearby users retrieved successfully!",
-      data: {
-        userDetails: {
-          first_name: user.first_name,
-          age: user.age,
-          lat: user.lat,
-          long: user.long,
-        },
-        usersNearby: usersNearby.map((otherUser) => ({
-          userId: otherUser._id,
-          firstName: otherUser.first_name,
-          lat: otherUser.lat,
-          long: otherUser.long,
-          distance: distance(
-            user._id,
-            user.lat,
-            user.long,
-            otherUser.lat,
-            otherUser.long
-          ),
-        })),
-      },
+      data: finalData,
     });
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
@@ -199,7 +206,7 @@ const getUserDetailsAll = async (req, res) => {
       role,
       age,
       maxDistance,
-      countryCode
+      countryCode,
     } = getDetails;
     res.status(200).json({
       success: true,
@@ -228,7 +235,7 @@ const getUserDetailsAll = async (req, res) => {
         role,
         age,
         maxDistance,
-        countryCode
+        countryCode,
       },
     });
   } catch (error) {
@@ -344,7 +351,7 @@ const updateDetails = async (req, res) => {
       jobTitle,
       email,
       phoneNumber,
-      countryCode
+      countryCode,
     } = req.body; // Extract the 'role' and 'gender' fields from the request body
     const userExists = await userService.getUserById(userId);
 
