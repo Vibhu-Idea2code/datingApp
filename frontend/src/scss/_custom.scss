@@ -13,26 +13,25 @@
     font-weight: 400;
   }
 
-.editIcon{
-    margin-right: 10px;
-    padding:5px;
-    font-size: 40px;
-    border:1px solid black ;
-    // border-width:1px;
-    border-radius:5px; 
-    color: green;
-    width: 1.5em;
-    height: 1.5em;
-}
+// .editIcon{
+//     margin-right: 10px;
+//     padding:5px;
+//     font-size: 32px;
+//     border:1px solid black ;
+//     // border-width:1px;
+//     border-radius:5px; 
+//     color: green;
+//     // width: 1.5em;
+//     // height: 1.5em;
+// }
 
 .deleteIcon{
-    margin-right: 10px;
+   
     color: #6E260E;
-    padding:3px;
-    font-size: 40px;
+    padding:5px;
+    font-size: 32px;
     border:1px solid black ;
-    border-width:1px;
-    border-radius:5px;
+    
 
 }
 .login-page{
@@ -99,3 +98,6 @@
   //   font-weight: bold;
   //   /* Add other styles as needed */
   // }
+  .dashboradData{
+    margin-left: 20px;
+  }

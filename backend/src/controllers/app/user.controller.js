@@ -126,11 +126,40 @@ const getUserLatLong = async (req, res) => {
       throw new Error("User not found!");
     }
 
-    // Retrieve all users from the database
+    let minAge = 0;
+    let maxAge = Infinity;
+
+    // Check if minAge and maxAge are updated
+    if (user.minAge !== undefined && user.maxAge !== undefined) {
+      minAge = user.minAge;
+      maxAge = user.maxAge;
+    }
+
+    // Retrieve all users from the database within the specified age range
     const allUsers = await userService.getUserListDis();
 
-    // Compare the location of the specified user with all other users
-    const usersNearby = allUsers.filter((otherUser) => {
+    // Filter users by age and showMe preference within the specified range
+    const usersInRange = allUsers.filter((otherUser) => {
+      // Filter by age
+      const ageInRange = otherUser.age >= minAge && otherUser.age <= maxAge;
+
+      // Filter by showMe preference
+      if (user.showMe === "2") {
+        // Allow both "0" and "1" when showMe is "2" (everyone)
+        return ageInRange;
+      } else if (user.showMe === "0") {
+        // Show only men if showMe is "0"
+        return otherUser.gender === "0" && ageInRange;
+      } else if (user.showMe === "1") {
+        // Show only women if showMe is "1"
+        return otherUser.gender === "1" && ageInRange;
+      } else {
+        throw new Error("Invalid showMe value!");
+      }
+    });
+
+    // Compare the location of the specified user with all other users within the age and showMe preference range
+    const usersNearby = usersInRange.filter((otherUser) => {
       // Check the condition for proximity (you can define your own logic here)
       return (
         Math.abs(user.lat - otherUser.lat) < 0.1 &&
@@ -143,8 +172,6 @@ const getUserLatLong = async (req, res) => {
       firstName: otherUser.first_name,
       age: otherUser.age,
       boostStatus: otherUser.boostStatus,
-      // lat: otherUser.lat,
-      // long: otherUser.long,
       dis: distance(
         user._id,
         user.lat,
@@ -165,7 +192,8 @@ const getUserLatLong = async (req, res) => {
         return 0; // no change in order
       }
     });
-      finalData.sort((a, b) => b.dis - a.dis);
+    finalData.sort((a, b) => b.dis - a.dis);
+    
     res.status(200).json({
       success: true,
       message: "User details and nearby users retrieved successfully!",
@@ -175,6 +203,11 @@ const getUserLatLong = async (req, res) => {
     res.status(400).json({ success: false, message: error.message });
   }
 };
+
+
+
+
+
 
 const getUserDetailsAll = async (req, res) => {
   try {

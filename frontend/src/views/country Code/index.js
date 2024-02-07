@@ -15,11 +15,14 @@ import MUIDataTable from "mui-datatables";
 import { Grid, Switch } from "@mui/material";
 import * as Icons from "@mui/icons-material";
 import { useUserState } from "src/context/UserContext";
-import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer, toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
 
-
-import {  updateCountryCodeStatus, deleteMultiCountryCode ,deleteCountryCode} from '../../apiController';
+import {
+  updateCountryCodeStatus,
+  deleteMultiCountryCode,
+  deleteCountryCode,
+} from "../../apiController";
 import swal from "sweetalert";
 
 // import no_profile from "../../../assets/images/users/no_profile.jpg";
@@ -92,7 +95,7 @@ export default function Interest() {
     // },
     {
       name: "status",
-      label: "Status",
+      label: "STATUS",
       options: {
         filter: true,
         sort: false,
@@ -111,7 +114,6 @@ export default function Interest() {
                       key: data._id,
                     });
                     getData();
-
                   })
                   .catch(() => {
                     toast.error("something went wrong!", {
@@ -163,11 +165,7 @@ export default function Interest() {
               /> */}
               <Icons.Edit
                 className="editIcon"
-                style={{
-                  width: "35px",
-                  height: "40px",
-                  cursor: "pointer",
-                }}
+               
                 onClick={() => {
                   const editdata = datatableData.find(
                     (data) => data._id === value
@@ -179,11 +177,7 @@ export default function Interest() {
               />
               <Icons.Delete
                 className="deleteIcon"
-                style={{
-                  width: "35px",
-                  height: "40px",
-                  cursor: "pointer",
-                }}
+                
                 onClick={async () => {
                   const confirm = await swal({
                     title: "Are you sure?",
@@ -200,7 +194,6 @@ export default function Interest() {
                           key: value,
                         });
                         getData();
-                       
                       })
                       .catch(() => {
                         toast.error("something went wrong!", {
@@ -271,7 +264,7 @@ export default function Interest() {
       <div className="container-fluid">
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb m-0 mb-3 ms-2">
-        <ToastContainer />
+            <ToastContainer />
             <li className="breadcrumb-item">
               <a className="" href="/">
                 Home

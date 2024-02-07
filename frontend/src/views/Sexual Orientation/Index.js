@@ -10,11 +10,14 @@ import { useNavigate } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import { Grid, Switch } from "@mui/material";
 import * as Icons from "@mui/icons-material";
-import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer, toast } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
 
 import swal from "sweetalert";
-import {  updateSexualStatus,deleteMultiSexualOrientation  } from '../../apiController';
+import {
+  updateSexualStatus,
+  deleteMultiSexualOrientation,
+} from "../../apiController";
 
 export default function SexualOrientation() {
   const navigate = useNavigate();
@@ -22,12 +25,13 @@ export default function SexualOrientation() {
   const [datatableData, setdatatableData] = useState([]);
 
   const getData = async () => {
-    await axios.get("http://localhost:9500/v1/sexual/list", {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    }
-    ).then((res) => {
-      setdatatableData(res.data.data);
-    });
+    await axios
+      .get("http://localhost:9500/v1/sexual/list", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      })
+      .then((res) => {
+        setdatatableData(res.data.data);
+      });
   };
 
   useEffect(() => {
@@ -45,7 +49,7 @@ export default function SexualOrientation() {
     },
     {
       name: "status",
-      label: "Status",
+      label: "STATUS",
       options: {
         filter: true,
         sort: false,
@@ -63,8 +67,7 @@ export default function SexualOrientation() {
                     toast.success("status changed successfully!", {
                       key: data._id,
                     });
-    getData();
-                 
+                    getData();
                   })
                   .catch(() => {
                     toast.error("something went wrong!", {
@@ -116,10 +119,7 @@ export default function SexualOrientation() {
               /> */}
               <Icons.Edit
                 className="editIcon"
-                style={{
-                  width: "1em",
-                  height: "1em",
-                }}
+               
                 onClick={() => {
                   const editdata = datatableData.find(
                     (data) => data._id === value
@@ -131,10 +131,7 @@ export default function SexualOrientation() {
               />
               <Icons.Delete
                 className="deleteIcon"
-                style={{
-                  width: "1em",
-                  height: "1em",
-                }}
+               
                 onClick={async () => {
                   const confirm = await swal({
                     title: "Are you sure?",
@@ -150,7 +147,11 @@ export default function SexualOrientation() {
                         `http://localhost:9500/v1/sexual/delete/${value}`,
                         value,
                         {
-                          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+                          headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                              "token"
+                            )}`,
+                          },
                         }
                       )
                       .then((res) => {
@@ -225,7 +226,7 @@ export default function SexualOrientation() {
       <div className="container-fluid">
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb m-0 mb-3 ms-2">
-        <ToastContainer />
+            <ToastContainer />
             <li className="breadcrumb-item">
               <a className="" href="/">
                 Home

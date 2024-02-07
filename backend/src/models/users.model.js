@@ -27,15 +27,10 @@ const userSchema = new mongoose.Schema(
     gender: {
       type: String,
     },
-    // nationality:{
-    //   type : mongoose.Schema.Types.ObjectId , ref : 'countrycode'
-    // },
-    like:[
-      {type : mongoose.Schema.Types.ObjectId , ref : 'like'}
-    ],
-    boost:
-      {type :Number, default:0 },
-    
+
+    like: [{ type: mongoose.Schema.Types.ObjectId, ref: "like" }],
+    boost: { type: Number, default: 0 },
+    superlike: { type: Number, default: 0 },
     sexual: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -52,14 +47,14 @@ const userSchema = new mongoose.Schema(
     school: {
       type: String,
     },
-    countryCode:{
-      type : mongoose.Schema.Types.ObjectId ,
-      ref : 'countrycode',
+    countryCode: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "countrycode",
     },
- subscription:{ 
-  type:Boolean,
-  default:false
- },
+    subscription: {
+      type: Boolean,
+      default: false,
+    },
 
     interest: [
       {
@@ -68,24 +63,22 @@ const userSchema = new mongoose.Schema(
       },
     ],
     plan: [
-   {
+      {
         type: mongoose.Schema.Types.ObjectId,
         ref: "plan",
       },
     ],
-    freeboost:
-    {
-      type:Number,
-      default:0
+    freeboost: {
+      type: Number,
+      default: 0,
     },
-    totalboost:
-    {
+    totalboost: {
       type: Number,
     },
-    startDatePlan:{
+    startDatePlan: {
       type: Date,
     },
-    endDatePlan:{
+    endDatePlan: {
       type: Date,
     },
     sign: [
@@ -120,6 +113,10 @@ const userSchema = new mongoose.Schema(
       type: String,
     },
     boostStatus: {
+      type: Boolean,
+      default: false,
+    },
+    superlikeStatus: {
       type: Boolean,
       default: false,
     },
@@ -171,9 +168,9 @@ const userSchema = new mongoose.Schema(
     aboutMe: {
       type: String,
     },
-    boostCount:{
-      type : Number ,
-      default:0,
+    boostCount: {
+      type: Number,
+      default: 0,
     },
 
     user_img: {
@@ -200,7 +197,6 @@ const userSchema = new mongoose.Schema(
   //       }
   //     },
   //   },
-
 );
 
 const User = mongoose.model("user", userSchema);

@@ -9,11 +9,13 @@ import { Grid, IconButton, Switch } from "@mui/material";
 import * as Icons from "@mui/icons-material";
 import swal from "sweetalert";
 import "../../scss/_custom.scss";
-import {  updateNotificationStatus,deleteMultiNotification,notification  } from '../../apiController';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
-
+import {
+  updateNotificationStatus,
+  deleteMultiNotification,
+  notification,
+} from "../../apiController";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Notification() {
   const navigate = useNavigate();
@@ -41,17 +43,17 @@ export default function Notification() {
       },
     },
     {
-        name: "description",
-        label: "Description",
-        options: {
-          filter: true,
-          sort: true,
-        },
+      name: "description",
+      label: "Description",
+      options: {
+        filter: true,
+        sort: true,
       },
+    },
     /* --------------------------- COLUMNS FOR STATUS --------------------------- */
     {
       name: "status",
-      label: "Status",
+      label: "STATUS",
       options: {
         filter: true,
         sort: false,
@@ -70,7 +72,6 @@ export default function Notification() {
                       key: data._id,
                     });
                     getData();
-
                   })
                   .catch(() => {
                     toast.error("something went wrong!", {
@@ -122,11 +123,7 @@ export default function Notification() {
               /> */}
               <Icons.Edit
                 className="editIcon"
-                style={{
-                  width: "1em",
-                  height: "1em",
-                  cursor: "pointer",
-                }}
+                
                 onClick={() => {
                   const editdata = datatableData.find(
                     (data) => data._id === value
@@ -138,11 +135,7 @@ export default function Notification() {
               />
               <Icons.Delete
                 className="deleteIcon"
-                style={{
-                  width: "1em",
-                  height: "1em",
-                  cursor: "pointer",
-                }}
+                
                 onClick={async () => {
                   const confirm = await swal({
                     title: "Are you sure?",
@@ -175,7 +168,6 @@ export default function Notification() {
     },
   ];
 
-
   const deleteMultiple = async (index) => {
     const id = index.data.map(
       (index1) =>
@@ -191,10 +183,10 @@ export default function Notification() {
       dangerMode: true,
     });
     if (confirm) {
-        deleteMultiNotification(id)
+      deleteMultiNotification(id)
         .then(() => {
           getData();
-   
+
           toast.success("Deleted successfully!", {
             key: id,
           });
@@ -206,10 +198,6 @@ export default function Notification() {
         });
     }
   };
-
-
-  
-
 
   const SelectedRowsToolbar = ({ selectedRows, data }) => {
     return (
@@ -233,11 +221,10 @@ export default function Notification() {
   };
   return (
     <Grid>
-      
       <div className="container-fluid">
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb m-0 mb-3 ms-2">
-          <ToastContainer />
+            <ToastContainer />
 
             <li className="breadcrumb-item">
               <a className="" href="/">

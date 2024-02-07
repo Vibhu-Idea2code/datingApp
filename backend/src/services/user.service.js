@@ -45,7 +45,7 @@ const getUserList = async (filter, options) => {
       "plan"
      )
     .populate(
-      "nationality"
+      "countryCode"
      
     )
     .populate(

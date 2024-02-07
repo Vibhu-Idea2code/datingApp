@@ -9,11 +9,12 @@ import { Grid, IconButton, Switch } from "@mui/material";
 import * as Icons from "@mui/icons-material";
 import swal from "sweetalert";
 import "../../scss/_custom.scss";
-import {  updateZodiacSignStatus,deleteMultiZodiacSign  } from '../../apiController';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
-
+import {
+  updateZodiacSignStatus,
+  deleteMultiZodiacSign,
+} from "../../apiController";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Sign() {
   const navigate = useNavigate();
@@ -21,11 +22,13 @@ export default function Sign() {
   const [datatableData, setdatatableData] = useState([]);
 
   const getData = async () => {
-    await axios.get("http://localhost:9500/v1/sign/list",{
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    }).then((res) => {
-      setdatatableData(res.data.data);
-    });
+    await axios
+      .get("http://localhost:9500/v1/sign/list", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      })
+      .then((res) => {
+        setdatatableData(res.data.data);
+      });
   };
 
   useEffect(() => {
@@ -45,7 +48,7 @@ export default function Sign() {
     /* --------------------------- COLUMNS FOR STATUS --------------------------- */
     {
       name: "status",
-      label: "Status",
+      label: "STATUS",
       options: {
         filter: true,
         sort: false,
@@ -64,7 +67,6 @@ export default function Sign() {
                       key: data._id,
                     });
                     getData();
-
                   })
                   .catch(() => {
                     toast.error("something went wrong!", {
@@ -116,11 +118,7 @@ export default function Sign() {
               /> */}
               <Icons.Edit
                 className="editIcon"
-                style={{
-                  width: "1em",
-                  height: "1em",
-                  cursor: "pointer",
-                }}
+               
                 onClick={() => {
                   const editdata = datatableData.find(
                     (data) => data._id === value
@@ -132,11 +130,7 @@ export default function Sign() {
               />
               <Icons.Delete
                 className="deleteIcon"
-                style={{
-                  width: "1em",
-                  height: "1em",
-                  cursor: "pointer",
-                }}
+               
                 onClick={async () => {
                   const confirm = await swal({
                     title: "Are you sure?",
@@ -187,7 +181,7 @@ export default function Sign() {
       deleteMultiZodiacSign(id)
         .then(() => {
           getData();
-   
+
           toast.success("Deleted successfully!", {
             key: id,
           });
@@ -222,11 +216,10 @@ export default function Sign() {
   };
   return (
     <Grid>
-      
       <div className="container-fluid">
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb m-0 mb-3 ms-2">
-          <ToastContainer />
+            <ToastContainer />
 
             <li className="breadcrumb-item">
               <a className="" href="/">

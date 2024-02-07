@@ -3,11 +3,7 @@ const { PurchasePlan, Plan, User } = require("../../models");
 const mongoose = require("mongoose");
 const { userService } = require("../../services");
 const { startSession } = require("../../models/admin.model");
-// const { findOneAndUpdate } = require("../../models/like.model");
 
-// Assuming you have a User model and a Plan model imported
-// const User = require('../models/User');
-// const Plan = require('../models/Plan');
 
 const createPurchasePlan = async (req, res) => {
   try {
@@ -32,7 +28,10 @@ const createPurchasePlan = async (req, res) => {
 
     // Update the 'freeBoost' field in the 'plan' model with the 'boost' value from the 'user' model
     user.boost += plan.freeBoost;
+    user.superlike += plan.freeSuperLike;
+
     console.log(user.boost);
+    console.log(user.superlike, "46546");
 
     // Save the updated user
     await user.save();
@@ -57,67 +56,35 @@ const createPurchasePlan = async (req, res) => {
   }
 };
 
-//   const purchasePlanList=async(req,res)=>{
-//     try {
-//         let data = await PurchasePlan.find().populate({
-//             path: 'plan',
-//             select: 'freeBoost'
-//         });
-
-//         // Create an object to store total boosts for each user
-//         let totalBoosts = {};
-
-//         // Now, you can access the values of freeBoost from the populated plan
-//         if (data && data.length > 0) {
-//             data.forEach(item => {
-//                 // Sum up freeBoost values for all plans
-//                 let freeBoostValue = item.plan.reduce((total, planItem) => total + (planItem.freeBoost || 0), 0);
-
-//                 // Now you can use freeBoostValue in your code as needed
-//                 console.log('Free Boost Value:', freeBoostValue);
-
-//                 // You can add freeBoostValue to your existing data structure if needed
-//                 item.boost = freeBoostValue;
-
-//                 // Calculate total boost for each user
-//                 if (item.user in totalBoosts) {
-//                     totalBoosts[item.user] += freeBoostValue;
-//                 } else {
-//                     totalBoosts[item.user] = freeBoostValue;
-//                 }
-//             });
-//         }
-
-//         res.status(200).json({ success: true, data, totalBoosts });
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ success: false, error: 'Internal Server Error' });
-//     }
-//    }
-
 const purchasePlanList = async (req, res) => {
   try {
     let data = await PurchasePlan.find()
       .populate({
         path: "plan",
-        select: "freeBoost",
+        select: "freeBoost freeSuperLike"
       })
       .populate({
         path: "user",
-        select: "boost",
+        select: "boost superlike",
       });
 
     data = data.map((item) => {
-      if (item.user && item.plan) {
+      if (item.user && item.plan  ) {
         // Check if user's boost is greater than 0
-        if (item.user.boost > 0) {
+        if (item.user.boost > 0 || item.user.superlike) {
           // Decrement boost by 1
           item.user.boost -= 1;
+          item.user.superlike -= 1;
+
         } else {
           // If boost is already 0, do not try to boost
           item.user.boost = 0;
+          item.user.superlike = 0;
+
         }
         item.user.boost = item.plan.freeBoost;
+        item.user.superlike = item.plan.freeSuperLike;
+
       }
       return item;
     });

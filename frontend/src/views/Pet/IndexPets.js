@@ -7,13 +7,11 @@ import { useNavigate } from "react-router-dom";
 import MUIDataTable from "mui-datatables";
 import { Grid, Switch } from "@mui/material";
 import * as Icons from "@mui/icons-material";
-import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer, toast } from 'react-toastify';
-import {  updatePetStatus, deleteMultiPet } from '../../apiController';
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
+import { updatePetStatus, deleteMultiPet } from "../../apiController";
+import "react-toastify/dist/ReactToastify.css";
 import IconButton from "@mui/material/IconButton";
-
-
 
 import swal from "sweetalert";
 import "../../scss/_custom.scss";
@@ -24,11 +22,13 @@ export default function Pets() {
   const [datatableData, setdatatableData] = useState([]);
 
   const getData = async () => {
-    await axios.get("http://localhost:9500/v1/pet/list",{
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-    }).then((res) => {
-      setdatatableData(res.data.data);
-    });
+    await axios
+      .get("http://localhost:9500/v1/pet/list", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      })
+      .then((res) => {
+        setdatatableData(res.data.data);
+      });
   };
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export default function Pets() {
     },
     {
       name: "status",
-      label: "Status",
+      label: "STATUS",
       options: {
         filter: true,
         sort: false,
@@ -65,7 +65,6 @@ export default function Pets() {
                       key: data._id,
                     });
                     getData();
-
                   })
                   .catch(() => {
                     toast.error("something went wrong!", {
@@ -186,7 +185,7 @@ export default function Pets() {
       deleteMultiPet(ids)
         .then(() => {
           getData();
-        
+
           toast.success("Deleted successfully!", {
             key: ids,
           });
@@ -224,8 +223,7 @@ export default function Pets() {
       <div className="container-fluid">
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb m-0 mb-3 ms-2">
-            
-        <ToastContainer />
+            <ToastContainer />
             <li className="breadcrumb-item">
               <a className="" href="/">
                 Home

@@ -59,6 +59,12 @@ const createLike = async (req, res) => {
         break;
       case '2':
         newAction = '2';
+        const users = await User.findById(touserid);
+        if (users.superlike > 0) {
+          await User.findByIdAndUpdate(touserid, { $inc: { superlike: -1 } });
+        } else {
+          return res.status(400).json({ message: 'Insufficient boost count' });
+        }
         break;
       case '3':
         newAction = '3';

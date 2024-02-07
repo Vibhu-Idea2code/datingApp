@@ -380,9 +380,14 @@ plan --- done
 
 dashboard list valu baki che design -reming (api -done)
 purchaseplan wise like api  recorrect when user boost use in like api  then km kbr pde k boost use thya k ny in purchaseplan ma --- done
+userid mlti hoy aema thi check krvanu age range ,gender so on -list ni api ma j----update age range kriye tyare--- done (distance-lat-long baki che je mne kbr ny pdti)
 
 
-and boost api baki che design baki che edit icon vali ----remiang
+and boost api baki che--done
+superlike remaning boost jevu j krvanu chge --done
+
+(boost ma cron set kravnu km k starttime and exact 30 min pachi endtime upr delete thavu jove database ma boost na table ma 
+home page ma boost vali profile avi gy che)------- some remiang (crone baki che)
 
 
 remaning
@@ -404,8 +409,8 @@ DASHBOARD api
 
 ---------------------------------------------------------------------------------------------
 
-boost --- almost done remaning - crone set for half mintues
 
+boost --- almost done remaning - crone set for half mintues
 remaing 
 purchaseplan mange -- crone set 
 
@@ -413,18 +418,14 @@ purchaseplan mange -- crone set
 
 
 
-keep me login(rember me)
-
+(keep me login(rember me)
 login time upr device type for example 1 hoy to ios and 2 hoy to andriod
+api security mate   api token in --------------OPTIONAL)
 
-api security mate   api token in 
-
-(home screen ma startdattime valu 
-boost ma cron set kravnu km k starttime and exact 30 min pachi endtime upr delete thavu jove database ma boost na table ma 
-in short ma boost valu jovanu che 
-home page ma boost vali profile avi gy che)------- some remiang 
 
 
 delte -image valu (delete profile kriye to image bhi delte thy jva jove)-----remaing
 
-superlike remaning boost jevu j krvanu chge 
+
+
+ design baki che edit icon vali ----remiang

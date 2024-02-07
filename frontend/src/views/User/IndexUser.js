@@ -32,13 +32,14 @@ export default function IndexUser() {
   const [datatableData, setdatatableData] = useState([]);
   const [baseurl, setbaseurl] = useState([]);
   const getData = async () => {
-    await axios.get("http://localhost:9500/v1/admin/user-list",{
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    }
-    ).then((res) => {
-      setdatatableData(res.data.data);
-      setbaseurl(res.data.baseUrl);
-    });
+    await axios
+      .get("http://localhost:9500/v1/admin/user-list", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      })
+      .then((res) => {
+        setdatatableData(res.data.data);
+        setbaseurl(res.data.baseUrl);
+      });
   };
 
   useEffect(() => {
@@ -110,7 +111,7 @@ export default function IndexUser() {
 
     {
       name: "status",
-      label: "BlockUser",
+      label: "BLOCK USER",
       options: {
         filter: true,
         sort: false,
@@ -152,17 +153,13 @@ export default function IndexUser() {
           return (
             <div>
               <Icons.Edit
-                // className="editIcon"
-                // style={{
-                //   marginRight: "10px",
-                //   marginBottom: "5px",
-                //   color: "green",
-                // }}
+                className="editIcon"
+              
                 onClick={() => {
                   const editdata = datatableData.find(
                     (data) => data._id === value
                   );
-                  console.log(editdata,"editdata kjfsdfi")
+                  console.log(editdata, "editdata kjfsdfi");
                   navigate("/indexForm", {
                     state: { editdata: editdata, baseurl: baseurl },
                   });
@@ -171,12 +168,8 @@ export default function IndexUser() {
                 }}
               />
               <Icons.Delete
-                // className="deleteIcon"
-                // style={{
-                //   marginRight: "10px",
-                //   marginBottom: "5px",
-                //   color: "6E260E",
-                // }}
+                className="deleteIcon"
+              
                 onClick={async () => {
                   const confirm = await swal({
                     title: "Are you sure?",
@@ -190,8 +183,13 @@ export default function IndexUser() {
                     await axios
                       .delete(
                         `http://localhost:9500/v1/admin/delete-user/${value}`,
-                        value,{
-                          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+                        value,
+                        {
+                          headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                              "token"
+                            )}`,
+                          },
                         }
                       )
                       .then((res) => {
