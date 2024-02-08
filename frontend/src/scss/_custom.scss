@@ -13,26 +13,24 @@
     font-weight: 400;
   }
 
-// .editIcon{
-//     margin-right: 10px;
-//     padding:5px;
-//     font-size: 32px;
-//     border:1px solid black ;
-//     // border-width:1px;
-//     border-radius:5px; 
-//     color: green;
-//     // width: 1.5em;
-//     // height: 1.5em;
-// }
+.editIcon{
+  color: white;
+  padding: 0px;
+  margin: 2px;
+  font-size: 1.5rem !important;
+  border: 1px solid  transparent;
+  cursor: pointer;
+  background-color: #ff4d67; 
+}
 
-.deleteIcon{
-   
-    color: #6E260E;
-    padding:5px;
-    font-size: 32px;
-    border:1px solid black ;
-    
-
+.deleteIcon {
+  color: white;
+  padding: 0px;
+  margin: 2px;
+  font-size: 1.5rem !important;
+  border: 1px solid  transparent;
+  cursor: pointer;
+  background-color: #ff4d67; 
 }
 .login-page{
     background-image: url("../assets/images/banner.jpg");

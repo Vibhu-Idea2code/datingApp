@@ -119,11 +119,7 @@ export default function Plans() {
             <div>
               <Icons.Edit
                 className="editIcon"
-                style={{
-                  width: "1em",
-                  height: "1em",
-                  cursor: "pointer",
-                }}
+               
                 onClick={() => {
                   const editdata = datatableData.find(
                     (data) => data._id === value
@@ -135,11 +131,7 @@ export default function Plans() {
               />
               <Icons.Delete
                 className="deleteIcon"
-                style={{
-                  width: "1em",
-                  height: "1em",
-                  cursor: "pointer",
-                }}
+               
                 onClick={async () => {
                   const confirm = await swal({
                     title: "Are you sure?",

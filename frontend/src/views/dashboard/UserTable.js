@@ -7,9 +7,23 @@ const UserTable = () => {
   const [dataTableData, setDataTable] = useState([]);
 
   const activeUserList = async () => {
-    getUserDashboard().then((res) => {
-      setDataTable(res.data.ageRangeDetails);
-    });
+    try {
+      const response = await getUserDashboard();
+      const formattedData = response.data.ageRangeDetails.map((detail) => ({
+        ageRange: detail.ageRange,
+        count: detail.count,
+        percentage: detail.percentage,
+        userDetails: [
+          {
+            countryCode: detail.countryCode ? detail.countryCode : "null",
+          },
+        ],
+      }));
+      setDataTable(formattedData);
+    } catch (error) {
+      console.error("Error fetching user dashboard data:", error);
+      toast.error("Failed to fetch user dashboard data");
+    }
   };
 
   useEffect(() => {
@@ -39,6 +53,9 @@ const UserTable = () => {
       options: {
         filter: true,
         sort: false,
+        customBodyRender: (value) => {
+          return value ? <div>{value}</div> : <div>null</div>;
+        },
       },
     },
     {
@@ -48,13 +65,9 @@ const UserTable = () => {
         filter: false,
         sort: false,
         customBodyRender: (value) => {
-          return (
-            <>
-              {value.map((user, index) => (
-                <div key={index}>{user.countryCode}</div>
-              ))}
-            </>
-          );
+          const ccode =
+            value && value.length > 0 ? value[0].countryCode : "null";
+          return <div>{ccode}</div>;
         },
       },
     },
@@ -66,7 +79,7 @@ const UserTable = () => {
     download: false,
     viewColumns: false,
     filter: false,
-    rowsPerPage: 3,
+    rowsPerPage: 5,
   };
 
   return (
@@ -77,7 +90,7 @@ const UserTable = () => {
         columns={columns}
         options={options}
         title={"Users"}
-    />
+      />
     </>
   );
 };

@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   CButton,
@@ -18,7 +18,7 @@ import { cilEnvelopeClosed, cilLockLocked, cilUser } from "@coreui/icons";
 import { useNavigate } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
-import { loginUser, useUserDispatch } from '../../context/UserContext'
+import { loginUser, useUserDispatch } from "../../context/UserContext";
 
 const Login = () => {
   const {
@@ -29,15 +29,15 @@ const Login = () => {
     formState: { errors },
   } = useForm();
   const navigate = useNavigate();
-  var userDispatch = useUserDispatch()
+  var userDispatch = useUserDispatch();
 
-  var [isLoading, setIsLoading] = useState(false)
+  var [isLoading, setIsLoading] = useState(false);
 
   // console.log(errors)
   const onSubmit = async (data) => {
-    loginUser(userDispatch, data, navigate, setIsLoading, setError)
+    loginUser(userDispatch, data, navigate, setIsLoading, setError);
     // console.log
-  }
+  };
   // const onSubmit = async (data) => {
   //   try {
   //     // const response = await axios.post(
@@ -66,7 +66,7 @@ const Login = () => {
     <div className="bg-light  min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
         <CRow className="justify-content-center">
-          <CCol md={8}>
+          <CCol md={6}>
             <CCardGroup>
               <CCard className="p-4 col-md-7">
                 <CCardBody>
@@ -104,37 +104,39 @@ const Login = () => {
                       )}
                     </CInputGroup>
                     <CInputGroup>
-                        <CInputGroupText>
-                          <CIcon icon={cilLockLocked} />
-                        </CInputGroupText>
-                        <Controller
-                          name="password"
-                          control={control}
-                          defaultValue=""
-                          rules={{ required: 'Password is required' }}
-                          render={({ field }) => (
-                            <>
-                              <CFormInput
-                                {...field}
-                                type="password"
-                                placeholder="Password"
-                                autoComplete="current-password"
-                                variant="outlined" // Custom prop for the outlined variant
-                              />
-                            </>
-                          )}
-                        />
-                      </CInputGroup>
-                      {errors.password && (
-                        <div className="error-msg mb-2">{errors.password.message}</div>
-                      )}
+                      <CInputGroupText>
+                        <CIcon icon={cilLockLocked} />
+                      </CInputGroupText>
+                      <Controller
+                        name="password"
+                        control={control}
+                        defaultValue=""
+                        rules={{ required: "Password is required" }}
+                        render={({ field }) => (
+                          <>
+                            <CFormInput
+                              {...field}
+                              type="password"
+                              placeholder="Password"
+                              autoComplete="current-password"
+                              variant="outlined" // Custom prop for the outlined variant
+                            />
+                          </>
+                        )}
+                      />
+                    </CInputGroup>
+                    {errors.password && (
+                      <div className="error-msg mb-2">
+                        {errors.password.message}
+                      </div>
+                    )}
                     <CRow>
                       <CCol xs={6}>
                         <CButton color="primary" className="px-4" type="submit">
                           Login
                         </CButton>
                       </CCol>
-                      <CCol xs={6} className="text-right">
+                      <CCol xs={6}  className="text-right">
                         <Link
                           to="/forgot-password"
                           className="btn btn-link px-0">
@@ -145,7 +147,7 @@ const Login = () => {
                   </CForm>
                 </CCardBody>
               </CCard>
-              <CCard className="text-white col-md-5 bg-primary py-5">
+              {/* <CCard className="text-white col-md-5 bg-primary py-5">
                 <CCardBody className="text-center">
                   <div>
                     <h2>Sign up</h2>
@@ -165,7 +167,7 @@ const Login = () => {
                     </Link>
                   </div>
                 </CCardBody>
-              </CCard>
+              </CCard> */}
             </CCardGroup>
           </CCol>
         </CRow>

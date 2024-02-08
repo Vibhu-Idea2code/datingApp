@@ -153,7 +153,7 @@ export default function IndexUser() {
           return (
             <div>
               <Icons.Edit
-                className="editIcon"
+            className="editIcon"
               
                 onClick={() => {
                   const editdata = datatableData.find(
