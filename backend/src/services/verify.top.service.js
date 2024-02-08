@@ -1,7 +1,7 @@
 const { User,Admin } = require("../models");
 
-const findOtpByEmail = async (phoneNumber) => {
-  return await User.findOne(phoneNumber);
+const findOtpByEmail = async ({phoneNumber}) => {
+  return await User.findOne({phoneNumber});
 };
 const findOtpByOtp = async (otp) => {
   return await User.findOne(otp);

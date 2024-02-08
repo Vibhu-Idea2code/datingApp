@@ -1,0 +1,89 @@
+home page (like,supelike button)
+http://localhost:9500/v1/user/getid-user-all-latlong/65c47fb5a906f6e3e7f3350f
+
+CLICK BUTTON SPECIFIC DETAILS OF USER
+http://localhost:9500/v1/user/getid-user-all/65b8e715b175222d2962f9d6
+
+
+
+ LIKE,SUPER LIKE,BOOST
+ (localhost:9500/v1/like/like-create)
+
+LIKE LIST
+(http://localhost:9500/v1/like/like/1)--for Like
+
+
+
+
+
+ LIST
+
+ 1.Sexual orientation 
+(http://localhost:9500/v1/list/list-sexual)---set validation 3 thi niche
+
+2.Interest
+(http://localhost:9500/v1/list/list-interest)---set validation 3 to 5
+
+3.Pets
+(http://localhost:9500/v1/list/list-pets)
+
+4.zodiac sign
+(http://localhost:9500/v1/sign/list-app)
+
+5.Plan list
+(http://localhost:9500/v1/list/list-plan)
+
+
+
+
+
+
+LOGIN 
+ 1.Login By Email
+ (http://localhost:9500/v1/user/login)
+
+ 2.Login by PhoneNumber
+ (http://localhost:9500/v1/user/login-phone)
+
+ 3.Verify Otp
+ (http://localhost:9500/v1/user/verify-otp)--(if already phoneNumber get in database then all detail show otherwise if not found in database then status 1)
+(if status code 1 then register)--case 1
+(if show all details then home page (user/getid-user-all-latlong)<- this api)-- case 2
+
+
+REGISTRATION
+(http://localhost:9500/v1/user/create-user)
+
+
+EDIT API
+
+1.Update Sign 
+(http://localhost:9500/v1/user/update-sign/65b8e715b175222d2962f9d6)
+
+2.Update Pet
+(http://localhost:9500/v1/user/update-pets/65ba1e50df42946d64ab273a)
+
+3.Update address
+(http://localhost:9500/v1/user/update-address/65ba1e50df42946d64ab273a)
+
+4.Update about me
+(http://localhost:9500/v1/user/update-aboutme/65ba1e50df42946d64ab273a)
+
+5.Update gender
+(http://localhost:9500/v1/user/update-gender/65ba1e50df42946d64ab273a)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

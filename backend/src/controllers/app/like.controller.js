@@ -1,7 +1,7 @@
-const { PurchasePlan } = require('../../models');
-const Like = require('../../models/like.model');
-const Plan = require('../../models/plan.model');
-const User = require('../../models/users.model');
+const { PurchasePlan } = require("../../models");
+const Like = require("../../models/like.model");
+const Plan = require("../../models/plan.model");
+const User = require("../../models/users.model");
 
 /* ---------------------------- CREATE LIKE TABLE --------------------------- */
 // const createLike = async (req, res) => {
@@ -30,81 +30,96 @@ const User = require('../../models/users.model');
 //   }
 // };
 
+
+// 1-like 2-superlike 3--boost 4-nope
 const createLike = async (req, res) => {
   try {
     const { fromuserid, touserid, action, PurchasePlanid } = req.body;
 
-      // Check if the user has purchased a plan
-      const purchasedPlan = await PurchasePlan.findById(PurchasePlanid);
+    // Check if the user has purchased a plan
+    const purchasedPlan = await PurchasePlan.findById(PurchasePlanid);
 
-      if (!purchasedPlan) {
-        return res.status(400).json({ message: 'User has not purchased a plan' });
-      }
-
-      const existingLike = await Like.findOne({ fromuserid, touserid });
-
-    if (existingLike) {
-      return res.status(400).json({ message: 'User already liked this profile' });
+    if (!purchasedPlan) {
+      return res.status(400).json({ message: "User has not purchased a plan" });
     }
 
+    if ((action === '1' || action === '2') && !fromuserid) {
+      return res.status(400).json({ message: "fromuserid is required for action 1 and 2" });
+    }
+
+    const existingLike = await Like.findOne({ fromuserid, touserid });
+
+    if (existingLike && (action === '1' || action === '2')) {
+      return res.status(400).json({ message: 'User already liked this profile' });
+    }
+    
     if (fromuserid === touserid) {
-      return res.status(400).json({ message: 'Cannot like your own ID' });
+      return res.status(400).json({ message: "Cannot like your own ID" });
     }
 
     let newAction;
-// 1-like, 2-superlike, 3-boost, 4-nope
+
     switch (action) {
       case "1":
-        newAction = '1';
+        newAction = "1";
         break;
-      case '2':
-        newAction = '2';
-        const users = await User.findById(touserid);
-        if (users.superlike > 0) {
+      case "2":
+        newAction = "2";
+        const user = await User.findById(touserid);
+        if (user.superlike > 0) {
           await User.findByIdAndUpdate(touserid, { $inc: { superlike: -1 } });
         } else {
-          return res.status(400).json({ message: 'Insufficient boost count' });
+          return res
+            .status(400)
+            .json({ message: "Insufficient superlike count" });
         }
         break;
-      case '3':
-        newAction = '3';
+      case "3":
+        newAction = "3";
         if (fromuserid) {
-          return res.status(400).json({ message: 'Boost action does not require fromuserid' });
+          return res
+            .status(400)
+            .json({ message: "Boost action does not require fromuserid" });
         }
-        const user = await User.findById(touserid);
-        if (user.boost > 0) {
+        const boostCooldown = 30 * 60 * 1000; // 30 minutes in milliseconds
+        const lastBoost = await Like.findOne({ touserid, action: "3" }).sort({
+          createdAt: -1,
+        });
+        if (lastBoost && Date.now() - lastBoost.createdAt < boostCooldown) {
+          return res
+            .status(400)
+            .json({ message: "Boost action is on cooldown and count at 30 minutes" });
+        }
+        const userForBoost = await User.findById(touserid);
+        if (userForBoost.boost > 0) {
           await User.findByIdAndUpdate(touserid, { $inc: { boost: -1 } });
         } else {
-          return res.status(400).json({ message: 'Insufficient boost count' });
+          return res.status(400).json({ message: "Insufficient boost count" });
         }
-        // await User.findByIdAndUpdate(touserid, { $inc: { boostCount: -1 } });
         break;
-      case '4':
-        newAction = '4';
+      case "4":
+        newAction = "4";
         break;
       default:
-        return res.status(400).json({ message: 'Invalid action' });
+        return res.status(400).json({ message: "Invalid action" });
     }
 
-    // Check if the user has purchased a plan
-    let planStatus = false;
-
-  
     const newLike = new Like({
       touserid,
       fromuserid,
       action: newAction,
-      planStatus: planStatus
+      planStatus: true, // Assuming the user has an active plan if they are performing an action
     });
 
     const result = await newLike.save();
-    
+
     res.status(200).json({ message: `${newAction} successful.`, data: result });
   } catch (error) {
     // console.error(error);
-    res.status(500).json({ message: 'Internal Server Error' });
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
 
 /* ------------------------------- LIST BY ID ------------------------------- */
 // const getLikesByUserId = async (req, res) => {
@@ -134,59 +149,75 @@ const getLikesByUserId = async (req, res) => {
   try {
     const { action } = req.params;
 
-    console.log('Received action:', action,"like controller line no:-122"); // Add this line for debugging
+    console.log("Received action:", action, "like controller line no:-122"); // Add this line for debugging
 
     // Validate the action parameter
-    const validActions = ["1", '2', '3', '4'];
+    const validActions = ["1", "2"];
     if (!validActions.includes(action)) {
-      console.log('Invalid action parameter:', action,"like controller line no:-127"); // Add this line for debugging
-      return res.status(400).json({ message: 'Invalid action parameter' });
+      console.log(
+        "Invalid action parameter:",
+        action,
+        "like controller line no:-127"
+      ); // Add this line for debugging
+      return res.status(400).json({ message: "Invalid action parameter" });
     }
 
     // Assuming 'fromUserId' is the field in your Like model representing the user
-    const likes = await Like.find({ action }).select('fromuserid');
+    const likes = await Like.find({ action }).select("fromuserid");
 
     // Extracting unique fromUserIds
-    const uniqueFromUserIds = [...new Set(likes.map(like => like.fromuserid))];
+    const uniqueFromUserIds = [
+      ...new Set(likes.map((like) => like.fromuserid)),
+    ];
 
     // Fetching user details based on unique fromUserIds
-    const users = await User.find({ _id: { $in: uniqueFromUserIds } }).select('first_name age');
+    const users = await User.find({ _id: { $in: uniqueFromUserIds } }).select(
+      "first_name age"
+    );
 
     res.status(200).json({ data: users });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Internal Server Error' });
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
-
-
 
 const getLikesByUser = async (req, res) => {
   try {
     // Directly destructure the 'action' from req.params
     const { action } = req.params;
 
-    console.log('Received action:', action, "like controller line no:-122");
+    console.log("Received action:", action, "like controller line no:-122");
 
     // Validate the action parameter
-    const validActions = ["1", '2', '3', '4'];
+    const validActions = ["1", "2", "3", "4"];
     if (!validActions.includes(action)) {
-      console.log('Invalid action parameter:', action, "like controller line no:-127");
-      return res.status(400).json({ message: 'Invalid action parameter' });
+      console.log(
+        "Invalid action parameter:",
+        action,
+        "like controller line no:-127"
+      );
+      return res.status(400).json({ message: "Invalid action parameter" });
     }
 
     // Assuming 'fromUserId' is the field in your Like model representing the user
-    const likes = await Like.find({ action }).select('fromuserid');
+    const likes = await Like.find({ action }).select("fromuserid");
 
     // Extracting unique fromUserIds
-    const uniqueFromUserIds = [...new Set(likes.map(like => like.fromuserid))];
+    const uniqueFromUserIds = [
+      ...new Set(likes.map((like) => like.fromuserid)),
+    ];
 
     // Fetching user details based on unique fromUserIds
-    const users = await User.find({ _id: { $in: uniqueFromUserIds } }).select('first_name age');
+    const users = await User.find({ _id: { $in: uniqueFromUserIds } }).select(
+      "first_name age"
+    );
 
     // Separate users with action 3 and others
-    const action3Users = users.filter(user => likes.find(like => like.fromuserid === user._id && like.action === '3'));
-    const otherUsers = users.filter(user => !action3Users.includes(user));
+    const action3Users = users.filter((user) =>
+      likes.find((like) => like.fromuserid === user._id && like.action === "3")
+    );
+    const otherUsers = users.filter((user) => !action3Users.includes(user));
 
     // Concatenate the two lists, with action 3 users first
     const finalUserList = [...action3Users, ...otherUsers];
@@ -194,12 +225,9 @@ const getLikesByUser = async (req, res) => {
     res.status(200).json({ data: finalUserList });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Internal Server Error' });
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
-
-
-
 
 /* ------------------------------- LIST BY ID ------------------------------- */
 const getSuperLikesByUserId = async (req, res) => {
@@ -210,18 +238,18 @@ const getSuperLikesByUserId = async (req, res) => {
     const likeCount = await Like.countDocuments({ touserid });
     const user = await Like.find({ touserid }).populate({
       path: "fromuserid",
-      select: ["_id","first_name","age"],
+      select: ["_id", "first_name", "age"],
     });
 
-        if (!user) {
-          return res.status(404).json({ message: 'User not found' });
-        }
-        console.log(user)
-        const fromUserIds = user.map((like) => like.fromuserid);
-    return res.status(200).json({ data:likeCount,fromUserIds});
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    console.log(user);
+    const fromUserIds = user.map((like) => like.fromuserid);
+    return res.status(200).json({ data: likeCount, fromUserIds });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: 'Internal Server Error' });
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
@@ -236,22 +264,24 @@ const getAllUsersWithLikes = async (req, res) => {
 
     // Iterate through each user and get the like count
     for (const user of users) {
-      const { _id, name, age,distance } = user;
+      const { _id, name, age, distance } = user;
 
       // Count the number of likes where the likedUser is the current user's ID
       const likeCount = await Like.countDocuments({ touserid: _id });
 
       // Add user details with like count to the array
-      usersWithLikes.push({ _id, name, age, likeCount,distance });
+      usersWithLikes.push({ _id, name, age, likeCount, distance });
     }
 
     // Sort the array by name, handling cases where name is undefined
-    usersWithLikes.sort((a, b) => (a.distance && b.distance ? a.distance.localeCompare(b.distance) : 0));
+    usersWithLikes.sort((a, b) =>
+      a.distance && b.distance ? a.distance.localeCompare(b.distance) : 0
+    );
 
     return res.status(200).json({ data: usersWithLikes });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: 'Internal Server Error' });
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
@@ -281,12 +311,9 @@ const getAllUsersWithLikes = async (req, res) => {
 //   }
 // };
 
-
-
-
-
-  
-  
 module.exports = {
-  createLike,getLikesByUserId,getAllUsersWithLikes,getLikesByUser
+  createLike,
+  getLikesByUserId,
+  getAllUsersWithLikes,
+  getLikesByUser,
 };

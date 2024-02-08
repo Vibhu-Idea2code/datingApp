@@ -1,28 +1,23 @@
-const express=require('express');
-const {zodiacSignController}=require('../../../controllers');
-const router=express.Router();
-const {
-    refreshToken,
-    accessToken,
-  } = require("../../../middlewares/AdminAuth");
+const express = require("express");
+const { zodiacSignController } = require("../../../controllers");
+const router = express.Router();
+const { refreshToken, accessToken } = require("../../../middlewares/AdminAuth");
 
-router.post('/create-sign',
-zodiacSignController.createZodiac);
+router.post("/create-sign", zodiacSignController.createZodiac);
+// admin side
+router.get("/list", accessToken(), zodiacSignController.getZodiacList);
 
-router.get('/list',accessToken(),
-zodiacSignController.getZodiacList);
+router.get("/id/:signId", zodiacSignController.getZodiacId);
 
-router.get('/id/:signId',
-zodiacSignController.getZodiacId);
+router.delete("/delete/:signId", zodiacSignController.deleteZodiac);
 
-router.delete('/delete/:signId',
-zodiacSignController.deleteZodiac);
-
-router.put('/update/:signId',
-zodiacSignController.updateZodiac);
+router.put("/update/:signId", zodiacSignController.updateZodiac);
 
 router.delete("/delete-many", zodiacSignController.multipleDelete);
 
-router.put("/updateSignStatus/:id",zodiacSignController.updateZodiacSignStatus);
+router.put(
+  "/updateSignStatus/:id",
+  zodiacSignController.updateZodiacSignStatus
+);
 
-module.exports=router;
+module.exports = router;

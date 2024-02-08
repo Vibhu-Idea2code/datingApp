@@ -245,7 +245,7 @@ const getdashboard = async (req, res) => {
       { min: 65, max: Infinity },
     ];
 
-    // Create an array to store the count and details for each age range and countryCode
+    // Create an array to store the age range details
     const ageRangeDetails = [];
 
     // Loop through each age range
@@ -253,7 +253,7 @@ const getdashboard = async (req, res) => {
       // Find users within the current age range
       const usersInAgeRange = await User.find({
         age: { $gte: range.min, $lte: range.max },
-      }).populate({ path: "countryCode", model: "countrycode" }); // Populate countryCode field with all data
+      }).populate({ path: "countryCode", model: "countrycode" });
 
       // Filter users by countryCode if provided
       const filteredUsers = req.query.countryCode
@@ -264,34 +264,43 @@ const getdashboard = async (req, res) => {
           )
         : usersInAgeRange;
 
-      // Filter out users with undefined countryCode
-      const validUsers = filteredUsers.filter((user) => user.countryCode);
-
       // Group users by countryCode and count them
-      const countryCodeCount = validUsers.length;
+      const countryCodeCounts = filteredUsers.reduce((acc, user) => {
+        if (user.countryCode) {
+          const countryCode = user.countryCode.countryCode;
+          acc[countryCode] = (acc[countryCode] || 0) + 1;
+        }
+        return acc;
+      }, {});
 
-      // Calculate percentage
-      const totalUsersCount = usersInAgeRange.length;
-      const percentage = (countryCodeCount / totalUsersCount) * 100;
+      // Calculate total count of users within the age range
+      const totalCount = Object.values(countryCodeCounts).reduce(
+        (acc, count) => acc + count,
+        0
+      );
 
-      // Include user details for users with unique countryCode
-      const uniqueNationalities = validUsers.map((user) => user.countryCode);
-      const userDetails = await User.find({
-        age: { $gte: range.min, $lte: range.max },
-        countryCode: { $in: uniqueNationalities },
-      }).populate("countryCode", "countryCode"); // Populate countryCode field with all data
+      // If there are no users in this age range, add a null entry
+      if (totalCount === 0) {
+        ageRangeDetails.push({
+          ageRange: `${range.min}-${range.max}`,
+          count: 0,
+          percentage: null,
+          countryCode: null,
+        });
+      } else {
+        // Calculate percentage for each country code
+        const ageRangeDetailsForRange = Object.entries(countryCodeCounts).map(
+          ([countryCode, count]) => ({
+            ageRange: `${range.min}-${range.max}`,
+            count: count,
+            percentage: (count / totalCount) * 100,
+            countryCode: countryCode,
+          })
+        );
 
-      // Push the count, percentage, and details to the ageRangeDetails array
-      ageRangeDetails.push({
-        ageRange: `${range.min}-${range.max}`,
-        count: countryCodeCount,
-        percentage: percentage,
-        userDetails: userDetails.map((user) => ({
-            // _id: user.countryCode._id,
-            countryCode: user.countryCode.countryCode
-      
-        })),
-      });
+        // Push the details for the current age range into the main array
+        ageRangeDetails.push(...ageRangeDetailsForRange);
+      }
     }
 
     res.status(200).json({

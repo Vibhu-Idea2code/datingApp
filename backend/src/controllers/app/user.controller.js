@@ -162,8 +162,8 @@ const getUserLatLong = async (req, res) => {
     const usersNearby = usersInRange.filter((otherUser) => {
       // Check the condition for proximity (you can define your own logic here)
       return (
-        Math.abs(user.lat - otherUser.lat) < 0.1 &&
-        Math.abs(user.long - otherUser.long) < 0.1
+        Math.abs(user.lat - otherUser.lat) &&
+        Math.abs(user.long - otherUser.long)
       );
     });
 
@@ -182,7 +182,7 @@ const getUserLatLong = async (req, res) => {
     }));
 
     const finalData = filterData.filter((item) => item.userId != userId);
-    
+
     finalData.sort((a, b) => {
       if (a.boostStatus === true && b.boostStatus === false) {
         return -1; // a should come before b
@@ -193,7 +193,7 @@ const getUserLatLong = async (req, res) => {
       }
     });
     finalData.sort((a, b) => b.dis - a.dis);
-    
+
     res.status(200).json({
       success: true,
       message: "User details and nearby users retrieved successfully!",
@@ -203,11 +203,6 @@ const getUserLatLong = async (req, res) => {
     res.status(400).json({ success: false, message: error.message });
   }
 };
-
-
-
-
-
 
 const getUserDetailsAll = async (req, res) => {
   try {

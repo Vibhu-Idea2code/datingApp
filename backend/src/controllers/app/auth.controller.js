@@ -159,7 +159,7 @@ const loginEmail = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "send mail successfully",
-      data: { findUser },
+      // data: { findUser },
     });
   } catch (error) {      
     res.status(404).json({ error: error.message });
@@ -217,11 +217,12 @@ const checkUserPh = async (req, res, next) => {
 const verifyOtp = async (req, res) => {
   try {
     const { phoneNumber, otp } = req.body;
-
+console.log(req.body)
     const findEmail = await verifyOtpService.findOtpByEmail({ phoneNumber });
+    console.log(findEmail)
     // console.log("findEmail", findEmail);
     if (!findEmail) {
-      throw new Error("user not found");
+     return res.json({ message:"1"})
     }
     findEmail.otp = otp;
     await findEmail.save();

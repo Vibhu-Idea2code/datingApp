@@ -1,4 +1,4 @@
-const { listingService } = require("../../services");
+const { listingService, planService } = require("../../services");
 
 /* -------------------------- PET LIST BY USER SIDE ------------------------- */
 const petList = async (req, res) => {
@@ -80,9 +80,32 @@ const sexualList = async (req, res) => {
   }
 };
 
+const getPlanList = async (req, res) => {
+  try {
+    let plans = await planService.getPlanList(req, res);
+    // Extracting required fields from each plan object
+    let formattedPlans = plans.map(plan => ({
+      planType: plan.planType,
+      planName: plan.planName,
+      description: plan.description,
+      price:plan.price
+    }));
+    res.status(200).json({
+      message: "Successfully fetched all plans",
+      status: true,
+      data: formattedPlans,
+    });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
+
+
 module.exports = {
   sexualList,
   signList,
   interestList,
   petList,
+  getPlanList
 };

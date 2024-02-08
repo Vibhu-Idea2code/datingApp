@@ -10,4 +10,7 @@ router.get("/list-sexual", listingController.sexualList);
 
 router.get("/list-sign", listingController.signList);
 
+router.get("/list-plan", listingController.getPlanList);
+
+
 module.exports = router;
