@@ -1,17 +1,22 @@
-import { createStore } from 'redux'
+import { configureStore } from "@reduxjs/toolkit";
 
 const initialState = {
   sidebarShow: true,
-}
+};
 
-const changeState = (state = initialState, { type, ...rest }) => {
-  switch (type) {
-    case 'set':
-      return { ...state, ...rest }
+const usersReducer   = (state = initialState, action) => {
+  switch (action.type) {
+    case "set":
+      return { ...state, ...action.payload };
     default:
-      return state
+      return state;
   }
-}
+};
 
-const store = createStore(changeState)
-export default store
+const store = configureStore({
+  reducer: {
+    users: usersReducer,
+  },
+});
+
+export default store;

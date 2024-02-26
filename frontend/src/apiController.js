@@ -99,6 +99,8 @@ export const adminDetails = () =>
     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
   });
 
+  
+
 // export const adminCreateUserDetails = () =>
 //   axios.post(`${mainUrl}/admin/create-user`, {
 //     // headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
@@ -256,6 +258,10 @@ export const notification = (data) =>
     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
   });
 
+  export const fetchDataFromAPI = (data) =>
+  axios.get(`http://localhost:9500/v1/admin/user-list`, data, {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  });
 export const updateNotificationStatus = (data, id) =>
   axios.put(`${mainUrl}/v1/notification/update/${id}`, data, {
     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
